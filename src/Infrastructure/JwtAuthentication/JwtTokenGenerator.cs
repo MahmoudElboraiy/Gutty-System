@@ -1,12 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Application.Interfaces;
 using Domain.Models.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.JwtAuthentication;
 
-public class JwtTokenGenerator
+public class JwtTokenGenerator : IJwtTokenGenerator
 {
     private readonly JwtSettings _jwtSettings;
 

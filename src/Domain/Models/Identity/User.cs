@@ -9,7 +9,7 @@ public class User : IdentityUser
     public required string FirstName { get; set; }
 
     [MaxLength(255)]
-    public string SecondName { get; set; } = string.Empty;
+    public string MiddleName { get; set; } = string.Empty;
 
     [MaxLength(255)]
     public required string LastName { get; set; }
@@ -18,7 +18,7 @@ public class User : IdentityUser
     public required string MainAddress { get; set; }
 
     [MaxLength(255)]
-    public string SecondaryAddress { get; set; } = string.Empty;
+    public string? SecondaryAddress { get; set; } = string.Empty;
 
     [MaxLength(11)]
     [MinLength(11)]

@@ -1,4 +1,5 @@
 using System.Text;
+using Application.Interfaces;
 using Domain.Models.Identity;
 using Infrastructure.Data;
 using Infrastructure.JwtAuthentication;
@@ -24,15 +25,18 @@ public static class DependencyInjection
 
         services.AddSingleton(jwtSettings);
 
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+
         services
             .AddIdentityCore<User>(o =>
             {
                 o.User.RequireUniqueEmail = false;
-                o.SignIn.RequireConfirmedPhoneNumber = true;
+                o.SignIn.RequireConfirmedPhoneNumber = false;
                 o.SignIn.RequireConfirmedEmail = false;
                 o.Password.RequireDigit = true;
                 o.Password.RequireLowercase = true;
                 o.Password.RequireUppercase = true;
+                o.Password.RequireNonAlphanumeric = false;
                 o.Password.RequiredLength = 8;
             })
             .AddRoles<IdentityRole>()
