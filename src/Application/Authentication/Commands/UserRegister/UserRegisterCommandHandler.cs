@@ -10,18 +10,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Authentication.Commands.UserRegister;
 
-public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand, ErrorOr<AuthenticationResponse>>
+public class UserRegisterCommandHandler
+    : IRequestHandler<UserRegisterCommand, ErrorOr<AuthenticationResponse>>
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtTokenGenerator JwtTokenGenerator;
 
-    public UserRegisterCommandHandler(UserManager<User> userManager, IJwtTokenGenerator jwtTokenGenerator)
+    public UserRegisterCommandHandler(
+        UserManager<User> userManager,
+        IJwtTokenGenerator jwtTokenGenerator
+    )
     {
         _userManager = userManager;
         JwtTokenGenerator = jwtTokenGenerator;
     }
 
-    public async Task<ErrorOr<AuthenticationResponse>> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AuthenticationResponse>> Handle(
+        UserRegisterCommand request,
+        CancellationToken cancellationToken
+    )
     {
         var user = new User
         {
@@ -31,10 +38,13 @@ public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand, E
             PhoneNumber = request.PhoneNumber,
             MainAddress = request.MainAddress,
             SecondaryAddress = request.SecondaryAddress,
-            UserName = request.PhoneNumber
+            UserName = request.PhoneNumber,
         };
-        
-        var phoneExists = await _userManager.Users.AnyAsync(u => u.PhoneNumber == user.PhoneNumber, cancellationToken: cancellationToken);
+
+        var phoneExists = await _userManager.Users.AnyAsync(
+            u => u.PhoneNumber == user.PhoneNumber,
+            cancellationToken: cancellationToken
+        );
         if (phoneExists)
         {
             return DomainErrors.Authentication.DuplicatePhoneNumber(user.PhoneNumber);
@@ -46,13 +56,13 @@ public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand, E
         {
             return DomainErrors.Authentication.InvalidCredentials();
         }
-        
+
         await _userManager.AddToRoleAsync(user, Roles.User.ToString());
-        
+
         // TODO: Send verification sms to user`
 
         var jwtToken = JwtTokenGenerator.GenerateToken(user, Roles.User.ToString());
-        
+
         return new AuthenticationResponse(jwtToken, Roles.User.ToString());
     }
 }

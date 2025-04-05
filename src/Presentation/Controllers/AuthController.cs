@@ -16,24 +16,18 @@ public class AuthController : Controller
     {
         _mediator = mediator;
     }
-    
+
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterCommand command)
     {
         var result = await _mediator.Send(command);
-        return result.Match<IActionResult>(
-            Ok,
-            BadRequest
-        );
+        return result.Match<IActionResult>(Ok, BadRequest);
     }
-    
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginQuery query)
     {
         var result = await _mediator.Send(query);
-        return result.Match<IActionResult>(
-            Ok,
-            BadRequest
-        );
+        return result.Match<IActionResult>(Ok, BadRequest);
     }
 }
