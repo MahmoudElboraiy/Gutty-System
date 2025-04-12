@@ -1,0 +1,12 @@
+using Domain.Models.Entities;
+
+namespace Application.Interfaces.UnitOfWorkInterfaces;
+
+public interface IIngredientRepository
+{
+    Task AddAsync(Ingredient ingredient);
+    Task UpdateAsync(Ingredient ingredient);
+    Task DeleteAsync(Ingredient ingredient);
+    Task<Ingredient> GetAsync(int id);
+    Task<List<Ingredient>> GetAllAsync();
+}
