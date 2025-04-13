@@ -22,3 +22,12 @@ dotnet run --project .\src\Presentation\
 ```bash
 dotnet run --project .\src\Presentation\ seedRoles
 ```
+
+
+### Seeding Admin User
+```bash
+dotnet run --project .\src\Presentation\ seedAdmin
+```
+#### Admin User
+- Phone: 1234567890
+- Password: 1234567890

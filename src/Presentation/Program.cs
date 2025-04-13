@@ -1,5 +1,6 @@
 using System.Reflection;
 using Application;
+using Domain.Models.Identity;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
@@ -93,6 +94,13 @@ if (args.Length > 0 && args[0] == "seedRoles")
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     await SeedRoles.SeedAsync(context);
+}
+
+if (args.Length > 0 && args[0] == "seedAdmin")
+{
+    var scope = app.Services.CreateScope();
+    using var context = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    await SeedAdmin.SeedAsync(context);
 }
 
 app.UseHttpsRedirection();

@@ -1,8 +1,11 @@
 using System.Text;
 using Application.Interfaces;
+using Application.Interfaces.UnitOfWorkInterfaces;
+using Domain.Models.Entities;
 using Domain.Models.Identity;
 using Infrastructure.Data;
 using Infrastructure.JwtAuthentication;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +29,19 @@ public static class DependencyInjection
         services.AddSingleton(jwtSettings);
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IIngredientRepository, IngredientRepository>();
+        services.AddScoped<IIngredientLogRepository, IngredientLogRepository>();
+        services.AddScoped<IIngredientStockRepository, IngredientStockRepository>();
+        services.AddScoped<IMainItemRepository, MainItemRepository>();
+        services.AddScoped<IMealRepository, MealRepository>();
+        services.AddScoped<IPlanRepository, PlanRepository>();
+        services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
+        services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
+        services.AddScoped<ISideItemRepository, SideItemRepository>();
+        services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+        services.AddScoped<IUserPrefernceRepository, UserPrefernceRepository>();
 
         services
             .AddIdentityCore<User>(o =>
