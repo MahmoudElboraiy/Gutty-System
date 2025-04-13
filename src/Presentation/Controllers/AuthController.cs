@@ -1,7 +1,8 @@
 using Application.Authentication.Commands.UserRegister;
 using Application.Authentication.Queries.UserLogin;
-using ErrorOr;
+using Application.Authentication.Queries.UserVerify;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
@@ -11,7 +12,6 @@ namespace Presentation.Controllers;
 public class AuthController : Controller
 {
     private readonly ISender _mediator;
-
     public AuthController(ISender mediator)
     {
         _mediator = mediator;
@@ -27,6 +27,16 @@ public class AuthController : Controller
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginQuery query)
     {
+        var result = await _mediator.Send(query);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+
+    [HttpGet("verify")]
+    [Authorize]
+    public async Task<IActionResult> Verify()
+    {
+        var identity = HttpContext.User.Identity.Name;
+        var query = new UserVerifyQuery(identity);
         var result = await _mediator.Send(query);
         return result.Match<IActionResult>(Ok, BadRequest);
     }

@@ -14,5 +14,7 @@ public static class DomainErrors
                 "Authentication.DuplicatePhoneNumber",
                 $"User with phone number {phoneNumber} already exists."
             );
+        public static Error UserNotFound(string userId) =>
+            Error.NotFound("Authentication.UserNotFound", $"User with id {userId} not found.");
     }
 }
