@@ -4,6 +4,7 @@ namespace Domain.Models.Entities;
 
 public class UserPrefernce
 {
+    //aa
     public int Id { get; set; }
     public int UserId { get; set; }
 
