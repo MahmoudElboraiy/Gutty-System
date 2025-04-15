@@ -18,6 +18,5 @@ public class Meal
     public required decimal Proteins { get; set; } = 0;
     public required decimal Carbohydrates { get; set; } = 0;
     public required decimal Fats { get; set; } = 0;
-    public required MainItem MainItem { get; set; }
-    public List<SideItem> SideDishes { get; set; } = [];
+    public required List<Item> Item { get; set; }
 }
