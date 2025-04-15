@@ -33,7 +33,7 @@ public class IngredientRepository :  IIngredientRepository
         return Task.CompletedTask;
     }
 
-    public Task<Ingredient> GetAsync(int id)
+    public Task<Ingredient?> GetAsync(int id)
     {
         return _context.Ingredients.FirstOrDefaultAsync(x => x.Id == id);
     }
@@ -42,5 +42,14 @@ public class IngredientRepository :  IIngredientRepository
     {
         return _context.Ingredients.ToListAsync();
     }
-    
+
+    public Task<List<Ingredient>> GetAllWithoutTrackingAsync()
+    {
+        return _context.Ingredients.AsNoTracking().ToListAsync();
+    }
+
+    public IQueryable<Ingredient> GetAllQueryable()
+    {
+        return _context.Ingredients;
+    }
 }

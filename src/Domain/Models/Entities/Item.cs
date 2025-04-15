@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models.Entities;
 
-public class MainItem
+public class Item
 {
     public Guid Id { get; set; }
 
@@ -19,4 +19,5 @@ public class MainItem
     public required decimal Fats { get; set; } = 0;
     public List<RecipeIngredient> RecipeIngredients { get; set; } = [];
     public List<Meal> Meals { get; set; } = [];
+    public bool IsMainItem { get; set; }
 }

@@ -34,12 +34,11 @@ public static class DependencyInjection
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<IIngredientLogRepository, IngredientLogRepository>();
         services.AddScoped<IIngredientStockRepository, IngredientStockRepository>();
-        services.AddScoped<IMainItemRepository, MainItemRepository>();
+        services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IMealRepository, MealRepository>();
         services.AddScoped<IPlanRepository, PlanRepository>();
         services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
         services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
-        services.AddScoped<ISideItemRepository, SideItemRepository>();
         services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         services.AddScoped<IUserPrefernceRepository, UserPrefernceRepository>();
 
