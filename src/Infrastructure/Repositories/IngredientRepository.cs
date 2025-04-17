@@ -38,6 +38,11 @@ public class IngredientRepository :  IIngredientRepository
         return _context.Ingredients.FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public Task<Ingredient?> GetWithoutTrackingAsync(int id)
+    {
+        return _context.Ingredients.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public Task<List<Ingredient>> GetAllAsync()
     {
         return _context.Ingredients.ToListAsync();
