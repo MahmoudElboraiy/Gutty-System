@@ -18,10 +18,16 @@ public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ErrorOr<GetItem
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<ErrorOr<GetItemQueryResponse>> Handle(GetItemQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<GetItemQueryResponse>> Handle(
+        GetItemQuery request,
+        CancellationToken cancellationToken
+    )
     {
-        var item = await _itemRepository.GetQueryable().AsNoTracking().Include(i=>i.RecipeIngredients).
-            FirstOrDefaultAsync(i=>i.Id == request.Id, cancellationToken: cancellationToken);
+        var item = await _itemRepository
+            .GetQueryable()
+            .AsNoTracking()
+            .Include(i => i.RecipeIngredients)
+            .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
 
         if (item == null)
         {

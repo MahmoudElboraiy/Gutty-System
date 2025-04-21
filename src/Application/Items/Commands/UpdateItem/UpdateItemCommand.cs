@@ -1,5 +1,5 @@
-using MediatR;
 using ErrorOr;
+using MediatR;
 
 namespace Application.Items.Commands.UpdateItem;
 
@@ -14,7 +14,7 @@ public record UpdateItemCommand(
     decimal Carbohydrates,
     decimal Proteins,
     bool IsMainItem,
-    List<UpdateItemRecipeIngredient> RecipeIngredients 
+    List<UpdateItemRecipeIngredient> RecipeIngredients
 ) : IRequest<ErrorOr<UpdateItemCommandResponse>>;
 
 public record UpdateItemRecipeIngredient(int IngredientId, decimal Quantity);

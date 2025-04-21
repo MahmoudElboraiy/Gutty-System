@@ -3,8 +3,5 @@ using MediatR;
 
 namespace Application.Ingredients.Commands.UpdateIngredient;
 
-public record UpdateIngredientCommand(
-    int Id,
-    string Name,
-    decimal Stock
-    ) : IRequest<ErrorOr<UpdateIngredientCommandResponse>>;
+public record UpdateIngredientCommand(int Id, string Name, decimal Stock)
+    : IRequest<ErrorOr<UpdateIngredientCommandResponse>>;

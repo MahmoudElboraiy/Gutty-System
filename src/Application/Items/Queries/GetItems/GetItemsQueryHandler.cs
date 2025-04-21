@@ -16,15 +16,21 @@ public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, ErrorOr<GetIt
         _itemRepository = itemRepository;
     }
 
-    public async Task<ErrorOr<GetItemsQueryResponse>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<GetItemsQueryResponse>> Handle(
+        GetItemsQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var items = await _itemRepository
             .GetQueryable()
             .AsNoTracking()
             .Include(i => i.RecipeIngredients)
-            .Where(x => x.Name.Contains(request.SearchText ?? "") || x.Description.Contains(request.SearchText ?? ""))
+            .Where(x =>
+                x.Name.Contains(request.SearchText ?? "")
+                || x.Description.Contains(request.SearchText ?? "")
+            )
             .ToListAsync(cancellationToken: cancellationToken);
-        
+
         var result = new GetItemsQueryResponse(items.Select(x => x.MapItemResponse()).ToList());
 
         return result;

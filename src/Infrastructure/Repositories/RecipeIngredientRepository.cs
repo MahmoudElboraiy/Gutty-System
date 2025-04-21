@@ -16,21 +16,21 @@ public class RecipeIngredientRepository : IRecipeIngredientRepository
     public Task AddAsync(RecipeIngredient recipeIngredient)
     {
         _context.RecipeIngredients.Add(recipeIngredient);
-        
+
         return Task.CompletedTask;
     }
 
     public Task UpdateAsync(RecipeIngredient recipeIngredient)
     {
         _context.RecipeIngredients.Update(recipeIngredient);
-        
+
         return Task.CompletedTask;
     }
 
     public Task DeleteAsync(RecipeIngredient recipeIngredient)
     {
         _context.RecipeIngredients.Remove(recipeIngredient);
-        
+
         return Task.CompletedTask;
     }
 

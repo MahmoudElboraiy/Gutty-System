@@ -29,7 +29,7 @@ public static class DependencyInjection
         services.AddSingleton(jwtSettings);
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-        
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<IIngredientLogRepository, IngredientLogRepository>();

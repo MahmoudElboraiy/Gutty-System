@@ -17,20 +17,21 @@ public class ItemController : Controller
     {
         _mediator = mediator;
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> CreateItem([FromBody] CreateItemCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
+
     [HttpPut]
     public async Task<IActionResult> UpdateItem([FromBody] UpdateItemCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    
+
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetItem([FromRoute] Guid id)
     {
@@ -38,11 +39,11 @@ public class ItemController : Controller
         var result = await _mediator.Send(query);
         return result.Match<IActionResult>(Ok, NotFound);
     }
+
     [HttpGet]
     public async Task<IActionResult> GetItems([FromQuery] GetItemsQuery query)
     {
         var result = await _mediator.Send(query);
         return result.Match<IActionResult>(Ok, NotFound);
     }
-    
 }

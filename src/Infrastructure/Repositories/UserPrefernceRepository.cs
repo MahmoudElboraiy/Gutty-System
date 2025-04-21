@@ -17,7 +17,7 @@ public class UserPrefernceRepository : IUserPrefernceRepository
     public Task AddAsync(UserPrefernce userPrefernce)
     {
         _context.UserPrefernces.Add(userPrefernce);
-        
+
         return Task.CompletedTask;
     }
 
@@ -34,14 +34,14 @@ public class UserPrefernceRepository : IUserPrefernceRepository
     public Task UpdateAsync(UserPrefernce userPrefernce)
     {
         _context.UserPrefernces.Update(userPrefernce);
-        
+
         return Task.CompletedTask;
     }
 
     public Task DeleteAsync(UserPrefernce userPrefernce)
     {
         _context.UserPrefernces.Remove(userPrefernce);
-        
+
         return Task.CompletedTask;
     }
 
@@ -50,7 +50,7 @@ public class UserPrefernceRepository : IUserPrefernceRepository
         var userPrefernce = _context.UserPrefernces.FirstOrDefault(x => x.Id == id);
 
         _context.UserPrefernces.Remove(userPrefernce);
-        
+
         return Task.CompletedTask;
     }
 
@@ -59,7 +59,7 @@ public class UserPrefernceRepository : IUserPrefernceRepository
         var userPrefernce = _context.UserPrefernces.FirstOrDefault(x => x.UserId == userId);
 
         _context.UserPrefernces.Remove(userPrefernce);
-        
+
         return Task.CompletedTask;
     }
 

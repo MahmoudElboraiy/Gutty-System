@@ -17,21 +17,21 @@ public class IngredientController : Controller
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetIngredients([FromQuery] GetIngredientsQuery query)
     {
         var result = await _mediator.Send(query);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> UpdateIngredient([FromBody] CreateIngredientCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    
+
     [HttpPut]
     public async Task<IActionResult> UpdateIngredient([FromBody] UpdateIngredientCommand command)
     {

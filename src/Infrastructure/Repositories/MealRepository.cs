@@ -17,21 +17,21 @@ public class MealRepository : IMealRepository
     public Task AddAsync(Meal meal)
     {
         _context.Meals.Add(meal);
-        
+
         return Task.CompletedTask;
     }
 
     public Task UpdateAsync(Meal meal)
     {
         _context.Meals.Update(meal);
-        
+
         return Task.CompletedTask;
     }
 
     public Task DeleteAsync(Meal meal)
     {
         _context.Meals.Remove(meal);
-        
+
         return Task.CompletedTask;
     }
 

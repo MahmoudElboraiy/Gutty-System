@@ -19,9 +19,5 @@ public record GetIngredientLogsResponse(
     bool HasPreviousPage,
     bool HasNextPage
 );
-public record IngredientLogMinimum(
-    int IngredientId,
-    string Name,
-    DateTime Date,
-    int Quantity
-);
+
+public record IngredientLogMinimum(int IngredientId, string Name, DateTime Date, int Quantity);

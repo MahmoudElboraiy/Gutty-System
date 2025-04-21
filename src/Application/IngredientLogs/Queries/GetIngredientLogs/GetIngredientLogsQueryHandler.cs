@@ -5,31 +5,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.IngredientLogs.Queries.GetIngredientLogs;
 
-public class GetIngredientLogsQueryHandler :  IRequestHandler<GetIngredientLogsQuery, ErrorOr<GetIngredientLogsResponse>>
+public class GetIngredientLogsQueryHandler
+    : IRequestHandler<GetIngredientLogsQuery, ErrorOr<GetIngredientLogsResponse>>
 {
     private readonly IIngredientLogRepository _ingredientLogRepository;
-    
+
     public GetIngredientLogsQueryHandler(IIngredientLogRepository ingredientLogRepository)
     {
         _ingredientLogRepository = ingredientLogRepository;
     }
-    
-    public async Task<ErrorOr<GetIngredientLogsResponse>> Handle(GetIngredientLogsQuery request, CancellationToken cancellationToken)
+
+    public async Task<ErrorOr<GetIngredientLogsResponse>> Handle(
+        GetIngredientLogsQuery request,
+        CancellationToken cancellationToken
+    )
     {
-        var ingredientLogQueryable= _ingredientLogRepository.GetAll();
-        
+        var ingredientLogQueryable = _ingredientLogRepository.GetAll();
+
         var totalCount = ingredientLogQueryable.Count();
-        
+
         var pageSize = request.PageSize ?? 20;
         var pageNumber = request.PageNumber ?? 1;
 
         var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-        
+
         var hasNextPage = pageNumber < totalPages;
-        
+
         var hasPreviousPage = pageNumber > 1;
-        
-        if(request.OrderDateDesc == true)
+
+        if (request.OrderDateDesc == true)
         {
             ingredientLogQueryable = ingredientLogQueryable.OrderByDescending(i => i.Date);
         }
@@ -40,14 +44,34 @@ public class GetIngredientLogsQueryHandler :  IRequestHandler<GetIngredientLogsQ
 
         if (request.IngredientId != null)
         {
-            ingredientLogQueryable = ingredientLogQueryable.Where(i => i.IngredientId == request.IngredientId);
+            ingredientLogQueryable = ingredientLogQueryable.Where(i =>
+                i.IngredientId == request.IngredientId
+            );
         }
-        
-        var ingredientLogs = await ingredientLogQueryable.Skip((pageNumber - 1) * pageSize).Take(pageSize).Include(i=>i.Ingredient).ToListAsync(cancellationToken: cancellationToken);
 
-        var finalResult = ingredientLogs.Select(item => new IngredientLogMinimum(item.Ingredient.Id, item.Ingredient.Name, item.Date, item.Quantity)).ToList();
+        var ingredientLogs = await ingredientLogQueryable
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Include(i => i.Ingredient)
+            .ToListAsync(cancellationToken: cancellationToken);
 
-        return new GetIngredientLogsResponse(finalResult, totalCount, pageNumber, pageSize,
-            totalPages, hasPreviousPage, hasNextPage);
+        var finalResult = ingredientLogs
+            .Select(item => new IngredientLogMinimum(
+                item.Ingredient.Id,
+                item.Ingredient.Name,
+                item.Date,
+                item.Quantity
+            ))
+            .ToList();
+
+        return new GetIngredientLogsResponse(
+            finalResult,
+            totalCount,
+            pageNumber,
+            pageSize,
+            totalPages,
+            hasPreviousPage,
+            hasNextPage
+        );
     }
 }

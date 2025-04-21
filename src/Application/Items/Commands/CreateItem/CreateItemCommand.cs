@@ -1,5 +1,5 @@
-using MediatR;
 using ErrorOr;
+using MediatR;
 
 namespace Application.Items.Commands.CreateItem;
 
@@ -13,15 +13,9 @@ public record CreateItemCommand(
     decimal Carbohydrates,
     decimal Proteins,
     bool IsMainItem,
-    List<CreateItemRecipeIngredient> RecipeIngredients 
+    List<CreateItemRecipeIngredient> RecipeIngredients
 ) : IRequest<ErrorOr<CreateItemCommandResponse>>;
 
-public record CreateItemRecipeIngredient(
-    int IngredientId,
-    int Quantity
-);
+public record CreateItemRecipeIngredient(int IngredientId, int Quantity);
 
-public record CreateItemCommandResponse(
-    Guid Id
-);
-
+public record CreateItemCommandResponse(Guid Id);

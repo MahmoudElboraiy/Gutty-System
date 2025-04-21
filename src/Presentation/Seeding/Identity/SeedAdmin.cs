@@ -14,14 +14,13 @@ public class SeedAdmin
             MiddleName = "Admin",
             LastName = "Admin",
             PhoneNumber = "01000000000",
-            SecondPhoneNumber  = "01000000000",
+            SecondPhoneNumber = "01000000000",
             Email = "0wPZG@example.com",
             MainAddress = "Admin Address",
-            UserName = "0wPZG@example.com"
+            UserName = "0wPZG@example.com",
         };
-        
+
         await userManager.CreateAsync(admin, "Admin123");
         await userManager.AddToRoleAsync(admin, Roles.Admin.ToString());
     }
-    
 }

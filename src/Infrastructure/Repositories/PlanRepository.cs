@@ -17,7 +17,7 @@ public class PlanRepository : IPlanRepository
     public Task AddAsync(Plan plan)
     {
         _context.Plans.Add(plan);
-        
+
         return Task.CompletedTask;
     }
 
@@ -34,14 +34,14 @@ public class PlanRepository : IPlanRepository
     public Task UpdateAsync(Plan plan)
     {
         _context.Plans.Update(plan);
-        
+
         return Task.CompletedTask;
     }
 
     public Task DeleteAsync(Plan plan)
     {
         _context.Plans.Remove(plan);
-        
+
         return Task.CompletedTask;
     }
 

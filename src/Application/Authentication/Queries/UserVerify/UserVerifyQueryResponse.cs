@@ -10,5 +10,5 @@ public record UserVerifyQueryResponse(
     string SecondPhoneNumber,
     string? Email,
     bool PhoneNumberConfirmed,
-    IList<string> Roles 
-    );
+    IList<string> Roles
+);

@@ -29,14 +29,14 @@ public class IngredientStockRepository : IIngredientStockRepository
     public Task UpdateAsync(IngredientStock stock)
     {
         _context.IngredientStocks.Update(stock);
-        
+
         return Task.CompletedTask;
     }
 
     public Task DeleteAsync(IngredientStock stock)
     {
         _context.IngredientStocks.Remove(stock);
-        
+
         return Task.CompletedTask;
     }
 

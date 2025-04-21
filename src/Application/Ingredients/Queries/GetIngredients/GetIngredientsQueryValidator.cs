@@ -1,13 +1,13 @@
-﻿using FluentValidation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Application.Ingredients.Queries.GetIngredients
 {
-    public class GetIngredientsQueryValidator:AbstractValidator<GetIngredientsQuery>
+    public class GetIngredientsQueryValidator : AbstractValidator<GetIngredientsQuery>
     {
         public GetIngredientsQueryValidator()
         {

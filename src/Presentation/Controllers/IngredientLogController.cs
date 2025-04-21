@@ -14,7 +14,7 @@ public class IngredientLogController : Controller
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetIngredientLogs([FromQuery] GetIngredientLogsQuery query)
     {

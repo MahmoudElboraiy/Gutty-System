@@ -27,21 +27,21 @@ public class SubscriptionRepository : ISubscriptionRepository
     public Task CreateSubscriptionAsync(Subscription subscription)
     {
         _context.Subscriptions.Add(subscription);
-        
+
         return Task.CompletedTask;
     }
 
     public Task UpdateSubscriptionAsync(Subscription subscription)
     {
         _context.Subscriptions.Update(subscription);
-        
+
         return Task.CompletedTask;
     }
 
     public Task DeleteSubscriptionAsync(Subscription subscription)
     {
         _context.Subscriptions.Remove(subscription);
-        
+
         return Task.CompletedTask;
     }
 
