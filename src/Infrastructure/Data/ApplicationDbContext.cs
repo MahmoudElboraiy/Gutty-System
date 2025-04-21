@@ -12,7 +12,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Item> Items { get; set; }
-    public DbSet<Meal> Meals { get; set; }
+    public DbSet<LaunchMeal> Meals { get; set; }
     public DbSet<PaymentLog> PaymentLogs { get; set; }
     public DbSet<IngredientLog> IngredientLogs { get; set; }
     public DbSet<Plan> Plans { get; set; }

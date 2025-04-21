@@ -1,18 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Models.Identity;
 
 namespace Domain.Models.Entities;
 
-public class Plan
+public class Plan : BaseEntity<Guid>
 {
-    public Guid Id { get; set; }
-
     [MaxLength(255)]
     public required string Name { get; set; }
-
     [MaxLength(1000)]
     public required string Description { get; set; }
-    public decimal PriceMonthly { get; set; }
-    public decimal PriceWeekly { get; set; }
-    public decimal PriceDaily { get; set; }
-    public required List<Item> Items { get; set; }
+    public bool IsPreDefined { get; set; }
+    public string? CreatedByUserId { get; set; }
+    public User CreatedByUser { get; set; } = null!;
+    public decimal TotalPrice { get; set; }
 }

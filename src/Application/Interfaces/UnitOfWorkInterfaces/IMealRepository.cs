@@ -4,10 +4,10 @@ namespace Application.Interfaces.UnitOfWorkInterfaces;
 
 public interface IMealRepository
 {
-    Task AddAsync(Meal meal);
-    Task UpdateAsync(Meal meal);
-    Task DeleteAsync(Meal meal);
-    Task<Meal?> FindByIdAsync(Guid id);
-    Task<List<Meal>> GetAllAsync();
+    Task AddAsync(LaunchMeal launchMeal);
+    Task UpdateAsync(LaunchMeal launchMeal);
+    Task DeleteAsync(LaunchMeal launchMeal);
+    Task<LaunchMeal?> FindByIdAsync(Guid id);
+    Task<List<LaunchMeal>> GetAllAsync();
     IQueryable GetAll();
 }
