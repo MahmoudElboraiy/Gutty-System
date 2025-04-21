@@ -14,33 +14,33 @@ public class MealRepository : IMealRepository
         _context = context;
     }
 
-    public Task AddAsync(Meal meal)
+    public Task AddAsync(LaunchMeal launchMeal)
     {
-        _context.Meals.Add(meal);
+        _context.Meals.Add(launchMeal);
 
         return Task.CompletedTask;
     }
 
-    public Task UpdateAsync(Meal meal)
+    public Task UpdateAsync(LaunchMeal launchMeal)
     {
-        _context.Meals.Update(meal);
+        _context.Meals.Update(launchMeal);
 
         return Task.CompletedTask;
     }
 
-    public Task DeleteAsync(Meal meal)
+    public Task DeleteAsync(LaunchMeal launchMeal)
     {
-        _context.Meals.Remove(meal);
+        _context.Meals.Remove(launchMeal);
 
         return Task.CompletedTask;
     }
 
-    public Task<Meal?> FindByIdAsync(Guid id)
+    public Task<LaunchMeal?> FindByIdAsync(Guid id)
     {
         return _context.Meals.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public Task<List<Meal>> GetAllAsync()
+    public Task<List<LaunchMeal>> GetAllAsync()
     {
         return _context.Meals.ToListAsync();
     }

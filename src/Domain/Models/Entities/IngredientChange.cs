@@ -3,12 +3,11 @@ using Domain.Enums;
 
 namespace Domain.Models.Entities;
 
-public class IngredientLog
+public class IngredientChange : BaseEntity<int>
 {
-    public int Id { get; set; }
     public int IngredientId { get; set; }
     public Ingredient Ingredient { get; set; } = null!;
-    public DateTime Date { get; set; }
-    public int Quantity { get; set; }
-    public IngredientStatus Status { get; set; }
+    public decimal Quantity { get; set; } 
+    public decimal OldValue { get; set; }
+    public decimal NewValue { get; set; }
 }
