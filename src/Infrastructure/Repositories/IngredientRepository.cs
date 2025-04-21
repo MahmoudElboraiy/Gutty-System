@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class IngredientRepository :  IIngredientRepository
+public class IngredientRepository : IIngredientRepository
 {
     private readonly ApplicationDbContext _context;
-    
+
     public IngredientRepository(ApplicationDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task AddAsync(Ingredient ingredient)
     {
         await _context.Ingredients.AddAsync(ingredient);
@@ -22,14 +22,14 @@ public class IngredientRepository :  IIngredientRepository
     public Task UpdateAsync(Ingredient ingredient)
     {
         _context.Ingredients.Update(ingredient);
-        
+
         return Task.CompletedTask;
     }
 
     public Task DeleteAsync(Ingredient ingredient)
     {
         _context.Ingredients.Remove(ingredient);
-        
+
         return Task.CompletedTask;
     }
 

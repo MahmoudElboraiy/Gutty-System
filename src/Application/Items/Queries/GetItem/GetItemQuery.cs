@@ -3,9 +3,7 @@ using MediatR;
 
 namespace Application.Items.Queries.GetItem;
 
-public record GetItemQuery(
-    Guid Id
-) : IRequest<ErrorOr<GetItemQueryResponse>>;
+public record GetItemQuery(Guid Id) : IRequest<ErrorOr<GetItemQueryResponse>>;
 
 public record GetItemQueryResponse(
     Guid Id,
@@ -20,7 +18,5 @@ public record GetItemQueryResponse(
     bool IsMainItem,
     List<GetItemRecipeIngredientResponse> RecipeIngredients
 );
-public record GetItemRecipeIngredientResponse(
-    int IngredientId,
-    decimal Quantity
-);
+
+public record GetItemRecipeIngredientResponse(int IngredientId, decimal Quantity);

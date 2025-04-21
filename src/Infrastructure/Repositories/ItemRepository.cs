@@ -21,20 +21,22 @@ public class ItemRepository : IItemRepository
 
     public Task<Item?> GetItemByIdAsync(Guid id)
     {
-        return _context.Items.Include(i=>i.RecipeIngredients).FirstOrDefaultAsync(x => x.Id == id);
+        return _context
+            .Items.Include(i => i.RecipeIngredients)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public Task CreateMainItemAsync(Item item)
     {
         _context.Items.Add(item);
-        
+
         return Task.CompletedTask;
     }
 
     public Task UpdateMainItemAsync(Item item)
     {
         _context.Items.Update(item);
-        
+
         return Task.CompletedTask;
     }
 
@@ -43,7 +45,7 @@ public class ItemRepository : IItemRepository
         var mainItem = _context.Items.FirstOrDefault(x => x.Id == id);
 
         _context.Items.Remove(mainItem);
-        
+
         return Task.CompletedTask;
     }
 

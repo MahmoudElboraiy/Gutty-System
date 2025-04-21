@@ -22,21 +22,21 @@ public class PromoCodeRepository : IPromoCodeRepository
     public Task AddPromoCode(PromoCode promoCode)
     {
         _context.PromoCodes.Add(promoCode);
-        
+
         return Task.CompletedTask;
     }
 
     public Task UpdatePromoCode(PromoCode promoCode)
     {
         _context.PromoCodes.Update(promoCode);
-        
+
         return Task.CompletedTask;
     }
 
     public Task DeletePromoCode(PromoCode promoCode)
     {
         _context.PromoCodes.Remove(promoCode);
-        
+
         return Task.CompletedTask;
     }
 

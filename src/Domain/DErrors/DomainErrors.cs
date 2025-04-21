@@ -14,6 +14,7 @@ public static class DomainErrors
                 "Authentication.DuplicatePhoneNumber",
                 $"User with phone number {phoneNumber} already exists."
             );
+
         public static Error UserNotFound(string userId) =>
             Error.NotFound("Authentication.UserNotFound", $"User with id {userId} not found.");
     }
@@ -21,7 +22,10 @@ public static class DomainErrors
     public static class Ingredients
     {
         public static Error IngredientNotFound(int requestId) =>
-            Error.NotFound("Ingredients.IngredientNotFound", $"Ingredient with id {requestId} not found.");
+            Error.NotFound(
+                "Ingredients.IngredientNotFound",
+                $"Ingredient with id {requestId} not found."
+            );
     }
 
     public static class Items

@@ -9,6 +9,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
+
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Item> Items { get; set; }
     public DbSet<Meal> Meals { get; set; }

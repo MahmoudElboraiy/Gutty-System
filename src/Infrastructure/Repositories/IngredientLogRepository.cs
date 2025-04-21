@@ -17,7 +17,7 @@ public class IngredientLogRepository : IIngredientLogRepository
     public Task AddAsync(IngredientLog log)
     {
         _context.IngredientLogs.Add(log);
-        
+
         return Task.CompletedTask;
     }
 

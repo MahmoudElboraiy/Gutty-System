@@ -1,13 +1,13 @@
-﻿using FluentValidation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Application.Ingredients.Commands.UpdateIngredient
 {
-    public class UpdateIngredientCommandValidator:AbstractValidator<UpdateIngredientCommand>
+    public class UpdateIngredientCommandValidator : AbstractValidator<UpdateIngredientCommand>
     {
         public UpdateIngredientCommandValidator()
         {
@@ -17,8 +17,10 @@ namespace Application.Ingredients.Commands.UpdateIngredient
 
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("الاسم مطلوب")
-                .Length(2, 50).WithMessage("الاسم يجب أن يكون بين 2 و 50 حرفًا");
+                .NotEmpty()
+                .WithMessage("الاسم مطلوب")
+                .Length(2, 50)
+                .WithMessage("الاسم يجب أن يكون بين 2 و 50 حرفًا");
 
             RuleFor(x => x.Stock)
                 .GreaterThanOrEqualTo(0)

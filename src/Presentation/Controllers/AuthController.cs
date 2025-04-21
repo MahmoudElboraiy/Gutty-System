@@ -12,6 +12,7 @@ namespace Presentation.Controllers;
 public class AuthController : Controller
 {
     private readonly ISender _mediator;
+
     public AuthController(ISender mediator)
     {
         _mediator = mediator;

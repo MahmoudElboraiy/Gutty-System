@@ -16,13 +16,13 @@ public class UsersController : Controller
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery query)
     {
         var result = await _mediator.Send(query);
-        
+
         return result.Match<IActionResult>(Ok, BadRequest);
     }
 }

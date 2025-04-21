@@ -1,20 +1,20 @@
-﻿using FluentValidation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Application.IngredientLogs.Queries.GetIngredientLogs
 {
-    public class GetIngredientLogsQueryValidator:AbstractValidator<GetIngredientLogsQuery>
+    public class GetIngredientLogsQueryValidator : AbstractValidator<GetIngredientLogsQuery>
     {
         public GetIngredientLogsQueryValidator()
         {
             RuleFor(x => x.IngredientId)
-            .Cascade(CascadeMode.Stop)
-            .Must(id => id == null || id > 0)
-            .WithMessage("معرّف المكوّن يجب أن يكون رقمًا موجبًا");
+                .Cascade(CascadeMode.Stop)
+                .Must(id => id == null || id > 0)
+                .WithMessage("معرّف المكوّن يجب أن يكون رقمًا موجبًا");
 
             RuleFor(x => x.PageNumber)
                 .Cascade(CascadeMode.Stop)

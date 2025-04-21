@@ -14,4 +14,5 @@ public class Plan
     public decimal PriceMonthly { get; set; }
     public decimal PriceWeekly { get; set; }
     public decimal PriceDaily { get; set; }
+    public required List<Item> Items { get; set; }
 }
