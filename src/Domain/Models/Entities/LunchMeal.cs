@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace Domain.Models.Entities;
 
-public class LaunchMeal : BaseEntity<Guid>
+public class LunchMeal : BaseEntity<Guid>
 {
     public Plan? Plans { get; set; }
     [ForeignKey("Item")]

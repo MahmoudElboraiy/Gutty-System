@@ -30,16 +30,9 @@ public static class DependencyInjection
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
+        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IIngredientRepository, IngredientRepository>();
-        services.AddScoped<IIngredientLogRepository, IngredientLogRepository>();
-        services.AddScoped<IIngredientStockRepository, IngredientStockRepository>();
-        services.AddScoped<IItemRepository, ItemRepository>();
-        services.AddScoped<IMealRepository, MealRepository>();
-        services.AddScoped<IPlanRepository, PlanRepository>();
-        services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
-        services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
-        services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         services.AddScoped<IUserPrefernceRepository, UserPrefernceRepository>();
 
         services
