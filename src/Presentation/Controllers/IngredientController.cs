@@ -2,6 +2,7 @@ using Application.Ingredients.Commands.CreateIngredient;
 using Application.Ingredients.Commands.DeleteIngredient;
 using Application.Ingredients.Commands.UpdateIngredient;
 using Application.Ingredients.Queries.GetIngredients;
+using Application.IngredientsChanges.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,4 +47,12 @@ public class IngredientController : Controller
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
+
+    [HttpGet("change")]
+    public async Task<IActionResult> GetChange([FromQuery] GetIngredientsChangesQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
 }
+

@@ -13,7 +13,7 @@ public record GetItemQueryResponse(
     decimal Weight,
     decimal Calories,
     decimal Fats,
-    decimal Carbohydrates,
+    decimal Carbs,
     decimal Proteins,
     decimal Fibers,
     ItemType Type, 
