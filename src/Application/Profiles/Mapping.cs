@@ -1,4 +1,5 @@
 using Application.Ingredients.Queries.GetIngredients;
+using Application.IngredientsChanges.Queries;
 using Application.Items.Queries.GetItem;
 using Application.Users.Queries.GetUsers;
 using Domain.Models.Entities;
@@ -11,7 +12,7 @@ public static class Mapping
     public static UserResponse MapUserResponse(this User user) =>
         new(
             user.Id,
-            user.PhoneNumber,
+            user.PhoneNumber ?? "",
             user.FirstName,
             user.MiddleName,
             user.LastName,
@@ -38,14 +39,23 @@ public static class Mapping
             item.ExtraItemOptions == null ? [] : item.ExtraItemOptions.Select(x => x.MapExtraItemOptionsResponse()).ToList()
         );
 
-    public static GetItemRecipeIngredientResponse MapRecipeIngredientResponse(
+    private static GetItemRecipeIngredientResponse MapRecipeIngredientResponse(
         this ItemIngredient recipeIngredient
     ) => new(recipeIngredient.IngredientId, recipeIngredient.Quantity);
 
-    public static GetItemExtraItemOptionsResponse MapExtraItemOptionsResponse(
+    private static GetItemExtraItemOptionsResponse MapExtraItemOptionsResponse(
         this ExtraItemOption extraItemOption
     ) => new(extraItemOption.Price, extraItemOption.Weight);
     
     public static GetIngredientsQueryResponseItem MapIngredientResponse(this Ingredient ingredient) =>
         new(ingredient.Id, ingredient.Name,ingredient.StockQuantity);
+
+    public static GetIngredientsChangesQueryResponseItem MapIngredientChangeResponse(
+        this IngredientChange ingredientChange) =>
+        new(ingredientChange.CreatedAt, ingredientChange.Quantity, ingredientChange.OldValue, ingredientChange.NewValue,
+            ingredientChange.Ingredient.MapIngredientChangeResponseIngredient());
+
+    private static GetIngredientsChangesResponseIngredientQuery MapIngredientChangeResponseIngredient(
+        this Ingredient ingredient) =>
+        new(ingredient.Id, ingredient.Name);
 }
