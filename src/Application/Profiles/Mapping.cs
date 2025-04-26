@@ -1,3 +1,4 @@
+using Application.Ingredients.Queries.GetIngredients;
 using Application.Items.Queries.GetItem;
 using Application.Users.Queries.GetUsers;
 using Domain.Models.Entities;
@@ -25,17 +26,26 @@ public static class Mapping
             item.Id,
             item.Name,
             item.Description,
-            item.WeightRaw ?? 0,
-            item.Weight ?? 0,
-            item.Calories ?? 0,
+            item.Weight ,
+            item.Calories ,
             item.Fats,
-            item.Carbohydrates,
+            item.Carbs,
             item.Proteins,
-            item.IsMainItem,
-            item.RecipeIngredients.Select(x => x.MapRecipeIngredientResponse()).ToList()
+            item.Fibers,
+            item.Type,
+            item.ImageUrls,
+            item.Ingredients.Select(x => x.MapRecipeIngredientResponse()).ToList(),
+            item.ExtraItemOptions == null ? [] : item.ExtraItemOptions.Select(x => x.MapExtraItemOptionsResponse()).ToList()
         );
 
     public static GetItemRecipeIngredientResponse MapRecipeIngredientResponse(
-        this RecipeIngredient recipeIngredient
+        this ItemIngredient recipeIngredient
     ) => new(recipeIngredient.IngredientId, recipeIngredient.Quantity);
+
+    public static GetItemExtraItemOptionsResponse MapExtraItemOptionsResponse(
+        this ExtraItemOption extraItemOption
+    ) => new(extraItemOption.Price, extraItemOption.Weight);
+    
+    public static GetIngredientsQueryResponseItem MapIngredientResponse(this Ingredient ingredient) =>
+        new(ingredient.Id, ingredient.Name,ingredient.StockQuantity);
 }

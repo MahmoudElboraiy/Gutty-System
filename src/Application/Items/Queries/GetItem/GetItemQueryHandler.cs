@@ -9,12 +9,10 @@ namespace Application.Items.Queries.GetItem;
 
 public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ErrorOr<GetItemQueryResponse>>
 {
-    private readonly IItemRepository _itemRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetItemQueryHandler(IItemRepository itemRepository, IUnitOfWork unitOfWork)
+    public GetItemQueryHandler( IUnitOfWork unitOfWork)
     {
-        _itemRepository = itemRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -23,10 +21,10 @@ public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ErrorOr<GetItem
         CancellationToken cancellationToken
     )
     {
-        var item = await _itemRepository
+        var item = await _unitOfWork.Items
             .GetQueryable()
             .AsNoTracking()
-            .Include(i => i.RecipeIngredients)
+            .Include(i => i.Ingredients)
             .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
 
         if (item == null)

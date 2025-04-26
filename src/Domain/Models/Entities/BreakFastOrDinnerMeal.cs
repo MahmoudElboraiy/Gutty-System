@@ -1,6 +1,6 @@
 namespace Domain.Models.Entities;
 
-public class BreakFastOrDinnerMeal
+public class BreakFastOrDinnerMeal : BaseEntity<Guid>
 {
     public Plan? Plan { get; set; }
     public Guid PlanId { get; set; }

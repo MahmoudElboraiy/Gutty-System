@@ -9,22 +9,13 @@ namespace Application.Items.Commands.UpdateItem;
 public class UpdateItemCommandHandler
     : IRequestHandler<UpdateItemCommand, ErrorOr<UpdateItemCommandResponse>>
 {
-    private readonly IItemRepository _itemRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IIngredientRepository _ingredientRepository;
-    private readonly IRecipeIngredientRepository _recipeIngredientRepository;
 
     public UpdateItemCommandHandler(
-        IRecipeIngredientRepository recipeIngredientRepository,
-        IIngredientRepository ingredientRepository,
-        IUnitOfWork unitOfWork,
-        IItemRepository itemRepository
+        IUnitOfWork unitOfWork
     )
     {
-        _recipeIngredientRepository = recipeIngredientRepository;
-        _ingredientRepository = ingredientRepository;
         _unitOfWork = unitOfWork;
-        _itemRepository = itemRepository;
     }
 
     public async Task<ErrorOr<UpdateItemCommandResponse>> Handle(
@@ -32,7 +23,7 @@ public class UpdateItemCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var item = await _itemRepository.GetItemByIdAsync(request.Id);
+        var item = await _unitOfWork.Items.GetByIdAsync(request.Id);
         if (item == null)
         {
             return DomainErrors.Items.ItemNotFound(request.Id);
@@ -43,28 +34,29 @@ public class UpdateItemCommandHandler
         item.Proteins = request.Proteins;
         item.Fats = request.Fats;
         item.Weight = request.Weight;
-        item.WeightRaw = request.WeightRaw;
         item.Calories = request.Calories;
-        item.Carbohydrates = request.Carbohydrates;
-        item.IsMainItem = request.IsMainItem;
+        item.Carbs = request.Carbohydrates;
+        item.Fibers = request.Fibers;
+        item.ImageUrls = request.ImageUrls;
+        item.Type = request.Type;
 
-        var toRemove = item.RecipeIngredients.ToList();
+        var toRemove = item.Ingredients.ToList();
         foreach (var recipeIngredient in toRemove)
         {
-            await _recipeIngredientRepository.DeleteAsync(recipeIngredient);
+            _unitOfWork.ItemIngredients.Remove(recipeIngredient);
         }
 
-        var toAdd = new List<RecipeIngredient>();
+        var toAdd = new List<ItemIngredient>();
         foreach (var recipeIngredient in request.RecipeIngredients)
         {
-            var ingredient = await _ingredientRepository.GetAsync(recipeIngredient.IngredientId);
+            var ingredient = await _unitOfWork.Ingredients.GetByIdAsync(recipeIngredient.IngredientId);
             if (ingredient == null)
             {
                 return DomainErrors.Ingredients.IngredientNotFound(recipeIngredient.IngredientId);
             }
 
             toAdd.Add(
-                new RecipeIngredient()
+                new ItemIngredient()
                 {
                     IngredientId = recipeIngredient.IngredientId,
                     Quantity = recipeIngredient.Quantity,
@@ -72,11 +64,36 @@ public class UpdateItemCommandHandler
             );
         }
 
-        item.RecipeIngredients = toAdd;
+        if (request.ExtraItemOptions != null)
+        {
+            var toRemoveExtraItemOptions = item.ExtraItemOptions;
 
-        await _itemRepository.UpdateMainItemAsync(item);
+            if (toRemoveExtraItemOptions != null)
+            {
+                foreach(var extraItemOption in toRemoveExtraItemOptions)
+                {
+                    _unitOfWork.ExtraItemOptions.Remove(extraItemOption);
+                }
+            }
+            
+            foreach (var extraItemOption in request.ExtraItemOptions)
+            {
+                var extraItemOptionEntity = new ExtraItemOption()
+                {
+                    Item = item,
+                    ItemId = item.Id,
+                    Weight = extraItemOption.Weight,
+                    Price = extraItemOption.Price
+                };
+                await _unitOfWork.ExtraItemOptions.AddAsync(extraItemOptionEntity);
+            }
+        }
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        item.Ingredients = toAdd;
+
+        _unitOfWork.Items.Update(item);
+
+        await _unitOfWork.CompleteAsync();
 
         return new UpdateItemCommandResponse(item.Id);
     }

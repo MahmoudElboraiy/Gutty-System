@@ -9,11 +9,11 @@ namespace Application.Items.Queries.GetItems;
 
 public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, ErrorOr<GetItemsQueryResponse>>
 {
-    private readonly IItemRepository _itemRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetItemsQueryHandler(IItemRepository itemRepository)
+    public GetItemsQueryHandler(IUnitOfWork unitOfWork)
     {
-        _itemRepository = itemRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ErrorOr<GetItemsQueryResponse>> Handle(
@@ -21,10 +21,10 @@ public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, ErrorOr<GetIt
         CancellationToken cancellationToken
     )
     {
-        var items = await _itemRepository
+        var items = await _unitOfWork.Items
             .GetQueryable()
             .AsNoTracking()
-            .Include(i => i.RecipeIngredients)
+            .Include(i => i.Ingredients)
             .Where(x =>
                 x.Name.Contains(request.SearchText ?? "")
                 || x.Description.Contains(request.SearchText ?? "")
