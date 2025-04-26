@@ -10,18 +10,12 @@ public class CreateIngredientCommandHandler
     : IRequestHandler<CreateIngredientCommand, ErrorOr<CreateIngredientCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IIngredientRepository _ingredientRepository;
-    private readonly IIngredientLogRepository _ingredientLogRepository;
 
     public CreateIngredientCommandHandler(
-        IIngredientRepository ingredientRepository,
-        IUnitOfWork unitOfWork,
-        IIngredientLogRepository ingredientLogRepository
+        IUnitOfWork unitOfWork
     )
     {
-        _ingredientRepository = ingredientRepository;
         _unitOfWork = unitOfWork;
-        _ingredientLogRepository = ingredientLogRepository;
     }
 
     public async Task<ErrorOr<CreateIngredientCommandResponse>> Handle(
@@ -29,31 +23,36 @@ public class CreateIngredientCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var ingredient = new Ingredient() { Name = request.Name, Stock = request.Stock };
+        var ingredient = new Ingredient()
+        {
+            Name = request.Name,
+            StockQuantity = request.Stock,
+            Description = request.Description
+        };
 
-        await _ingredientRepository.AddAsync(ingredient);
+        await _unitOfWork.Ingredients.AddAsync(ingredient);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.CompleteAsync();
 
         if (request.Stock != 0)
         {
-            await _ingredientLogRepository.AddAsync(
-                new IngredientLog()
+            await _unitOfWork.IngredientChanges.AddAsync(
+                new IngredientChange
                 {
                     IngredientId = ingredient.Id,
-                    Date = DateTime.Now,
-                    Quantity = Convert.ToInt32(request.Stock),
-                    Status = IngredientStatus.Deposit,
+                    Quantity = request.Stock,
+                    OldValue = 0,
+                    NewValue = request.Stock,
                 }
             );
         }
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.CompleteAsync();
 
         return new CreateIngredientCommandResponse(
             ingredient.Id,
             ingredient.Name,
-            ingredient.Stock
+            ingredient.StockQuantity
         );
     }
 }

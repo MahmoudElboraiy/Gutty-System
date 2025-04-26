@@ -68,7 +68,7 @@ public class Repository<TEntity, TKey>  : IRepository<TEntity, TKey> where TEnti
             : await _dbSet.CountAsync(predicate);
     }
     
-    public IQueryable GetQueryable()
+    public IQueryable<TEntity> GetQueryable()
     {
         return _dbSet.AsQueryable();
     }

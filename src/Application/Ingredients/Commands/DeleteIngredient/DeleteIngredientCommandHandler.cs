@@ -9,15 +9,12 @@ public class DeleteIngredientCommandHandler
     : IRequestHandler<DeleteIngredientCommand, ErrorOr<DeleteIngredientCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IIngredientRepository _ingredientRepository;
 
     public DeleteIngredientCommandHandler(
-        IUnitOfWork unitOfWork,
-        IIngredientRepository ingredientRepository
+        IUnitOfWork unitOfWork
     )
     {
         _unitOfWork = unitOfWork;
-        _ingredientRepository = ingredientRepository;
     }
 
     public async Task<ErrorOr<DeleteIngredientCommandResponse>> Handle(
@@ -25,16 +22,16 @@ public class DeleteIngredientCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var ingredient = await _ingredientRepository.GetAsync(request.Id);
+        var ingredient = await _unitOfWork.Ingredients.GetByIdAsync(request.Id);
 
         if (ingredient == null)
         {
             return DomainErrors.Ingredients.IngredientNotFound(request.Id);
         }
 
-        await _ingredientRepository.DeleteAsync(ingredient);
+        _unitOfWork.Ingredients.Remove(ingredient);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.CompleteAsync();
 
         return new DeleteIngredientCommandResponse();
     }

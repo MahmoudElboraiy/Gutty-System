@@ -11,17 +11,11 @@ public class UpdateIngredientCommandHandler
     : IRequestHandler<UpdateIngredientCommand, ErrorOr<UpdateIngredientCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IIngredientRepository _ingredientRepository;
-    private readonly IIngredientLogRepository _ingredientLogRepository;
 
     public UpdateIngredientCommandHandler(
-        IIngredientLogRepository ingredientLogRepository,
-        IIngredientRepository ingredientRepository,
         IUnitOfWork unitOfWork
     )
     {
-        _ingredientLogRepository = ingredientLogRepository;
-        _ingredientRepository = ingredientRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -30,7 +24,7 @@ public class UpdateIngredientCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var oldIngredient = await _ingredientRepository.GetAsync(request.Id);
+        var oldIngredient = await _unitOfWork.Ingredients.GetByIdAsync(request.Id);
 
         if (oldIngredient == null)
         {
@@ -39,33 +33,30 @@ public class UpdateIngredientCommandHandler
 
         oldIngredient.Name = request.Name;
 
-        if (oldIngredient.Stock != request.Stock)
+        if (oldIngredient.StockQuantity != request.Stock)
         {
-            await _ingredientLogRepository.AddAsync(
-                new IngredientLog()
+            await _unitOfWork.IngredientChanges.AddAsync(
+                new IngredientChange()
                 {
                     IngredientId = oldIngredient.Id,
-                    Date = DateTime.Now,
                     Quantity =
-                        Convert.ToInt32(request.Stock) - Convert.ToInt32(oldIngredient.Stock),
-                    Status =
-                        request.Stock > oldIngredient.Stock
-                            ? IngredientStatus.Deposit
-                            : IngredientStatus.Used,
+                        Convert.ToInt32(request.Stock) - Convert.ToInt32(oldIngredient.StockQuantity),
+                    OldValue = oldIngredient.StockQuantity,
+                    NewValue = request.Stock,
                 }
             );
         }
 
-        oldIngredient.Stock = request.Stock;
+        oldIngredient.StockQuantity = request.Stock;
 
-        await _ingredientRepository.UpdateAsync(oldIngredient);
+        _unitOfWork.Ingredients.Update(oldIngredient);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.CompleteAsync();
 
         return new UpdateIngredientCommandResponse(
             oldIngredient.Id,
             oldIngredient.Name,
-            oldIngredient.Stock
+            oldIngredient.StockQuantity
         );
     }
 }

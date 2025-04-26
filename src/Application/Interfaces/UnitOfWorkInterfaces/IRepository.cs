@@ -14,5 +14,5 @@ public interface IRepository<TEntity, TKey> where TEntity : class
     void RemoveRange(IEnumerable<TEntity> entities);
     Task<bool> ExistsAsync(TKey id);
     Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate = null);
-    IQueryable GetQueryable();
+    IQueryable<TEntity> GetQueryable();
 }

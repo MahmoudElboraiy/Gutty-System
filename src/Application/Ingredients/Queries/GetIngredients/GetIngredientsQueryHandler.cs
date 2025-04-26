@@ -1,4 +1,5 @@
 using Application.Interfaces.UnitOfWorkInterfaces;
+using Application.Profiles;
 using ErrorOr;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,11 +9,11 @@ namespace Application.Ingredients.Queries.GetIngredients;
 public class GetIngredientsQueryHandler
     : IRequestHandler<GetIngredientsQuery, ErrorOr<GetIngredientsQueryResponse>>
 {
-    private readonly IIngredientRepository _ingredientRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetIngredientsQueryHandler(IIngredientRepository ingredientRepository)
+    public GetIngredientsQueryHandler(IUnitOfWork unitOfWork)
     {
-        _ingredientRepository = ingredientRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ErrorOr<GetIngredientsQueryResponse>> Handle(
@@ -20,13 +21,14 @@ public class GetIngredientsQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var ingredientsQ = _ingredientRepository.GetAllQueryable();
+        var ingredientsQ = _unitOfWork.Ingredients.GetQueryable();
 
         var ingredients = await ingredientsQ
             .AsNoTracking()
             .Where(i => i.Name.Contains(request.SearchTerm ?? ""))
-            .ToListAsync(cancellationToken);
-
+            .Select(x=> x.MapIngredientResponse())
+            .ToListAsync(cancellationToken: cancellationToken);
+        
         return new GetIngredientsQueryResponse(ingredients);
     }
 }

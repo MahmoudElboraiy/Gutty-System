@@ -9,18 +9,12 @@ namespace Application.Items.Commands.CreateItem;
 public class CreateItemCommandHandler
     : IRequestHandler<CreateItemCommand, ErrorOr<CreateItemCommandResponse>>
 {
-    private readonly IItemRepository _itemRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IIngredientRepository _ingredientRepository;
 
     public CreateItemCommandHandler(
-        IIngredientRepository ingredientRepository,
-        IItemRepository itemRepository,
         IUnitOfWork unitOfWork
     )
     {
-        _ingredientRepository = ingredientRepository;
-        _itemRepository = itemRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -36,23 +30,26 @@ public class CreateItemCommandHandler
             Proteins = request.Proteins,
             Fats = request.Fats,
             Weight = request.Weight,
-            WeightRaw = request.WeightRaw,
             Calories = request.Calories,
-            Carbohydrates = request.Carbohydrates,
-            IsMainItem = request.IsMainItem,
+            Carbs = request.Carbohydrates,
+            BasePrice = request.BasePrice,
+            ImageUrls = request.ImageUrls,
+            Fibers = request.Fibers,
+            Type = request.ItemType,
+            Ingredients = [],
         };
 
-        var recipeIngredients = new List<RecipeIngredient>();
+        var recipeIngredients = new List<ItemIngredient>();
         foreach (var recipeIngredient in request.RecipeIngredients)
         {
-            var ingredient = await _ingredientRepository.GetAsync(recipeIngredient.IngredientId);
+            var ingredient = await _unitOfWork.Ingredients.GetByIdAsync(recipeIngredient.IngredientId);
             if (ingredient == null)
             {
                 return DomainErrors.Ingredients.IngredientNotFound(recipeIngredient.IngredientId);
             }
 
             recipeIngredients.Add(
-                new RecipeIngredient()
+                new ItemIngredient()
                 {
                     IngredientId = recipeIngredient.IngredientId,
                     Quantity = recipeIngredient.Quantity,
@@ -60,11 +57,30 @@ public class CreateItemCommandHandler
             );
         }
 
-        item.RecipeIngredients = recipeIngredients;
+        var extraItemOptions = new List<ExtraItemOption>();
+        
+        if (request.ExtraItemOptions != null)
+        {
+            foreach (var extraOptions in request.ExtraItemOptions)
+            {
+                extraItemOptions.Add(
+                        new ExtraItemOption()
+                        {
+                            Item = item,
+                            Weight = extraOptions.Weight,
+                            Price = extraOptions.Price
+                        }
+                    );
+            }
+        }
 
-        await _itemRepository.CreateMainItemAsync(item);
+        item.Ingredients = recipeIngredients;
+        
+        item.ExtraItemOptions = extraItemOptions;
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.Items.AddAsync(item);
+
+        await _unitOfWork.CompleteAsync();
 
         return new CreateItemCommandResponse(item.Id);
     }

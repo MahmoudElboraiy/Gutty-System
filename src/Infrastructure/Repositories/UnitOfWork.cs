@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly DbContext _context;
+    private readonly ApplicationDbContext _context;
     
     private IRepository<Item, Guid> _itemRepository;
     private IRepository<Ingredient, int> _ingredientRepository;
@@ -20,7 +20,7 @@ public class UnitOfWork : IUnitOfWork
     private IRepository<ExtraItemOption, int> _extraItemOptionRepository;
     private IRepository<PaymentLog, Guid> _paymentLogRepository;
     
-    public UnitOfWork(DbContext context)
+    public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
     }
