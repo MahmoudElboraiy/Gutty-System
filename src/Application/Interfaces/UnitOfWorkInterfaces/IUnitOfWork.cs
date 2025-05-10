@@ -14,10 +14,11 @@ public interface IUnitOfWork
     IRepository<ItemIngredient, int> ItemIngredients { get; }
     IRepository<ExtraItemOption, int> ExtraItemOptions { get; }
     IRepository<PaymentLog, Guid> PaymentLogs { get; }
-        
+    IRepository<ShippingAddress, int> ShippingAddresses { get; }
+
     // Specialized repositories
     // IItemRepository ItemsSpecialized { get; }
     // IPlanRepository PlansSpecialized { get; }
-        
+
     Task<int> CompleteAsync();
 }

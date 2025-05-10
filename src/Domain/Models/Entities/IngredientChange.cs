@@ -7,7 +7,7 @@ public class IngredientChange : BaseEntity<int>
 {
     public int IngredientId { get; set; }
     public Ingredient Ingredient { get; set; } = null!;
-    public decimal Quantity { get; set; } 
+    public decimal Quantity { get; set; }
     public decimal OldValue { get; set; }
     public decimal NewValue { get; set; }
 }

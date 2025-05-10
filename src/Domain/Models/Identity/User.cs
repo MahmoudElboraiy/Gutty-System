@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Domain.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Models.Identity;
@@ -13,6 +14,7 @@ public class User : IdentityUser
 
     [MaxLength(255)]
     public required string LastName { get; set; }
+    public required int CityId { get; set; }
 
     [MaxLength(255)]
     public required string MainAddress { get; set; }

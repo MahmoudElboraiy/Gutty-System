@@ -11,9 +11,7 @@ public class UpdateItemCommandHandler
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateItemCommandHandler(
-        IUnitOfWork unitOfWork
-    )
+    public UpdateItemCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -49,7 +47,9 @@ public class UpdateItemCommandHandler
         var toAdd = new List<ItemIngredient>();
         foreach (var recipeIngredient in request.RecipeIngredients)
         {
-            var ingredient = await _unitOfWork.Ingredients.GetByIdAsync(recipeIngredient.IngredientId);
+            var ingredient = await _unitOfWork.Ingredients.GetByIdAsync(
+                recipeIngredient.IngredientId
+            );
             if (ingredient == null)
             {
                 return DomainErrors.Ingredients.IngredientNotFound(recipeIngredient.IngredientId);
@@ -70,12 +70,12 @@ public class UpdateItemCommandHandler
 
             if (toRemoveExtraItemOptions != null)
             {
-                foreach(var extraItemOption in toRemoveExtraItemOptions)
+                foreach (var extraItemOption in toRemoveExtraItemOptions)
                 {
                     _unitOfWork.ExtraItemOptions.Remove(extraItemOption);
                 }
             }
-            
+
             foreach (var extraItemOption in request.ExtraItemOptions)
             {
                 var extraItemOptionEntity = new ExtraItemOption()
@@ -83,7 +83,7 @@ public class UpdateItemCommandHandler
                     Item = item,
                     ItemId = item.Id,
                     Weight = extraItemOption.Weight,
-                    Price = extraItemOption.Price
+                    Price = extraItemOption.Price,
                 };
                 await _unitOfWork.ExtraItemOptions.AddAsync(extraItemOptionEntity);
             }

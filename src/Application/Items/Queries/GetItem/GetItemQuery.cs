@@ -16,7 +16,7 @@ public record GetItemQueryResponse(
     decimal Carbs,
     decimal Proteins,
     decimal Fibers,
-    ItemType Type, 
+    ItemType Type,
     List<string> ImageUrls,
     List<GetItemRecipeIngredientResponse> RecipeIngredients,
     List<GetItemExtraItemOptionsResponse> ExtraItemOptions

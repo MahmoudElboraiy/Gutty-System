@@ -11,5 +11,6 @@ public record UserRegisterCommand(
     string PhoneNumber,
     string Password,
     string MainAddress,
-    string? SecondaryAddress
+    string? SecondaryAddress,
+    int CityId
 ) : IRequest<ErrorOr<AuthenticationResponse>>;

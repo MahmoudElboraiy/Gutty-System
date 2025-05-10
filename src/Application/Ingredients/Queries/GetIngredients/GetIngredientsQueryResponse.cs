@@ -4,4 +4,4 @@ namespace Application.Ingredients.Queries.GetIngredients;
 
 public record GetIngredientsQueryResponse(List<GetIngredientsQueryResponseItem> Ingredients);
 
-public record  GetIngredientsQueryResponseItem(int Id, string Name, decimal Stock);
+public record GetIngredientsQueryResponseItem(int Id, string Name, decimal Stock);

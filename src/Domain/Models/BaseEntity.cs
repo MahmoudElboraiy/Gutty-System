@@ -9,5 +9,4 @@ public abstract class BaseEntity<TId>
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAtAt { get; set; }
     public bool IsActive { get; set; } = true;
-
 }

@@ -11,7 +11,7 @@ public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ErrorOr<GetItem
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetItemQueryHandler( IUnitOfWork unitOfWork)
+    public GetItemQueryHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -21,8 +21,8 @@ public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ErrorOr<GetItem
         CancellationToken cancellationToken
     )
     {
-        var item = await _unitOfWork.Items
-            .GetQueryable()
+        var item = await _unitOfWork
+            .Items.GetQueryable()
             .AsNoTracking()
             .Include(i => i.Ingredients)
             .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);

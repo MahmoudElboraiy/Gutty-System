@@ -1,5 +1,5 @@
-using MediatR;
 using ErrorOr;
+using MediatR;
 
 namespace Application.IngredientsChanges.Queries;
 
@@ -10,7 +10,7 @@ public record GetIngredientsChangesQuery(
     int? Page,
     int? PageSize,
     bool? IsDescending
-    ) : IRequest<ErrorOr<GetIngredientsChangesQueryResponse>>;
+) : IRequest<ErrorOr<GetIngredientsChangesQueryResponse>>;
 
 public record GetIngredientsChangesQueryResponse(
     int Page,
@@ -30,8 +30,4 @@ public record GetIngredientsChangesQueryResponseItem(
     GetIngredientsChangesResponseIngredientQuery Ingredient
 );
 
-public record GetIngredientsChangesResponseIngredientQuery(
-    int Id,
-    string Name
-);
-    
+public record GetIngredientsChangesResponseIngredientQuery(int Id, string Name);

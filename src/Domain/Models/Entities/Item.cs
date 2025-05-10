@@ -7,6 +7,7 @@ public class Item : BaseEntity<Guid>
 {
     [MaxLength(255)]
     public required string Name { get; set; }
+
     [MaxLength(1000)]
     public string Description { get; set; } = string.Empty;
     public required decimal Weight { get; set; }
@@ -17,7 +18,7 @@ public class Item : BaseEntity<Guid>
     public required decimal Fibers { get; set; } = 0;
     public required decimal BasePrice { get; set; }
     public required ItemType Type { get; set; }
-    public required ICollection<ItemIngredient> Ingredients { get; set; } 
+    public required ICollection<ItemIngredient> Ingredients { get; set; }
     public List<string> ImageUrls { get; set; } = new();
-    public ICollection<ExtraItemOption>? ExtraItemOptions { get; set; } 
+    public ICollection<ExtraItemOption>? ExtraItemOptions { get; set; }
 }

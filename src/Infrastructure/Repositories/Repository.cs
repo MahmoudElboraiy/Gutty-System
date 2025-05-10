@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Infrastructure.Repositories;
 
-public class Repository<TEntity, TKey>  : IRepository<TEntity, TKey> where TEntity : class
+public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
+    where TEntity : class
 {
     private readonly DbContext _context;
     private readonly DbSet<TEntity> _dbSet;
@@ -60,14 +60,12 @@ public class Repository<TEntity, TKey>  : IRepository<TEntity, TKey> where TEnti
     {
         return await _dbSet.FindAsync(id) != null;
     }
-        
+
     public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate = null)
     {
-        return predicate == null 
-            ? await _dbSet.CountAsync() 
-            : await _dbSet.CountAsync(predicate);
+        return predicate == null ? await _dbSet.CountAsync() : await _dbSet.CountAsync(predicate);
     }
-    
+
     public IQueryable<TEntity> GetQueryable()
     {
         return _dbSet.AsQueryable();

@@ -27,8 +27,8 @@ public static class Mapping
             item.Id,
             item.Name,
             item.Description,
-            item.Weight ,
-            item.Calories ,
+            item.Weight,
+            item.Calories,
             item.Fats,
             item.Carbs,
             item.Proteins,
@@ -36,7 +36,9 @@ public static class Mapping
             item.Type,
             item.ImageUrls,
             item.Ingredients.Select(x => x.MapRecipeIngredientResponse()).ToList(),
-            item.ExtraItemOptions == null ? [] : item.ExtraItemOptions.Select(x => x.MapExtraItemOptionsResponse()).ToList()
+            item.ExtraItemOptions == null
+                ? []
+                : item.ExtraItemOptions.Select(x => x.MapExtraItemOptionsResponse()).ToList()
         );
 
     private static GetItemRecipeIngredientResponse MapRecipeIngredientResponse(
@@ -46,16 +48,23 @@ public static class Mapping
     private static GetItemExtraItemOptionsResponse MapExtraItemOptionsResponse(
         this ExtraItemOption extraItemOption
     ) => new(extraItemOption.Price, extraItemOption.Weight);
-    
-    public static GetIngredientsQueryResponseItem MapIngredientResponse(this Ingredient ingredient) =>
-        new(ingredient.Id, ingredient.Name,ingredient.StockQuantity);
+
+    public static GetIngredientsQueryResponseItem MapIngredientResponse(
+        this Ingredient ingredient
+    ) => new(ingredient.Id, ingredient.Name, ingredient.StockQuantity);
 
     public static GetIngredientsChangesQueryResponseItem MapIngredientChangeResponse(
-        this IngredientChange ingredientChange) =>
-        new(ingredientChange.CreatedAt, ingredientChange.Quantity, ingredientChange.OldValue, ingredientChange.NewValue,
-            ingredientChange.Ingredient.MapIngredientChangeResponseIngredient());
+        this IngredientChange ingredientChange
+    ) =>
+        new(
+            ingredientChange.CreatedAt,
+            ingredientChange.Quantity,
+            ingredientChange.OldValue,
+            ingredientChange.NewValue,
+            ingredientChange.Ingredient.MapIngredientChangeResponseIngredient()
+        );
 
     private static GetIngredientsChangesResponseIngredientQuery MapIngredientChangeResponseIngredient(
-        this Ingredient ingredient) =>
-        new(ingredient.Id, ingredient.Name);
+        this Ingredient ingredient
+    ) => new(ingredient.Id, ingredient.Name);
 }

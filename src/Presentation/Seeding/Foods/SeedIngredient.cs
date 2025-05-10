@@ -13,21 +13,9 @@ namespace Presentation.Seeding.Foods
             modelBuilder
                 .Entity<Ingredient>()
                 .HasData(
-                    new Ingredient
-                    {
-                        Name = "Flour",
-                        StockQuantity = 100.0m,
-                    },
-                    new Ingredient
-                    {
-                        Name = "Sugar",
-                        StockQuantity = 50.0m,
-                    },
-                    new Ingredient
-                    {
-                        Name = "Butter",
-                        StockQuantity = 30.0m,
-                    }
+                    new Ingredient { Name = "Flour", StockQuantity = 100.0m },
+                    new Ingredient { Name = "Sugar", StockQuantity = 50.0m },
+                    new Ingredient { Name = "Butter", StockQuantity = 30.0m }
                 );
         }
     }

@@ -30,6 +30,12 @@ public static class DomainErrors
 
     public static class Items
     {
+        public static Error ExtraItemOptionNotFound(int value) =>
+            Error.NotFound(
+                "Items.ExtraItemOptionNotFound",
+                $"ExtraItemOption with id {value} not found."
+            );
+
         public static Error ItemNotFound(Guid requestId) =>
             Error.NotFound("Items.ItemNotFound", $"Item with id {requestId} not found.");
     }

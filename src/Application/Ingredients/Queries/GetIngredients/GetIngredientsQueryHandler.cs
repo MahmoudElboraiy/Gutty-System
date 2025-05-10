@@ -26,9 +26,9 @@ public class GetIngredientsQueryHandler
         var ingredients = await ingredientsQ
             .AsNoTracking()
             .Where(i => i.Name.Contains(request.SearchTerm ?? ""))
-            .Select(x=> x.MapIngredientResponse())
+            .Select(x => x.MapIngredientResponse())
             .ToListAsync(cancellationToken: cancellationToken);
-        
+
         return new GetIngredientsQueryResponse(ingredients);
     }
 }

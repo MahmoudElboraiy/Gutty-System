@@ -1,5 +1,6 @@
 using Application.Authentication.Common;
 using Application.Interfaces;
+using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.DErrors;
 using Domain.Enums;
 using Domain.Models.Identity;
@@ -39,6 +40,7 @@ public class UserRegisterCommandHandler
             MainAddress = request.MainAddress,
             SecondaryAddress = request.SecondaryAddress,
             UserName = request.PhoneNumber,
+            CityId = request.CityId,
         };
 
         var phoneExists = await _userManager.Users.AnyAsync(

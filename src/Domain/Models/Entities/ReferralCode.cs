@@ -2,7 +2,7 @@ using Domain.Models.Identity;
 
 namespace Domain.Models.Entities;
 
-public class ReferralCode: BaseEntity<int>
+public class ReferralCode : BaseEntity<int>
 {
     public string Code { get; set; }
     public string UserId { get; set; }
