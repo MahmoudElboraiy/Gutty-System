@@ -11,9 +11,7 @@ public class CreateIngredientCommandHandler
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateIngredientCommandHandler(
-        IUnitOfWork unitOfWork
-    )
+    public CreateIngredientCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -27,7 +25,7 @@ public class CreateIngredientCommandHandler
         {
             Name = request.Name,
             StockQuantity = request.Stock,
-            Description = request.Description
+            Description = request.Description,
         };
 
         await _unitOfWork.Ingredients.AddAsync(ingredient);

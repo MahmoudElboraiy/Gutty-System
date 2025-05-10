@@ -2,7 +2,8 @@ using System.Linq.Expressions;
 
 namespace Application.Interfaces.UnitOfWorkInterfaces;
 
-public interface IRepository<TEntity, TKey> where TEntity : class
+public interface IRepository<TEntity, TKey>
+    where TEntity : class
 {
     Task<TEntity?> GetByIdAsync(TKey id);
     Task<IEnumerable<TEntity>> GetAllAsync();

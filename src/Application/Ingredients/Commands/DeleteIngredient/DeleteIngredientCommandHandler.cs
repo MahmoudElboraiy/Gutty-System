@@ -10,9 +10,7 @@ public class DeleteIngredientCommandHandler
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteIngredientCommandHandler(
-        IUnitOfWork unitOfWork
-    )
+    public DeleteIngredientCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

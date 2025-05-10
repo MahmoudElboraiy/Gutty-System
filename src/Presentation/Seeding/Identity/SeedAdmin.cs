@@ -18,6 +18,7 @@ public class SeedAdmin
             Email = "0wPZG@example.com",
             MainAddress = "Admin Address",
             UserName = "0wPZG@example.com",
+            CityId = 1,
         };
 
         await userManager.CreateAsync(admin, "Admin123");

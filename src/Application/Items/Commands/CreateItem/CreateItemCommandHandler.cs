@@ -11,9 +11,7 @@ public class CreateItemCommandHandler
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateItemCommandHandler(
-        IUnitOfWork unitOfWork
-    )
+    public CreateItemCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -42,7 +40,9 @@ public class CreateItemCommandHandler
         var recipeIngredients = new List<ItemIngredient>();
         foreach (var recipeIngredient in request.RecipeIngredients)
         {
-            var ingredient = await _unitOfWork.Ingredients.GetByIdAsync(recipeIngredient.IngredientId);
+            var ingredient = await _unitOfWork.Ingredients.GetByIdAsync(
+                recipeIngredient.IngredientId
+            );
             if (ingredient == null)
             {
                 return DomainErrors.Ingredients.IngredientNotFound(recipeIngredient.IngredientId);
@@ -58,24 +58,24 @@ public class CreateItemCommandHandler
         }
 
         var extraItemOptions = new List<ExtraItemOption>();
-        
+
         if (request.ExtraItemOptions != null)
         {
             foreach (var extraOptions in request.ExtraItemOptions)
             {
                 extraItemOptions.Add(
-                        new ExtraItemOption()
-                        {
-                            Item = item,
-                            Weight = extraOptions.Weight,
-                            Price = extraOptions.Price
-                        }
-                    );
+                    new ExtraItemOption()
+                    {
+                        Item = item,
+                        Weight = extraOptions.Weight,
+                        Price = extraOptions.Price,
+                    }
+                );
             }
         }
 
         item.Ingredients = recipeIngredients;
-        
+
         item.ExtraItemOptions = extraItemOptions;
 
         await _unitOfWork.Items.AddAsync(item);

@@ -4,5 +4,5 @@ public enum ItemType
 {
     BreakFastOrDinner,
     Protein,
-    Side
+    Side,
 }

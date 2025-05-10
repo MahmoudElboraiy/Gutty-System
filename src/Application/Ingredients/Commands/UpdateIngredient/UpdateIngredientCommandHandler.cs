@@ -12,9 +12,7 @@ public class UpdateIngredientCommandHandler
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateIngredientCommandHandler(
-        IUnitOfWork unitOfWork
-    )
+    public UpdateIngredientCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -40,7 +38,8 @@ public class UpdateIngredientCommandHandler
                 {
                     IngredientId = oldIngredient.Id,
                     Quantity =
-                        Convert.ToInt32(request.Stock) - Convert.ToInt32(oldIngredient.StockQuantity),
+                        Convert.ToInt32(request.Stock)
+                        - Convert.ToInt32(oldIngredient.StockQuantity),
                     OldValue = oldIngredient.StockQuantity,
                     NewValue = request.Stock,
                 }

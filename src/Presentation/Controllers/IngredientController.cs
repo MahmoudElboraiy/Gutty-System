@@ -55,4 +55,3 @@ public class IngredientController : Controller
         return result.Match<IActionResult>(Ok, BadRequest);
     }
 }
-

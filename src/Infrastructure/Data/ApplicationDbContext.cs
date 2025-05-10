@@ -15,11 +15,10 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<IngredientChange> IngredientChanges { get; set; }
     public DbSet<Item> Items { get; set; }
-    public DbSet<LunchMeal> LunchMeals { get; set; }
     public DbSet<PaymentLog> PaymentLogs { get; set; }
     public DbSet<ReferralCode> ReferralCodes { get; set; }
     public DbSet<UserPrefernce> UserPrefernces { get; set; }
-    public DbSet<BreakFastOrDinnerMeal> BreakFastOrDinnerMeals { get; set; }
     public DbSet<ExtraItemOption> ExtraItemOptions { get; set; }
     public DbSet<ItemIngredient> ItemIngredients { get; set; }
+    public DbSet<Meal> Meals { get; set; }
 }

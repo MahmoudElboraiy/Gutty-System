@@ -21,8 +21,8 @@ public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, ErrorOr<GetIt
         CancellationToken cancellationToken
     )
     {
-        var items = await _unitOfWork.Items
-            .GetQueryable()
+        var items = await _unitOfWork
+            .Items.GetQueryable()
             .AsNoTracking()
             .Include(i => i.Ingredients)
             .Where(x =>
