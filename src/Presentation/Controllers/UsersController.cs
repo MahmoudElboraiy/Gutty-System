@@ -1,8 +1,11 @@
+using Application.Users.Commands;
 using Application.Users.Queries.GetUsers;
 using Domain.Enums;
+using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Presentation.Controllers;
 
@@ -25,4 +28,12 @@ public class UsersController : Controller
 
         return result.Match<IActionResult>(Ok, BadRequest);
     }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserCommand command)
+    {
+        var result = await _mediator.Send(command);
+
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+
 }
