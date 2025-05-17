@@ -51,7 +51,8 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
+        Console.WriteLine(connectionString);
+        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
         services
             .AddAuthentication(cfg =>
