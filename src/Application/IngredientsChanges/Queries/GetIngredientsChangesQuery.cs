@@ -30,4 +30,4 @@ public record GetIngredientsChangesQueryResponseItem(
     GetIngredientsChangesResponseIngredientQuery Ingredient
 );
 
-public record GetIngredientsChangesResponseIngredientQuery(int Id, string Name);
+public record GetIngredientsChangesResponseIngredientQuery(int Id, string Name, string NameAr);

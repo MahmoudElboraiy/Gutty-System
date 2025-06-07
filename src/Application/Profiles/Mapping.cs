@@ -26,7 +26,9 @@ public static class Mapping
         new(
             item.Id,
             item.Name,
+            item.NameAr,
             item.Description,
+            item.DescriptionAr,
             item.Weight,
             item.Calories,
             item.Fats,
@@ -36,22 +38,16 @@ public static class Mapping
             item.Type,
             item.ImageUrls,
             item.Ingredients.Select(x => x.MapRecipeIngredientResponse()).ToList(),
-            item.ExtraItemOptions == null
-                ? []
-                : item.ExtraItemOptions.Select(x => x.MapExtraItemOptionsResponse()).ToList()
+            item.WeightToPriceRatio
         );
 
     private static GetItemRecipeIngredientResponse MapRecipeIngredientResponse(
         this ItemIngredient recipeIngredient
     ) => new(recipeIngredient.IngredientId, recipeIngredient.Quantity);
 
-    private static GetItemExtraItemOptionsResponse MapExtraItemOptionsResponse(
-        this ExtraItemOption extraItemOption
-    ) => new(extraItemOption.Price, extraItemOption.Weight);
-
     public static GetIngredientsQueryResponseItem MapIngredientResponse(
         this Ingredient ingredient
-    ) => new(ingredient.Id, ingredient.Name, ingredient.StockQuantity);
+    ) => new(ingredient.Id, ingredient.Name, ingredient.NameAr, ingredient.StockQuantity);
 
     public static GetIngredientsChangesQueryResponseItem MapIngredientChangeResponse(
         this IngredientChange ingredientChange
@@ -66,5 +62,5 @@ public static class Mapping
 
     private static GetIngredientsChangesResponseIngredientQuery MapIngredientChangeResponseIngredient(
         this Ingredient ingredient
-    ) => new(ingredient.Id, ingredient.Name);
+    ) => new(ingredient.Id, ingredient.Name, ingredient.NameAr);
 }

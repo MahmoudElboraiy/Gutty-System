@@ -2,8 +2,10 @@ using System.Reflection;
 using Application;
 using Domain.Models.Identity;
 using Infrastructure;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
+using Presentation.Seeding.Foods;
 using Presentation.Seeding.Identity;
 
 var corsPolicyName = "AllowAll";
@@ -101,6 +103,18 @@ if (args.Length > 0 && args[0] == "seedAdmin")
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
     await SeedAdmin.SeedAsync(context);
+}
+
+if (args.Length > 0 && args[0] == "seedItems-ingredients")
+{
+    var scope = app.Services.CreateScope();
+    using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    
+    await SeedIngredient.SeedAsync(context);
+    await SeedItem.SeedAsync(context);
+    await SeedItemIngredient.SeedAsync(context);
+    
+    Console.WriteLine("Seeding completed successfully!");
 }
 
 app.UseHttpsRedirection();

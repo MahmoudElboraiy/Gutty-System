@@ -38,5 +38,10 @@ public static class DomainErrors
 
         public static Error ItemNotFound(Guid requestId) =>
             Error.NotFound("Items.ItemNotFound", $"Item with id {requestId} not found.");
+        public static Error WeightMustBeGreaterThanMinWeight(int value) =>
+            Error.Conflict(
+                "Items.WeightMustBeGreaterThanMinWeight",
+                $"Weight must be greater than min weight {value}.");
+            
     }
 }

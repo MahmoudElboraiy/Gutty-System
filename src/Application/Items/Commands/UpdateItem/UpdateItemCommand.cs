@@ -7,7 +7,9 @@ namespace Application.Items.Commands.UpdateItem;
 public record UpdateItemCommand(
     Guid Id,
     string Name,
+    string NameAr,
     string Description,
+    string DescriptionAr,
     decimal WeightRaw,
     decimal Weight,
     decimal Calories,
@@ -19,7 +21,7 @@ public record UpdateItemCommand(
     ItemType Type,
     List<string> ImageUrls,
     List<UpdateItemRecipeIngredient> RecipeIngredients,
-    List<UpdateItemExtraItemOptions>? ExtraItemOptions
+    decimal WeightToPriceRatio
 ) : IRequest<ErrorOr<UpdateItemCommandResponse>>;
 
 public record UpdateItemRecipeIngredient(int IngredientId, decimal Quantity);

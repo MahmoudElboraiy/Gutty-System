@@ -24,6 +24,7 @@ public class CreateIngredientCommandHandler
         var ingredient = new Ingredient()
         {
             Name = request.Name,
+            NameAr = request.NameAr,
             StockQuantity = request.Stock,
             Description = request.Description,
         };

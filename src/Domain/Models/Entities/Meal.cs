@@ -11,8 +11,8 @@ public class Meal : BaseEntity<Guid>
     [ForeignKey("Item")]
     public required Guid ItemId { get; set; }
     public required Item Item { get; set; }
-    public int? ExtraItemOptionId { get; set; }
-    public ExtraItemOption? ExtraItemOption { get; set; }
+    public decimal Weight { get; set; }
+    public decimal Price { get; set; }
     public MealType MealType { get; set; }
     public uint Quantity { get; set; }
 }

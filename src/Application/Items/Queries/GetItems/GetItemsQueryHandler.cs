@@ -27,7 +27,9 @@ public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, ErrorOr<GetIt
             .Include(i => i.Ingredients)
             .Where(x =>
                 x.Name.Contains(request.SearchText ?? "")
+                || x.NameAr.Contains(request.SearchText ?? "")
                 || x.Description.Contains(request.SearchText ?? "")
+                || x.DescriptionAr.Contains(request.SearchText ?? "")
             )
             .ToListAsync(cancellationToken: cancellationToken);
 

@@ -20,16 +20,9 @@ public class CreatePlanCommandValidator : AbstractValidator<CreatePlanCommand>
                 meal.RuleFor(x => x.Quantity)
                     .GreaterThan(0)
                     .WithMessage("Quantity must be greater than 0");
-
-                meal.When(
-                    x => x.ExtraItemOptionId.HasValue,
-                    () =>
-                    {
-                        meal.RuleFor(x => x.ExtraItemOptionId)
-                            .GreaterThan(0)
-                            .WithMessage("ExtraItemOptionId must be greater than 0");
-                    }
-                );
+                meal.RuleFor(x => x.Weight)
+                    .GreaterThan(0)
+                    .WithMessage("Weight must be greater than 0");
             });
     }
 }
