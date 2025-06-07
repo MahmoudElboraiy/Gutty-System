@@ -24,7 +24,9 @@ public class CreateItemCommandHandler
         var item = new Item()
         {
             Name = request.Name,
+            NameAr = request.NameAr,
             Description = request.Description,
+            DescriptionAr = request.DescriptionAr,
             Proteins = request.Proteins,
             Fats = request.Fats,
             Weight = request.Weight,
@@ -35,6 +37,7 @@ public class CreateItemCommandHandler
             Fibers = request.Fibers,
             Type = request.ItemType,
             Ingredients = [],
+            WeightToPriceRatio = request.WeightToPriceRatio
         };
 
         var recipeIngredients = new List<ItemIngredient>();
@@ -57,26 +60,7 @@ public class CreateItemCommandHandler
             );
         }
 
-        var extraItemOptions = new List<ExtraItemOption>();
-
-        if (request.ExtraItemOptions != null)
-        {
-            foreach (var extraOptions in request.ExtraItemOptions)
-            {
-                extraItemOptions.Add(
-                    new ExtraItemOption()
-                    {
-                        Item = item,
-                        Weight = extraOptions.Weight,
-                        Price = extraOptions.Price,
-                    }
-                );
-            }
-        }
-
         item.Ingredients = recipeIngredients;
-
-        item.ExtraItemOptions = extraItemOptions;
 
         await _unitOfWork.Items.AddAsync(item);
 

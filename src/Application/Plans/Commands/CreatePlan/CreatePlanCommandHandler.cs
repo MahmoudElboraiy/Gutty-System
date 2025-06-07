@@ -35,38 +35,27 @@ public class CreatePlanCommandHandler
             {
                 return DomainErrors.Items.ItemNotFound(mealRequest.ItemId);
             }
-            var totalPriceForMeal = (int)item.BasePrice * mealRequest.Quantity;
+            var totalPriceForMeal = item.BasePrice * mealRequest.Quantity;
 
-            ExtraItemOption? extraItemOption = null;
-            if (mealRequest.ExtraItemOptionId.HasValue)
+            if (mealRequest.Weight < item.Weight)
             {
-                extraItemOption = await _unitOfWork.ExtraItemOptions.GetByIdAsync(
-                    mealRequest.ExtraItemOptionId.Value
-                );
-                if (extraItemOption == null)
-                {
-                    return DomainErrors.Items.ExtraItemOptionNotFound(
-                        mealRequest.ExtraItemOptionId.Value
-                    );
-                }
+                return DomainErrors.Items.WeightMustBeGreaterThanMinWeight((int)item.Weight);
             }
 
             var meal = new Meal
             {
                 ItemId = mealRequest.ItemId,
                 Item = item,
-                ExtraItemOptionId = mealRequest.ExtraItemOptionId,
-                ExtraItemOption = extraItemOption,
+                Weight = item.Weight,
                 MealType = mealRequest.MealType,
                 Quantity = (uint)mealRequest.Quantity,
             };
 
-            // Add extra item option price if exists
-            if (extraItemOption != null)
+            if (mealRequest.Weight > item.Weight)
             {
-                totalPriceForMeal += (int)extraItemOption.Price * mealRequest.Quantity;
+                totalPriceForMeal  += (item.WeightToPriceRatio * (mealRequest.Weight - item.Weight));
             }
-
+            
             totalPrice += totalPriceForMeal;
             meals.Add(meal);
         }

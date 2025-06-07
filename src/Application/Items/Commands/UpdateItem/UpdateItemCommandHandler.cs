@@ -28,7 +28,9 @@ public class UpdateItemCommandHandler
         }
 
         item.Name = request.Name;
+        item.NameAr = request.NameAr;
         item.Description = request.Description;
+        item.DescriptionAr = request.DescriptionAr;
         item.Proteins = request.Proteins;
         item.Fats = request.Fats;
         item.Weight = request.Weight;
@@ -63,31 +65,8 @@ public class UpdateItemCommandHandler
                 }
             );
         }
-
-        if (request.ExtraItemOptions != null)
-        {
-            var toRemoveExtraItemOptions = item.ExtraItemOptions;
-
-            if (toRemoveExtraItemOptions != null)
-            {
-                foreach (var extraItemOption in toRemoveExtraItemOptions)
-                {
-                    _unitOfWork.ExtraItemOptions.Remove(extraItemOption);
-                }
-            }
-
-            foreach (var extraItemOption in request.ExtraItemOptions)
-            {
-                var extraItemOptionEntity = new ExtraItemOption()
-                {
-                    Item = item,
-                    ItemId = item.Id,
-                    Weight = extraItemOption.Weight,
-                    Price = extraItemOption.Price,
-                };
-                await _unitOfWork.ExtraItemOptions.AddAsync(extraItemOptionEntity);
-            }
-        }
+        
+        item.WeightToPriceRatio = request.WeightToPriceRatio;
 
         item.Ingredients = toAdd;
 

@@ -40,7 +40,9 @@ public class GetIngredientsChangesQueryHandler
         }
         else if (request.Name != null)
         {
-            changesToReturn = changesToReturn.Where(c => c.Ingredient.Name.Contains(request.Name));
+            changesToReturn = changesToReturn.Where(c => 
+                c.Ingredient.Name.Contains(request.Name) || 
+                c.Ingredient.NameAr.Contains(request.Name));
         }
 
         if (request.ChangeDate != null)

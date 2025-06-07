@@ -30,6 +30,7 @@ public class UpdateIngredientCommandHandler
         }
 
         oldIngredient.Name = request.Name;
+        oldIngredient.NameAr = request.NameAr;
 
         if (oldIngredient.StockQuantity != request.Stock)
         {

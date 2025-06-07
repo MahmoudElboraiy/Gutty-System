@@ -6,7 +6,9 @@ namespace Application.Items.Commands.CreateItem;
 
 public record CreateItemCommand(
     string Name,
+    string NameAr,
     string Description,
+    string DescriptionAr,
     decimal WeightRaw,
     decimal Weight,
     decimal Calories,
@@ -18,11 +20,9 @@ public record CreateItemCommand(
     List<string> ImageUrls,
     ItemType ItemType,
     List<CreateItemRecipeIngredient> RecipeIngredients,
-    List<CreateItemExtraItemOptions>? ExtraItemOptions
+    decimal WeightToPriceRatio
 ) : IRequest<ErrorOr<CreateItemCommandResponse>>;
 
 public record CreateItemRecipeIngredient(int IngredientId, int Quantity);
-
-public record CreateItemExtraItemOptions(decimal Weight, decimal Price);
 
 public record CreateItemCommandResponse(Guid Id);

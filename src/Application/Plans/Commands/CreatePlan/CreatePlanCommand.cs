@@ -11,6 +11,6 @@ public record CreatePlanCommand(
     List<CreatePlanMeal> Meals
 ) : IRequest<ErrorOr<CreatePlanCommandResponse>>;
 
-public record CreatePlanMeal(Guid ItemId, int? ExtraItemOptionId, MealType MealType, int Quantity);
+public record CreatePlanMeal(Guid ItemId, decimal Weight, MealType MealType, int Quantity);
 
 public record CreatePlanCommandResponse(Guid Id);

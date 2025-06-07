@@ -9,7 +9,9 @@ public record GetItemQuery(Guid Id) : IRequest<ErrorOr<GetItemQueryResponse>>;
 public record GetItemQueryResponse(
     Guid Id,
     string Name,
+    string NameAr,
     string Description,
+    string DescriptionAr,
     decimal Weight,
     decimal Calories,
     decimal Fats,
@@ -19,9 +21,8 @@ public record GetItemQueryResponse(
     ItemType Type,
     List<string> ImageUrls,
     List<GetItemRecipeIngredientResponse> RecipeIngredients,
-    List<GetItemExtraItemOptionsResponse> ExtraItemOptions
+    decimal WeightToPriceRatio
 );
 
 public record GetItemRecipeIngredientResponse(int IngredientId, decimal Quantity);
 
-public record GetItemExtraItemOptionsResponse(decimal Price, decimal Weight);
