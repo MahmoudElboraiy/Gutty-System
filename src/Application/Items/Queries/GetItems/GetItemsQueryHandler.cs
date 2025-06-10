@@ -25,6 +25,7 @@ public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, ErrorOr<GetIt
             .Items.GetQueryable()
             .AsNoTracking()
             .Include(i => i.Ingredients)
+            .ThenInclude(i => i.Ingredient)
             .Where(x =>
                 x.Name.Contains(request.SearchText ?? "")
                 || x.NameAr.Contains(request.SearchText ?? "")

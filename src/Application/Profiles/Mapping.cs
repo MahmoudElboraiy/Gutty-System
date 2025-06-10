@@ -43,7 +43,7 @@ public static class Mapping
 
     private static GetItemRecipeIngredientResponse MapRecipeIngredientResponse(
         this ItemIngredient recipeIngredient
-    ) => new(recipeIngredient.IngredientId, recipeIngredient.Quantity);
+    ) => new(recipeIngredient.IngredientId, recipeIngredient.Ingredient.Name, recipeIngredient.Ingredient.NameAr, recipeIngredient.Quantity, IsOptional: recipeIngredient.IsOptional);
 
     public static GetIngredientsQueryResponseItem MapIngredientResponse(
         this Ingredient ingredient
