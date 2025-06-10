@@ -24,5 +24,5 @@ public record GetItemQueryResponse(
     decimal WeightToPriceRatio
 );
 
-public record GetItemRecipeIngredientResponse(int IngredientId, decimal Quantity);
+public record GetItemRecipeIngredientResponse(int IngredientId, string Name, string NameAr, decimal Quantity, bool IsOptional);
 

@@ -25,6 +25,7 @@ public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ErrorOr<GetItem
             .Items.GetQueryable()
             .AsNoTracking()
             .Include(i => i.Ingredients)
+            .ThenInclude(i => i.Ingredient)
             .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
 
         if (item == null)
