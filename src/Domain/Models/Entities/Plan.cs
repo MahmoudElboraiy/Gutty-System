@@ -15,5 +15,11 @@ public class Plan : BaseEntity<Guid>
     public bool IsPreDefined { get; set; }
     public string? CreatedByUserId { get; set; }
     public User CreatedByUser { get; set; } = null!;
+    public uint MaxSeaFood { get; set; }
+    public uint MaxMeat { get; set; }
+    public uint MaxTwagen { get; set; }
+    public uint MaxChicken { get; set; }
+    public uint MaxPizza { get; set; }
+    public uint MaxHighCarb { get; set; }
     public decimal TotalPrice { get; set; }
 }

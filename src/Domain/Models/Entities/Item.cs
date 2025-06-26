@@ -20,6 +20,8 @@ public class Item : BaseEntity<Guid>
     public required decimal Fibers { get; set; } = 0;
     public required decimal BasePrice { get; set; }
     public required ItemType Type { get; set; }
+    public required ItemMenuType MenuType { get; set; } 
+    public bool HasCarb { get; set; }
     public required ICollection<ItemIngredient> Ingredients { get; set; }
     public List<string> ImageUrls { get; set; } = new();
     public decimal WeightToPriceRatio { get; set; }

@@ -19,6 +19,7 @@ public record CreateItemCommand(
     decimal Fibers,
     List<string> ImageUrls,
     ItemType ItemType,
+    ItemMenuType MenuType,
     List<CreateItemRecipeIngredient> RecipeIngredients,
     decimal WeightToPriceRatio
 ) : IRequest<ErrorOr<CreateItemCommandResponse>>;
