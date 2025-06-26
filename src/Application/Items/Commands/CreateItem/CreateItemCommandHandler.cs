@@ -36,6 +36,7 @@ public class CreateItemCommandHandler
             ImageUrls = request.ImageUrls,
             Fibers = request.Fibers,
             Type = request.ItemType,
+            MenuType = request.MenuType,
             Ingredients = [],
             WeightToPriceRatio = request.WeightToPriceRatio
         };

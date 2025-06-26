@@ -29,6 +29,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 16.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 113.26m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -48,6 +49,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 17.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 119.93m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -67,6 +69,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 18.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 126.59m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -86,6 +89,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 17.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 116.67m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -105,6 +109,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 19.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 133.26m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -124,6 +129,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 20.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 139.93m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -144,6 +150,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 21.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 146.59m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -163,6 +170,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 22.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 150.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -182,6 +190,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 21.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 143.33m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -201,6 +210,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 22.00m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 146.67m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -220,6 +230,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 23.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 159.93m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -240,6 +251,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 8.0m,
                         BasePrice = 15.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 25.02m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -259,6 +271,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 24.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.SeaFood,
                         WeightToPriceRatio = 124.95m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -278,6 +291,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 22.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 76.64m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -297,6 +311,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 12.0m,
                         BasePrice = 13.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 27.16m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -316,6 +331,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 2.0m,
                         BasePrice = 18.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 74.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -335,6 +351,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 9.99m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 20.02m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -355,6 +372,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 25.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 259.90m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -374,6 +392,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 26.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 265.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -393,6 +412,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 22.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 229.90m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -412,6 +432,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 23.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 235.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -431,6 +452,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 24.00m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 240.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -450,6 +472,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 20.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 209.90m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -470,6 +493,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 25.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 255.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -489,6 +513,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 26.00m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 260.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -508,6 +533,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 24.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 245.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -527,6 +553,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 25.00m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 250.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -546,6 +573,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 26.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Twagen,
                         WeightToPriceRatio = 265.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -566,6 +594,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 28.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.SeaFood,
                         WeightToPriceRatio = 241.58m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -585,6 +614,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 32.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.SeaFood,
                         WeightToPriceRatio = 274.92m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -604,6 +634,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 26.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.SeaFood,
                         WeightToPriceRatio = 224.92m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -623,6 +654,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 30.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.SeaFood,
                         WeightToPriceRatio = 254.17m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -642,6 +674,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 35.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.SeaFood,
                         WeightToPriceRatio = 299.92m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -661,6 +694,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 0.0m,
                         BasePrice = 38.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.SeaFood,
                         WeightToPriceRatio = 324.92m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -681,6 +715,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 8.0m,
                         BasePrice = 45.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 114.98m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -700,6 +735,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 8.0m,
                         BasePrice = 46.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 116.25m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -719,6 +755,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 8.0m,
                         BasePrice = 47.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 119.98m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -738,6 +775,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 8.0m,
                         BasePrice = 49.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 124.98m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -757,6 +795,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 8.0m,
                         BasePrice = 44.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 112.48m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -776,6 +815,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 8.0m,
                         BasePrice = 52.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 132.48m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -796,6 +836,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 29.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 99.97m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -815,6 +856,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 31.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 105.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -834,6 +876,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 32.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 109.97m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -853,6 +896,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 30.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 101.67m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -872,6 +916,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 28.99m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 96.63m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -891,6 +936,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 27.50m,
                         Type = ItemType.Protein,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 91.67m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -911,6 +957,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 2.0m,
                         BasePrice = 12.99m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 52.04m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -930,6 +977,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 2.0m,
                         BasePrice = 14.50m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 58.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -949,6 +997,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 2.0m,
                         BasePrice = 15.99m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 63.96m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -968,6 +1017,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 11.50m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 46.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -987,6 +1037,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 10.99m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 43.96m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1006,6 +1057,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 16.50m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 66.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1025,6 +1077,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 18.99m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 63.30m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1044,6 +1097,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 16.99m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 56.63m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1063,6 +1117,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 15.50m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 51.67m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1082,6 +1137,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 5.0m,
                         BasePrice = 17.99m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 59.97m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1101,6 +1157,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 5.0m,
                         BasePrice = 16.50m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 55.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1120,6 +1177,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 13.99m,
                         Type = ItemType.Side,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 46.63m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1140,6 +1198,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 18.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 54.24m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1159,6 +1218,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 17.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 50.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1178,6 +1238,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 18.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 52.86m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1197,6 +1258,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 19.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 55.71m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1216,6 +1278,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 20.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.SeaFood,
                         WeightToPriceRatio = 59.97m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1235,6 +1298,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 16.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 47.14m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1255,6 +1319,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 22.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 76.63m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1274,6 +1339,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 21.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 71.67m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1293,6 +1359,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 19.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 66.63m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1312,6 +1379,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 20.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 68.33m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1331,6 +1399,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 19.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 65.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1350,6 +1419,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 18.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 63.30m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1370,6 +1440,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 17.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 71.96m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1389,6 +1460,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 16.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 66.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1408,6 +1480,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 15.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 63.96m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1427,6 +1500,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 16.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 66.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1446,6 +1520,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 18.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 74.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1465,6 +1540,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 19.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 79.96m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1485,6 +1561,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 24.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 124.95m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1504,6 +1581,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 25.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 127.50m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1523,6 +1601,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 26.00m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 130.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1542,6 +1621,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 27.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 137.50m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1561,6 +1641,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 26.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 134.95m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1580,6 +1661,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 29.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Pizza,
                         WeightToPriceRatio = 149.95m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1599,6 +1681,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 2.0m,
                         BasePrice = 21.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 73.30m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1618,6 +1701,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 2.0m,
                         BasePrice = 19.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 65.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1637,6 +1721,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 1.0m,
                         BasePrice = 22.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Meat,
                         WeightToPriceRatio = 75.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1656,6 +1741,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 1.0m,
                         BasePrice = 20.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.Chicken,
                         WeightToPriceRatio = 69.97m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1675,6 +1761,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 2.0m,
                         BasePrice = 18.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 74.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1695,6 +1782,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 25.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 86.63m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1714,6 +1802,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 27.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 91.67m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1733,6 +1822,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 5.0m,
                         BasePrice = 24.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 83.30m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1752,6 +1842,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 5.0m,
                         BasePrice = 26.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 88.33m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1771,6 +1862,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 3.0m,
                         BasePrice = 18.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 94.95m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1790,6 +1882,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 6.0m,
                         BasePrice = 29.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 99.97m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1809,6 +1902,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 5.0m,
                         BasePrice = 28.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 95.00m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1828,6 +1922,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 5.0m,
                         BasePrice = 30.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 101.67m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1847,6 +1942,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 27.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 93.30m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1866,6 +1962,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 29.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 98.33m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1885,6 +1982,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 22.50m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 112.50m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
@@ -1904,6 +2002,7 @@ namespace Presentation.Seeding.Foods
                         Fibers = 4.0m,
                         BasePrice = 24.99m,
                         Type = ItemType.BreakFastOrDinner,
+                        MenuType = ItemMenuType.HighCarb,
                         WeightToPriceRatio = 124.95m,
                         Ingredients = new List<ItemIngredient>(),
                         ImageUrls = new List<string>()
