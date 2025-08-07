@@ -7,10 +7,17 @@ namespace Application.Plans.Commands.CreatePlan;
 public record CreatePlanCommand(
     string Name,
     string Description,
-    bool IsPreDefined,
-    List<CreatePlanMeal> Meals
+    uint DurationInDays,
+    uint LunchMealsPerDay,
+    uint DinnerMealsPerDay,
+    uint BreakfastMealsPerDay,
+    uint MaxSeaFood,
+    uint MaxMeat,
+    uint MaxTwagen,
+    uint MaxChicken,
+    uint MaxPizza,
+    uint MaxHighCarb,
+    decimal Price
 ) : IRequest<ErrorOr<CreatePlanCommandResponse>>;
-
-public record CreatePlanMeal(Guid ItemId, decimal Weight, MealType MealType, int Quantity);
 
 public record CreatePlanCommandResponse(Guid Id);

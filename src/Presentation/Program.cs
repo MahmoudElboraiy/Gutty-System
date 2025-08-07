@@ -117,6 +117,13 @@ if (args.Length > 0 && args[0] == "seedItems-ingredients")
     Console.WriteLine("Seeding completed successfully!");
 }
 
+if (args.Length > 0 && args[0] == "seedPlans")
+{
+    var scope = app.Services.CreateScope();
+    using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await SeedPlan.SeedAsync(context);
+}
+
 app.UseHttpsRedirection();
 app.MapControllers();
 

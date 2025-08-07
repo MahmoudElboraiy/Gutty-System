@@ -1,6 +1,7 @@
 using Application.Ingredients.Queries.GetIngredients;
 using Application.IngredientsChanges.Queries;
 using Application.Items.Queries.GetItem;
+using Application.Plans.Queries.GetPlans;
 using Application.Users.Queries.GetUsers;
 using Domain.Models.Entities;
 using Domain.Models.Identity;
@@ -63,4 +64,18 @@ public static class Mapping
     private static GetIngredientsChangesResponseIngredientQuery MapIngredientChangeResponseIngredient(
         this Ingredient ingredient
     ) => new(ingredient.Id, ingredient.Name, ingredient.NameAr);
+
+    public static GetPlanQueryResponseItem MapPlanResponse(this Plan plan) =>
+        new(
+            plan.Id,
+            plan.Name,
+            plan.Description,
+            plan.MaxSeaFood,
+            plan.MaxMeat,
+            plan.MaxTwagen,
+            plan.MaxChicken,
+            plan.MaxPizza,
+            plan.MaxHighCarb,
+            plan.Price
+        );
 }
