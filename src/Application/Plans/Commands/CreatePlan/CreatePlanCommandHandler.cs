@@ -25,48 +25,21 @@ public class CreatePlanCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var meals = new List<Meal>();
-        decimal totalPrice = 0;
-
-        foreach (var mealRequest in request.Meals)
-        {
-            var item = await _unitOfWork.Items.GetByIdAsync(mealRequest.ItemId);
-            if (item == null)
-            {
-                return DomainErrors.Items.ItemNotFound(mealRequest.ItemId);
-            }
-            var totalPriceForMeal = item.BasePrice * mealRequest.Quantity;
-
-            if (mealRequest.Weight < item.Weight)
-            {
-                return DomainErrors.Items.WeightMustBeGreaterThanMinWeight((int)item.Weight);
-            }
-
-            var meal = new Meal
-            {
-                ItemId = mealRequest.ItemId,
-                Item = item,
-                Weight = item.Weight,
-                MealType = mealRequest.MealType,
-                Quantity = (uint)mealRequest.Quantity,
-            };
-
-            if (mealRequest.Weight > item.Weight)
-            {
-                totalPriceForMeal  += (item.WeightToPriceRatio * (mealRequest.Weight - item.Weight));
-            }
-            
-            totalPrice += totalPriceForMeal;
-            meals.Add(meal);
-        }
-
         var plan = new Plan
         {
             Name = request.Name,
             Description = request.Description,
-            IsPreDefined = request.IsPreDefined,
-            Meals = meals,
-            TotalPrice = totalPrice,
+            DurationInDays = request.DurationInDays,
+            LunchMealsPerDay = request.LunchMealsPerDay,
+            DinnerMealsPerDay = request.DinnerMealsPerDay,
+            BreakfastMealsPerDay = request.BreakfastMealsPerDay,
+            MaxSeaFood = request.MaxSeaFood,
+            MaxMeat = request.MaxMeat,
+            MaxTwagen = request.MaxTwagen,
+            MaxChicken = request.MaxChicken,
+            MaxPizza = request.MaxPizza,
+            MaxHighCarb = request.MaxHighCarb,
+            Price = request.Price,
         };
 
         await _unitOfWork.Plans.AddAsync(plan);

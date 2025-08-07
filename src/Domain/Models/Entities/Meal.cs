@@ -5,9 +5,6 @@ namespace Domain.Models.Entities;
 
 public class Meal : BaseEntity<Guid>
 {
-    public Plan? Plan { get; set; }
-    public Guid PlanId { get; set; }
-
     [ForeignKey("Item")]
     public required Guid ItemId { get; set; }
     public required Item Item { get; set; }
