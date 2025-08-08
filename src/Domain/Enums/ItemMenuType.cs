@@ -7,6 +7,7 @@ public enum ItemMenuType
     Twagen,
     Chicken,
     Pizza,
+    HighCarb,
     Rice,
     Pasta,
     Other
