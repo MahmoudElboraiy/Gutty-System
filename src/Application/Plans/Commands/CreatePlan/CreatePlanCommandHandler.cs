@@ -30,16 +30,22 @@ public class CreatePlanCommandHandler
             Name = request.Name,
             Description = request.Description,
             DurationInDays = request.DurationInDays,
-            LunchMealsPerDay = request.LunchMealsPerDay,
-            DinnerMealsPerDay = request.DinnerMealsPerDay,
-            BreakfastMealsPerDay = request.BreakfastMealsPerDay,
-            MaxSeaFood = request.MaxSeaFood,
-            MaxMeat = request.MaxMeat,
-            MaxTwagen = request.MaxTwagen,
-            MaxChicken = request.MaxChicken,
-            MaxPizza = request.MaxPizza,
-            MaxHighCarb = request.MaxHighCarb,
-            Price = request.Price,
+            BreakfastPrice = request.BreakfastPrice,
+            DinnerPrice = request.DinnerPrice,
+            RiceCarbGrams = request.RiceCarbGrams,
+            PastaCarbGrams = request.PastaCarbGrams,
+            MaxRiceCarbGrams = request.MaxRiceCarbGrams,
+            MaxPastaCarbGrams = request.MaxPastaCarbGrams,
+            LunchCategories = request.LunchCategories.Select(c => new PlanCategory
+            {
+                Name = c.Name,
+                NumberOfMeals = c.NumberOfMeals,
+                ProteinGrams = c.ProteinGrams,
+                PricePerGram = c.PricePerGram,
+                AllowProteinChange = c.AllowProteinChange,
+                MaxMeals = c.MaxMeals,
+                MaxProteinGrams = c.MaxProteinGrams
+            }).ToList()
         };
 
         await _unitOfWork.Plans.AddAsync(plan);
