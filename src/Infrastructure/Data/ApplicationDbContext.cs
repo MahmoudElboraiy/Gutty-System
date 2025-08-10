@@ -11,6 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
         : base(options) { }
 
     public DbSet<Plan> Plans { get; set; }
+    public DbSet<PlanCategory> PlanCategories { get; set; }
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<IngredientChange> IngredientChanges { get; set; }

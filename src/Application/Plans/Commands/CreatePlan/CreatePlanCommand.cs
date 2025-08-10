@@ -8,16 +8,21 @@ public record CreatePlanCommand(
     string Name,
     string Description,
     uint DurationInDays,
-    uint LunchMealsPerDay,
-    uint DinnerMealsPerDay,
-    uint BreakfastMealsPerDay,
-    uint MaxSeaFood,
-    uint MaxMeat,
-    uint MaxTwagen,
-    uint MaxChicken,
-    uint MaxPizza,
-    uint MaxHighCarb,
-    decimal Price
+    decimal BreakfastPrice,
+    decimal DinnerPrice,
+    uint RiceCarbGrams,
+    uint PastaCarbGrams,
+    uint MaxRiceCarbGrams,
+    uint MaxPastaCarbGrams,
+    List<PlanCategoryDto> LunchCategories
 ) : IRequest<ErrorOr<CreatePlanCommandResponse>>;
-
+public record PlanCategoryDto(
+    string Name,
+    uint NumberOfMeals,
+    uint ProteinGrams,
+    decimal PricePerGram,
+    bool AllowProteinChange,
+    uint MaxMeals,
+    uint MaxProteinGrams
+);
 public record CreatePlanCommandResponse(Guid Id);

@@ -22,6 +22,7 @@ public class GetPlansQueryHandler : IRequestHandler<GetPlansQuery, GetPlansQuery
     {
         var plans = await _unitOfWork
             .Plans.GetQueryable()
+            .Include(p => p.LunchCategories) 
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
