@@ -66,16 +66,28 @@ public static class Mapping
     ) => new(ingredient.Id, ingredient.Name, ingredient.NameAr);
 
     public static GetPlanQueryResponseItem MapPlanResponse(this Plan plan) =>
-        new(
-            plan.Id,
-            plan.Name,
-            plan.Description,
-            plan.MaxSeaFood,
-            plan.MaxMeat,
-            plan.MaxTwagen,
-            plan.MaxChicken,
-            plan.MaxPizza,
-            plan.MaxHighCarb,
-            plan.Price
-        );
+     new(
+        plan.Id,
+        plan.Name,
+        plan.Description,
+        plan.DurationInDays,
+        plan.BreakfastPrice,
+        plan.DinnerPrice,
+        plan.GetTotalPrice(),
+        plan.RiceCarbGrams,
+        plan.PastaCarbGrams,
+        plan.MaxRiceCarbGrams,
+        plan.MaxPastaCarbGrams,
+        plan.LunchCategories.Select(c => new GetPlanCategoryResponseItem(
+            c.Id,
+            c.Name,
+            c.NumberOfMeals,
+            c.ProteinGrams,
+            c.PricePerGram,
+            c.AllowProteinChange,
+            c.MaxMeals,    
+            c.MaxProteinGrams,
+            c.GetCategoryPrice()
+        )).ToList()
+    );
 }
