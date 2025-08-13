@@ -8,5 +8,7 @@ public enum ItemMenuType
     Chicken,
     Pizza,
     HighCarb,
+    Rice,
+    Pasta,
     Other
 }
