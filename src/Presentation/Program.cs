@@ -91,21 +91,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-if (args.Length > 0 && args[0] == "seedRoles" || args[0] == "seed")
+if (args.Length > 0 && (args[0] == "seedRoles" || args[0] == "seed"))
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     await SeedRoles.SeedAsync(context);
 }
 
-if (args.Length > 0 && args[0] == "seedAdmin" || args[0] == "seed")
+if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
     await SeedAdmin.SeedAsync(context);
 }
 
-if (args.Length > 0 && args[0] == "seedItems-ingredients" || args[0] == "seed")
+if (args.Length > 0 && (args[0] == "seedItems-ingredients" || args[0] == "seed"))
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -117,7 +117,7 @@ if (args.Length > 0 && args[0] == "seedItems-ingredients" || args[0] == "seed")
     Console.WriteLine("Seeding completed successfully!");
 }
 
-if (args.Length > 0 && args[0] == "seedPlans" || args[0] == "seed")
+if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

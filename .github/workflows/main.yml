@@ -26,6 +26,12 @@ jobs:
       
     - name: Publish project
       run: dotnet publish src/Presentation/Presentation.csproj --configuration Release --output ./publish --no-build
+
+    - name: migrate database
+      run: dotnet ef database update --project src/Infrastructure/Infrastructure.csproj --startup-project src/Presentation/Presentation.csproj
+
+    - name: seed database
+      run: dotnet run --project src/Presentation/ seed
       
     - name: Create deployment package
       run: |
