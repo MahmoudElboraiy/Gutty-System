@@ -123,6 +123,10 @@ if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedPlan.SeedAsync(context);
 }
+if (args.Length > 0 && (args[0] == "seedAll" || args[0] == "seed"))
+{
+    Environment.Exit(0);
+}
 app.UseHttpsRedirection();
 app.MapControllers();
 

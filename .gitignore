@@ -488,3 +488,4 @@ $RECYCLE.BIN/
 **/app.db-wal
 
 appsettings.json
+appsettings.Development.json
