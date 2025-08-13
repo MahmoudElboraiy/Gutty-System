@@ -18,6 +18,11 @@ dotnet run --project .\src\Presentation\
 ```
 
 ## Seeding the Database
+### Seeding All
+```bash
+dotnet run --project .\src\Presentation\ seed
+```
+
 ### Seeding Roles
 ```bash
 dotnet run --project .\src\Presentation\ seedRoles

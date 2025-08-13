@@ -8,6 +8,9 @@ public class SeedAdmin
 {
     public static async Task SeedAsync(UserManager<User> userManager)
     {
+        if (await userManager.FindByEmailAsync("0wPZG@example.com") != null)
+            return;
+
         var admin = new User
         {
             FirstName = "Admin",
