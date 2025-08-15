@@ -49,4 +49,9 @@ public class PlansController : ControllerBase
         var response = await _mediator.Send(query);
         return Ok(response);
     }
+    [HttpGet("test")]
+    public async Task<IActionResult> Test()
+    {
+        return Ok("Test very successful");
+    }
 }
