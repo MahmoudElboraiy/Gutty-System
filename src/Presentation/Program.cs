@@ -85,14 +85,14 @@ var app = builder.Build();
 
 app.UseCors(corsPolicyName);
 
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-if (args.Length > 0 && (args[0] == "seedRoles" || args[0] == "seed"))
+//if (args.Length > 0 && (args[0] == "seedRoles" || args[0] == "seed"))
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
