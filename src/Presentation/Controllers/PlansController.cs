@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Dtos;
+using System.Security.Claims;
 
 namespace Presentation.Controllers;
 
@@ -41,6 +42,8 @@ public class PlansController : ControllerBase
             PlanId: id,
             RiceCarbGrams: request.RiceCarbGrams,
             PastaCarbGrams: request.PastaCarbGrams,
+            PromoCode: request.PromoCode,
+            UserId: User.FindFirstValue("UserId") ?? string.Empty,
             Categories: request.Categories?
                 .Select(c => new CategoryModificationDto(c.CategoryId, c.NumberOfMeals, c.ProteinGrams))
                 .ToList()

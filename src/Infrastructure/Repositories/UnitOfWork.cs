@@ -20,7 +20,8 @@ public class UnitOfWork : IUnitOfWork
     private IRepository<ExtraItemOption, int> _extraItemOptionRepository;
     private IRepository<PaymentLog, Guid> _paymentLogRepository;
     private IRepository<ShippingAddress, int> _shippingAddressRepository;
-
+    private IRepository<PromoCode, Guid> _promoCodeRepository;
+    private IRepository<PromoCodeUsage, Guid> _promoCodeUsageRepository;
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
@@ -58,7 +59,10 @@ public class UnitOfWork : IUnitOfWork
 
     public IRepository<ShippingAddress, int> ShippingAddresses =>
         _shippingAddressRepository ??= new Repository<ShippingAddress, int>(_context);
-
+    public IRepository<PromoCode, Guid> PromoCodes =>
+        _promoCodeRepository ??= new Repository<PromoCode, Guid>(_context);
+    public IRepository<PromoCodeUsage, Guid> PromoCodeUsages =>
+        _promoCodeUsageRepository ??= new Repository<PromoCodeUsage, Guid>(_context);
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();

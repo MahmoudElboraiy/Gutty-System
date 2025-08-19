@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialSqlServerCreate : Migration
+    public partial class m : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,6 +72,46 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plans",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    DurationInDays = table.Column<long>(type: "bigint", nullable: false),
+                    BreakfastPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DinnerPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PastaCarbGrams = table.Column<long>(type: "bigint", nullable: false),
+                    RiceCarbGrams = table.Column<long>(type: "bigint", nullable: false),
+                    MaxRiceCarbGrams = table.Column<long>(type: "bigint", nullable: false),
+                    MaxPastaCarbGrams = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAtAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plans", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PromoCodes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscountType = table.Column<int>(type: "int", nullable: false),
+                    DiscountValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    OwnerUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PromoCodes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -195,30 +235,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Plans",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    IsPreDefined = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedAtAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Plans", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Plans_AspNetUsers_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ReferralCodes",
                 columns: table => new
                 {
@@ -243,12 +259,61 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlanCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    NumberOfMeals = table.Column<long>(type: "bigint", nullable: false),
+                    ProteinGrams = table.Column<long>(type: "bigint", nullable: false),
+                    PricePerGram = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AllowProteinChange = table.Column<bool>(type: "bit", nullable: false),
+                    MaxMeals = table.Column<long>(type: "bigint", nullable: false),
+                    MaxProteinGrams = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAtAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlanCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlanCategories_Plans_PlanId",
+                        column: x => x.PlanId,
+                        principalTable: "Plans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PromoCodeUsages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PromoCodeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UsedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PromoCodeUsages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PromoCodeUsages_PromoCodes_PromoCodeId",
+                        column: x => x.PromoCodeId,
+                        principalTable: "PromoCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ingredients",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    NameAr = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     StockQuantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UserPrefernceId = table.Column<int>(type: "int", nullable: true),
@@ -272,7 +337,9 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    NameAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    DescriptionAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Calories = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Proteins = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -281,7 +348,10 @@ namespace Infrastructure.Migrations
                     Fibers = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BasePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
+                    MenuType = table.Column<int>(type: "int", nullable: false),
+                    HasCarb = table.Column<bool>(type: "bit", nullable: false),
                     ImageUrls = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WeightToPriceRatio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UserPrefernceId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAtAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -413,9 +483,9 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ExtraItemOptionId = table.Column<int>(type: "int", nullable: true),
+                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MealType = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -426,20 +496,9 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Meals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Meals_ExtraItemOptions_ExtraItemOptionId",
-                        column: x => x.ExtraItemOptionId,
-                        principalTable: "ExtraItemOptions",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Meals_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Meals_Plans_PlanId",
-                        column: x => x.PlanId,
-                        principalTable: "Plans",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -514,24 +573,19 @@ namespace Infrastructure.Migrations
                 column: "UserPrefernceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Meals_ExtraItemOptionId",
-                table: "Meals",
-                column: "ExtraItemOptionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Meals_ItemId",
                 table: "Meals",
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Meals_PlanId",
-                table: "Meals",
+                name: "IX_PlanCategories_PlanId",
+                table: "PlanCategories",
                 column: "PlanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Plans_CreatedByUserId",
-                table: "Plans",
-                column: "CreatedByUserId");
+                name: "IX_PromoCodeUsages_PromoCodeId",
+                table: "PromoCodeUsages",
+                column: "PromoCodeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReferralCodes_UserId",
@@ -568,6 +622,9 @@ namespace Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ExtraItemOptions");
+
+            migrationBuilder.DropTable(
                 name: "IngredientChanges");
 
             migrationBuilder.DropTable(
@@ -580,6 +637,12 @@ namespace Infrastructure.Migrations
                 name: "PaymentLogs");
 
             migrationBuilder.DropTable(
+                name: "PlanCategories");
+
+            migrationBuilder.DropTable(
+                name: "PromoCodeUsages");
+
+            migrationBuilder.DropTable(
                 name: "Subscriptions");
 
             migrationBuilder.DropTable(
@@ -589,7 +652,10 @@ namespace Infrastructure.Migrations
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
-                name: "ExtraItemOptions");
+                name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "PromoCodes");
 
             migrationBuilder.DropTable(
                 name: "Plans");
@@ -598,13 +664,10 @@ namespace Infrastructure.Migrations
                 name: "ReferralCodes");
 
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "UserPrefernces");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "UserPrefernces");
         }
     }
 }
