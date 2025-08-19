@@ -9,7 +9,9 @@ public record CalculatePlanPriceQuery(
     Guid PlanId,
     uint? RiceCarbGrams,
     uint? PastaCarbGrams,
-    List<CategoryModificationDto>? Categories
+    string? PromoCode,
+    string UserId,
+List<CategoryModificationDto>? Categories
 ) : IRequest<ErrorOr<CalculatePlanPriceResponse>>;
 
 public record CategoryCalculationItemDto(

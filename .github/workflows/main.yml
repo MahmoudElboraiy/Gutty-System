@@ -17,6 +17,11 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x' # Adjust version as needed
+<<<<<<< HEAD
+        
+    - name: Restore dependencies
+      run: dotnet restore Healthy-Food-System.sln
+=======
 
     - name: make appsettings.json
       run: echo -e '${{secrets.APPSETTINGS}}' > src/Presentation/appsettings.json 
@@ -29,15 +34,19 @@ jobs:
 
     - name: migrate database
       run: dotnet ef database update --project src/Infrastructure/Infrastructure.csproj --startup-project src/Presentation/Presentation.csproj
+>>>>>>> cba8637334410772053f5b81c31b23463032c794
       
     - name: Build project
       run: dotnet build Healthy-Food-System.sln --configuration Release --no-restore
       
     - name: Publish project
       run: dotnet publish src/Presentation/Presentation.csproj --configuration Release --output ./publish --no-build
+<<<<<<< HEAD
+=======
 
     - name: seed database
       run: dotnet run --project src/Presentation/ seed
+>>>>>>> cba8637334410772053f5b81c31b23463032c794
       
     - name: Create deployment package
       run: |
