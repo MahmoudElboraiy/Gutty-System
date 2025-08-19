@@ -4,6 +4,7 @@ using Domain.Models.Identity;
 using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Presentation.Seeding.Foods;
 using Presentation.Seeding.Identity;
@@ -72,7 +73,7 @@ builder.Services.AddSwaggerGen(c =>
                     Name = "Bearer",
                     In = ParameterLocation.Header,
                 },
-                []
+                new string[] {}
             },
         }
     );
@@ -112,13 +113,14 @@ if (args.Length > 0 && (args[0] == "seedItems-ingredients" || args[0] == "seed")
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    
+
     await SeedIngredient.SeedAsync(context);
     await SeedItem.SeedAsync(context);
     await SeedItemIngredient.SeedAsync(context);
-    
+
     Console.WriteLine("Seeding completed successfully!");
 }
+
 
 
 using (var scope = app.Services.CreateScope())
@@ -127,15 +129,20 @@ using (var scope = app.Services.CreateScope())
     await SeedPromoCode.SeedAsync(dbContext);
 }
 //if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
+
+if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
+
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedPlan.SeedAsync(context);
 }
+
 if (args.Length > 0 && (args[0] == "seedAll" || args[0] == "seed"))
 {
     Environment.Exit(0);
 }
+
 app.UseHttpsRedirection();
 app.MapControllers();
 
