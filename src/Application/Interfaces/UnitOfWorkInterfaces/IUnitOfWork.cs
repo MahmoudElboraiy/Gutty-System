@@ -15,6 +15,8 @@ public interface IUnitOfWork
     IRepository<ExtraItemOption, int> ExtraItemOptions { get; }
     IRepository<PaymentLog, Guid> PaymentLogs { get; }
     IRepository<ShippingAddress, int> ShippingAddresses { get; }
+    IRepository<PromoCode,Guid>  PromoCodes { get; }
+    IRepository<PromoCodeUsage ,Guid> PromoCodeUsages { get; }
 
     // Specialized repositories
     // IItemRepository ItemsSpecialized { get; }

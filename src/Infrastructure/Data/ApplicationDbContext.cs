@@ -9,7 +9,8 @@ public class ApplicationDbContext : IdentityDbContext<User>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
-
+    public DbSet<PromoCode> PromoCodes { get; set; }
+    public DbSet<PromoCodeUsage> PromoCodeUsages { get; set; }
     public DbSet<Plan> Plans { get; set; }
     public DbSet<PlanCategory> PlanCategories { get; set; }
     public DbSet<Subscription> Subscriptions { get; set; }
