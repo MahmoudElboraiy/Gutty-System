@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250809131400_addCarbAmount")]
-    partial class addCarbAmount
+    [Migration("20250817102926_m")]
+    partial class m
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -346,6 +346,12 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<long>("MaxPastaCarbGrams")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("MaxRiceCarbGrams")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("ModifiedAtAt")
                         .HasColumnType("datetime2");
 
@@ -411,6 +417,59 @@ namespace Infrastructure.Migrations
                     b.HasIndex("PlanId");
 
                     b.ToTable("PlanCategories");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.PromoCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DiscountType")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DiscountValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OwnerUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PromoCodes");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.PromoCodeUsage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PromoCodeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UsedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PromoCodeId");
+
+                    b.ToTable("PromoCodeUsages");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ReferralCode", b =>
@@ -823,6 +882,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Plan");
                 });
 
+            modelBuilder.Entity("Domain.Models.Entities.PromoCodeUsage", b =>
+                {
+                    b.HasOne("Domain.Models.Entities.PromoCode", "PromoCode")
+                        .WithMany("Usages")
+                        .HasForeignKey("PromoCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PromoCode");
+                });
+
             modelBuilder.Entity("Domain.Models.Entities.ReferralCode", b =>
                 {
                     b.HasOne("Domain.Models.Identity.User", "User")
@@ -915,6 +985,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Models.Entities.Plan", b =>
                 {
                     b.Navigation("LunchCategories");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.PromoCode", b =>
+                {
+                    b.Navigation("Usages");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ReferralCode", b =>
