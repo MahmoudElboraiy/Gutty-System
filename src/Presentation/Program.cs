@@ -86,22 +86,18 @@ var app = builder.Build();
 
 app.UseCors(corsPolicyName);
 
-<<<<<<< HEAD
-if (app.Environment.IsDevelopment())
-=======
 //if (app.Environment.IsDevelopment())
->>>>>>> 32ed6013475e5ba6a5d53415caf2c4e9d578f222
-{
+//{
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
+if (args.Length > 0 && args[0] == "seedRoles")
+//=======
 if (args.Length > 0 && (args[0] == "seedRoles" || args[0] == "seed"))
-=======
-//if (args.Length > 0 && (args[0] == "seedRoles" || args[0] == "seed"))
->>>>>>> 32ed6013475e5ba6a5d53415caf2c4e9d578f222
+//>>>>>>> cba8637334410772053f5b81c31b23463032c794
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -118,10 +114,7 @@ if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
 
 
 if (args.Length > 0 && (args[0] == "seedItems-ingredients" || args[0] == "seed"))
-<<<<<<< HEAD
-
-=======
->>>>>>> 32ed6013475e5ba6a5d53415caf2c4e9d578f222
+//>>>>>>> cba8637334410772053f5b81c31b23463032c794
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -133,21 +126,19 @@ if (args.Length > 0 && (args[0] == "seedItems-ingredients" || args[0] == "seed")
     Console.WriteLine("Seeding completed successfully!");
 }
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 32ed6013475e5ba6a5d53415caf2c4e9d578f222
+//<<<<<<< HEAD
+//if (args.Length > 0 && args[0] == "seedPlans")
+//{
+//    var scope = app.Services.CreateScope();
+//    using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    await SeedPlan.SeedAsync(context);
+//}
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedPromoCode.SeedAsync(dbContext);
 }
-<<<<<<< HEAD
-=======
-//if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
->>>>>>> 32ed6013475e5ba6a5d53415caf2c4e9d578f222
-
+//=======
 if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
 
 {
@@ -160,10 +151,7 @@ if (args.Length > 0 && (args[0] == "seedAll" || args[0] == "seed"))
 {
     Environment.Exit(0);
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 32ed6013475e5ba6a5d53415caf2c4e9d578f222
+//>>>>>>> cba8637334410772053f5b81c31b23463032c794
 app.UseHttpsRedirection();
 app.MapControllers();
 
