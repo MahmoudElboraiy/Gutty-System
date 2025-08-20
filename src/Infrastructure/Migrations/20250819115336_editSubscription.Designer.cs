@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250819115336_editSubscription")]
+    partial class editSubscription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -409,9 +412,14 @@ namespace Infrastructure.Migrations
                     b.Property<long>("ProteinGrams")
                         .HasColumnType("bigint");
 
+                    b.Property<Guid?>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PlanId");
+
+                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("PlanCategories");
                 });
@@ -564,57 +572,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ReferralCodeId");
 
                     b.ToTable("Subscriptions");
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.SubscriptionCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("AllowProteinChange")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<long>("MaxMeals")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("MaxProteinGrams")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("ModifiedAtAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<long>("NumberOfMeals")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal>("PricePerGram")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<long>("ProteinGrams")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("SubscriptionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubscriptionId");
-
-                    b.ToTable("SubscriptionCategories");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.UserPrefernce", b =>
@@ -946,6 +903,10 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.Entities.Subscription", null)
+                        .WithMany("LunchCategories")
+                        .HasForeignKey("SubscriptionId");
+
                     b.Navigation("Plan");
                 });
 
@@ -982,17 +943,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ReferralCodeId");
 
                     b.Navigation("PromoCode");
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.SubscriptionCategory", b =>
-                {
-                    b.HasOne("Domain.Models.Entities.Subscription", "Subscription")
-                        .WithMany("LunchCategories")
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

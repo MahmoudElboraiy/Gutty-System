@@ -86,18 +86,14 @@ var app = builder.Build();
 
 app.UseCors(corsPolicyName);
 
-//if (app.Environment.IsDevelopment())
-//{
+if (app.Environment.IsDevelopment())
+{
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-//<<<<<<< HEAD
-if (args.Length > 0 && args[0] == "seedRoles")
-//=======
 if (args.Length > 0 && (args[0] == "seedRoles" || args[0] == "seed"))
-//>>>>>>> cba8637334410772053f5b81c31b23463032c794
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -114,7 +110,6 @@ if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
 
 
 if (args.Length > 0 && (args[0] == "seedItems-ingredients" || args[0] == "seed"))
-//>>>>>>> cba8637334410772053f5b81c31b23463032c794
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -126,19 +121,12 @@ if (args.Length > 0 && (args[0] == "seedItems-ingredients" || args[0] == "seed")
     Console.WriteLine("Seeding completed successfully!");
 }
 
-//<<<<<<< HEAD
-//if (args.Length > 0 && args[0] == "seedPlans")
-//{
-//    var scope = app.Services.CreateScope();
-//    using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-//    await SeedPlan.SeedAsync(context);
-//}
+
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedPromoCode.SeedAsync(dbContext);
 }
-//=======
 if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
 
 {
@@ -151,7 +139,6 @@ if (args.Length > 0 && (args[0] == "seedAll" || args[0] == "seed"))
 {
     Environment.Exit(0);
 }
-//>>>>>>> cba8637334410772053f5b81c31b23463032c794
 app.UseHttpsRedirection();
 app.MapControllers();
 
