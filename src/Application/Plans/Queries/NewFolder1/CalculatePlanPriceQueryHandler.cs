@@ -52,8 +52,6 @@ public class CalculatePlanPriceQueryHandler
             if (!cat.AllowProteinChange)
                 requestedProtein = cat.ProteinGrams;
 
-            if (requestedMeals > cat.MaxMeals)
-                return Error.Validation("Category.MealsTooHigh", $"Category '{cat.Name}' meals cannot exceed {cat.MaxMeals}.");
 
             if (requestedProtein > cat.MaxProteinGrams)
                 return Error.Validation("Category.ProteinTooHigh", $"Category '{cat.Name}' protein cannot exceed {cat.MaxProteinGrams}g.");

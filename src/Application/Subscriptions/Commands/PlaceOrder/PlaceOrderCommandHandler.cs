@@ -32,12 +32,11 @@ public class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, Error
             UserId = request.UserId,
             PlanName = request.PlanName,
             DurationInDays = request.DurationInDays,
+            NumberOfLunchMeals = request.NumberOfLunchMeals,
             BreakfastPrice = request.BreakfastPrice,
             DinnerPrice = request.DinnerPrice,
             PastaCarbGrams = request.PastaCarbGrams,
             RiceCarbGrams = request.RiceCarbGrams,
-            MaxRiceCarbGrams = request.MaxRiceCarbGrams,
-            MaxPastaCarbGrams = request.MaxPastaCarbGrams,
             StartDate = request.StartDate,
             IsActive = request.IsActive,
             PromoCodeId = request.PromoCodeId,
@@ -49,7 +48,6 @@ public class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, Error
                 ProteinGrams = c.ProteinGrams,
                 PricePerGram = c.PricePerGram,
                 AllowProteinChange = c.AllowProteinChange,
-                MaxMeals = c.MaxMeals,
                 MaxProteinGrams = c.MaxProteinGrams
             }).ToList()
         };

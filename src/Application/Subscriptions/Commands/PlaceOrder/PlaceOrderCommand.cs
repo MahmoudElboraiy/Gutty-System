@@ -9,12 +9,11 @@ public record PlaceOrderCommand(
     string UserId,
     string PlanName,
     uint DurationInDays,
+    uint NumberOfLunchMeals,
     decimal BreakfastPrice,
     decimal DinnerPrice,
     uint PastaCarbGrams,
     uint RiceCarbGrams,
-    uint MaxRiceCarbGrams,
-    uint MaxPastaCarbGrams,
     DateTime StartDate,
     bool IsActive,
     List<PlaceOrderPlanCategory> LunchCategories,
@@ -27,7 +26,6 @@ public record PlaceOrderPlanCategory(
     uint ProteinGrams,
     decimal PricePerGram,
     bool AllowProteinChange,
-    uint MaxMeals,
     uint MaxProteinGrams,
     Guid? CategoryId
 );

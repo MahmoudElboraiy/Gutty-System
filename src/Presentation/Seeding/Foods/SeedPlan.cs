@@ -21,6 +21,7 @@ namespace Presentation.Seeding.Foods
                 Name = "Lunch Meal Per Month",
                 Description = "غذاء صحي لمدة شهر",
                 DurationInDays = 28,
+                NumberOfLunchMeals = 28,
                 BreakfastPrice = 2000,
                 DinnerPrice = 2000,
                 PastaCarbGrams = 250,
@@ -38,7 +39,6 @@ namespace Presentation.Seeding.Foods
                         ProteinGrams = 120,
                         PricePerGram = 2m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 250
                     },                  
                     new PlanCategory
@@ -50,7 +50,6 @@ namespace Presentation.Seeding.Foods
                         ProteinGrams = 100,
                         PricePerGram = 1.5m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
@@ -62,7 +61,6 @@ namespace Presentation.Seeding.Foods
                         ProteinGrams = 100,
                         PricePerGram = 1.5m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
@@ -74,7 +72,6 @@ namespace Presentation.Seeding.Foods
                         ProteinGrams = 100,
                         PricePerGram = 2m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
@@ -86,7 +83,6 @@ namespace Presentation.Seeding.Foods
                         ProteinGrams = 100,
                         PricePerGram = 2m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
@@ -98,7 +94,6 @@ namespace Presentation.Seeding.Foods
                         ProteinGrams = 100,
                         PricePerGram = 2m,
                         AllowProteinChange = false,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
@@ -110,7 +105,6 @@ namespace Presentation.Seeding.Foods
                         ProteinGrams = 100,
                         PricePerGram = 2m,
                         AllowProteinChange = false,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     }
                 }

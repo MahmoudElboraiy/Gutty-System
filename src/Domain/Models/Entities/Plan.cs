@@ -14,7 +14,7 @@ public class Plan : BaseEntity<Guid>
     public required string Description { get; set; }
 
     public uint DurationInDays { get; set; }
-
+    public uint NumberOfLunchMeals { get; set; }
     public decimal BreakfastPrice { get; set; }
     public decimal DinnerPrice { get; set; }
 

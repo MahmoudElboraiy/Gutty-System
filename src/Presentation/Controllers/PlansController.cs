@@ -73,15 +73,14 @@ public class PlansController : ControllerBase
             UserId: userId,
             PlanName: request.PlanName,
             DurationInDays: request.DurationInDays,
+            NumberOfLunchMeals: request.NumberOfLunchMeals,
             BreakfastPrice: request.BreakfastPrice,
             DinnerPrice: request.DinnerPrice,
             PastaCarbGrams: request.PastaCarbGrams,
             RiceCarbGrams: request.RiceCarbGrams,
-            MaxRiceCarbGrams: request.MaxRiceCarbGrams,
-            MaxPastaCarbGrams: request.MaxPastaCarbGrams,
             StartDate: request.StartDate,
             IsActive: request.IsActive,
-            LunchCategories: request.LunchCategories?.Select(c => new PlaceOrderPlanCategory(c.Name, c.NumberOfMeals, c.ProteinGrams, c.PricePerGram, c.AllowProteinChange, c.MaxMeals, c.MaxProteinGrams, c.CategoryId)).ToList() ?? new(),
+            LunchCategories: request.LunchCategories?.Select(c => new PlaceOrderPlanCategory(c.Name, c.NumberOfMeals, c.ProteinGrams, c.PricePerGram, c.AllowProteinChange, c.MaxProteinGrams, c.CategoryId)).ToList() ?? new(),
             PromoCodeId: request.PromoCodeId
         );
         var result = await _mediator.Send(command);

@@ -127,8 +127,8 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedPromoCode.SeedAsync(dbContext);
 }
-if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
 
+if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
