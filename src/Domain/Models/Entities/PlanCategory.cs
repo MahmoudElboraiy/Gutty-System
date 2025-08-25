@@ -21,7 +21,6 @@ namespace Domain.Models.Entities
         public uint ProteinGrams { get; set; }
         public decimal PricePerGram { get; set; }
         public bool AllowProteinChange { get; set; }
-        public uint MaxMeals { get; set; }
         public uint MaxProteinGrams { get; set; }
 
 

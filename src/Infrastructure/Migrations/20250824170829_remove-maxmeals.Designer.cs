@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250824170829_remove-maxmeals")]
+    partial class removemaxmeals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +55,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("ExtraItemOptions", (string)null);
+                    b.ToTable("ExtraItemOptions");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Ingredient", b =>
@@ -97,7 +100,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserPrefernceId");
 
-                    b.ToTable("Ingredients", (string)null);
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.IngredientChange", b =>
@@ -133,7 +136,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("IngredientChanges", (string)null);
+                    b.ToTable("IngredientChanges");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Item", b =>
@@ -213,7 +216,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserPrefernceId");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ItemIngredient", b =>
@@ -251,7 +254,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("ItemIngredients", (string)null);
+                    b.ToTable("ItemIngredients");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Meal", b =>
@@ -288,7 +291,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("Meals", (string)null);
+                    b.ToTable("Meals");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.PaymentLog", b =>
@@ -314,7 +317,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentLogs", (string)null);
+                    b.ToTable("PaymentLogs");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Plan", b =>
@@ -368,7 +371,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Plans", (string)null);
+                    b.ToTable("Plans");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.PlanCategory", b =>
@@ -413,7 +416,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("PlanCategories", (string)null);
+                    b.ToTable("PlanCategories");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.PromoCode", b =>
@@ -442,7 +445,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PromoCodes", (string)null);
+                    b.ToTable("PromoCodes");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.PromoCodeUsage", b =>
@@ -465,7 +468,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PromoCodeId");
 
-                    b.ToTable("PromoCodeUsages", (string)null);
+                    b.ToTable("PromoCodeUsages");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ReferralCode", b =>
@@ -500,7 +503,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ReferralCodes", (string)null);
+                    b.ToTable("ReferralCodes");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Subscription", b =>
@@ -559,7 +562,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ReferralCodeId");
 
-                    b.ToTable("Subscriptions", (string)null);
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.SubscriptionCategory", b =>
@@ -610,7 +613,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SubscriptionId");
 
-                    b.ToTable("SubscriptionCategories", (string)null);
+                    b.ToTable("SubscriptionCategories");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.UserPrefernce", b =>
@@ -632,7 +635,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserPrefernces", (string)null);
+                    b.ToTable("UserPrefernces");
                 });
 
             modelBuilder.Entity("Domain.Models.Identity.User", b =>

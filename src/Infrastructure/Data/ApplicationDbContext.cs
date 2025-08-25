@@ -23,4 +23,5 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<ExtraItemOption> ExtraItemOptions { get; set; }
     public DbSet<ItemIngredient> ItemIngredients { get; set; }
     public DbSet<Meal> Meals { get; set; }
+    public DbSet<SubscriptionCategory> SubscriptionCategories { get; set; }
 }

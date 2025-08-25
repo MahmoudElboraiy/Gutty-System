@@ -71,6 +71,7 @@ public static class Mapping
         plan.Name,
         plan.Description,
         plan.DurationInDays,
+        plan.NumberOfLunchMeals,
         plan.BreakfastPrice,
         plan.DinnerPrice,
         plan.GetTotalPrice(),
@@ -84,8 +85,7 @@ public static class Mapping
             c.NumberOfMeals,
             c.ProteinGrams,
             c.PricePerGram,
-            c.AllowProteinChange,
-            c.MaxMeals,    
+            c.AllowProteinChange,  
             c.MaxProteinGrams,
             c.GetCategoryPrice()
         )).ToList()

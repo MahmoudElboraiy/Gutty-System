@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Dtos;
 using System.Security.Claims;
+using Infrastructure.Data;
+using Application.Subscriptions.Commands.PlaceOrder;
+using Domain.Models.Entities;
 
 namespace Presentation.Controllers;
 
@@ -51,10 +54,36 @@ public class PlansController : ControllerBase
 
         var response = await _mediator.Send(query);
         return Ok(response);
+        
+
     }
     [HttpGet("test")]
     public async Task<IActionResult> Test()
     {
         return Ok("Test very successful");
+    }
+
+    [HttpPost("placeorder")]
+    [Authorize]
+    public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderRequest request)
+    {
+        var userId = HttpContext.User.Identity.Name;
+        // userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("UserId") ?? string.Empty;
+        var command = new PlaceOrderCommand(
+            UserId: userId,
+            PlanName: request.PlanName,
+            DurationInDays: request.DurationInDays,
+            NumberOfLunchMeals: request.NumberOfLunchMeals,
+            BreakfastPrice: request.BreakfastPrice,
+            DinnerPrice: request.DinnerPrice,
+            PastaCarbGrams: request.PastaCarbGrams,
+            RiceCarbGrams: request.RiceCarbGrams,
+            StartDate: request.StartDate,
+            IsActive: request.IsActive,
+            LunchCategories: request.LunchCategories?.Select(c => new PlaceOrderPlanCategory(c.Name, c.NumberOfMeals, c.ProteinGrams, c.PricePerGram, c.AllowProteinChange, c.MaxProteinGrams, c.CategoryId)).ToList() ?? new(),
+            PromoCodeId: request.PromoCodeId
+        );
+        var result = await _mediator.Send(command);
+        return result.Match<IActionResult>(Ok, BadRequest);
     }
 }
