@@ -43,7 +43,6 @@ public class CreatePlanCommandHandler
                 ProteinGrams = c.ProteinGrams,
                 PricePerGram = c.PricePerGram,
                 AllowProteinChange = c.AllowProteinChange,
-                MaxMeals = c.MaxMeals,
                 MaxProteinGrams = c.MaxProteinGrams
             }).ToList()
         };

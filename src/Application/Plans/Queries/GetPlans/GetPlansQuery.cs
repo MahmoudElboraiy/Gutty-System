@@ -13,7 +13,6 @@ public record GetPlanCategoryResponseItem(
     uint ProteinGrams,
     decimal PricePerGram,
     bool AllowProteinChange,
-    uint MaxMeals,
     uint MaxProteinGrams,
     decimal CategoryPrice
 );
@@ -22,6 +21,7 @@ public record GetPlanQueryResponseItem(
     string Name,
     string Description,
     uint DurationInDays,
+    uint NumberOfLunchMeals,
     decimal BreakfastPrice,
     decimal DinnerPrice,
     decimal TotalPrice,
