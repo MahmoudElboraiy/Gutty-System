@@ -14,14 +14,8 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Plan> Plans { get; set; }
     public DbSet<PlanCategory> PlanCategories { get; set; }
     public DbSet<Subscription> Subscriptions { get; set; }
-    public DbSet<Ingredient> Ingredients { get; set; }
-    public DbSet<IngredientChange> IngredientChanges { get; set; }
-    public DbSet<Item> Items { get; set; }
     public DbSet<PaymentLog> PaymentLogs { get; set; }
     public DbSet<ReferralCode> ReferralCodes { get; set; }
     public DbSet<UserPrefernce> UserPrefernces { get; set; }
-    public DbSet<ExtraItemOption> ExtraItemOptions { get; set; }
-    public DbSet<ItemIngredient> ItemIngredients { get; set; }
-    public DbSet<Meal> Meals { get; set; }
     public DbSet<SubscriptionCategory> SubscriptionCategories { get; set; }
 }
