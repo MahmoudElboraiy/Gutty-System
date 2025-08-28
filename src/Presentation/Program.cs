@@ -109,19 +109,6 @@ if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
 }
 
 
-if (args.Length > 0 && (args[0] == "seedItems-ingredients" || args[0] == "seed"))
-{
-    var scope = app.Services.CreateScope();
-    using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-    await SeedIngredient.SeedAsync(context);
-    await SeedItem.SeedAsync(context);
-    await SeedItemIngredient.SeedAsync(context);
-
-    Console.WriteLine("Seeding completed successfully!");
-}
-
-
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
