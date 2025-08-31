@@ -9,7 +9,7 @@ public class SubscriptionCategory : BaseEntity<Guid>
     public Guid SubscriptionId { get; set; }
     public Subscription Subscription { get; set; }
 
-    public Guid? CategoryId { get; set; }
+    public int? SubCategoryId { get; set; }
 
     [MaxLength(255)]
     public required string Name { get; set; }

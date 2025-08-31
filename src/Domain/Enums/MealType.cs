@@ -2,7 +2,8 @@ namespace Domain.Enums;
 
 public enum MealType
 {
-    Breakfast,
-    Lunch,
-    Dinner,
+    Carb_Rice,
+    Carb_Pasta,
+    Protien,
+    BreakFastAndDinner
 }

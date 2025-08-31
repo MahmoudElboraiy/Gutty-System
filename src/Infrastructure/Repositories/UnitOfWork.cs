@@ -8,7 +8,9 @@ namespace Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
-
+    private IRepository<Meal, int> _mealRepository;
+    private IRepository<Subcategory,int> _subcategoryRepository;
+    private IRepository<Category, int> _categoryRepository;
     private IRepository<Plan, Guid> _planRepository;
     private IRepository<Subscription, Guid> _subscriptionRepository;
     private IRepository<ReferralCode, int> _referralCodeRepository;
@@ -46,6 +48,12 @@ public class UnitOfWork : IUnitOfWork
         _promoCodeRepository ??= new Repository<PromoCode, Guid>(_context);
     public IRepository<PromoCodeUsage, Guid> PromoCodeUsages =>
         _promoCodeUsageRepository ??= new Repository<PromoCodeUsage, Guid>(_context);
+    public IRepository<Category, int> Categories =>
+        _categoryRepository ??= new Repository<Category, int>(_context);
+    public IRepository<Subcategory, int> SubCategories =>
+        _subcategoryRepository ??= new Repository<Subcategory, int>(_context);
+    public IRepository<Meal, int> Meals =>
+        _mealRepository ??= new Repository<Meal, int>(_context);
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();

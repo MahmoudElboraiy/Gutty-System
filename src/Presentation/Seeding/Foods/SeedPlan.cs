@@ -19,7 +19,7 @@ namespace Presentation.Seeding.Foods
             {
                 Id = basicPlanId,
                 Name = "Lunch Meal Per Month",
-                Description = "غذاء صحي لمدة شهر",
+                Description = "That is the best and most healthy Packdage",
                 DurationInDays = 28,
                 NumberOfLunchMeals = 28,
                 BreakfastPrice = 2000,
@@ -32,9 +32,9 @@ namespace Presentation.Seeding.Foods
                 {
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id =1,
                         PlanId = basicPlanId,
-                        Name = "سمك",
+                        Name = "Chicken Menu",
                         NumberOfMeals = 4,
                         ProteinGrams = 120,
                         PricePerGram = 2m,
@@ -43,10 +43,10 @@ namespace Presentation.Seeding.Foods
                     },                  
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                       // Id = 2,
                         PlanId = basicPlanId,
-                        Name = "طاجن فراخ",
-                        NumberOfMeals = 6,
+                        Name = "Chicken Twagen",
+                        NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 1.5m,
                         AllowProteinChange = true,
@@ -54,10 +54,10 @@ namespace Presentation.Seeding.Foods
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id = 3,
                         PlanId = basicPlanId,
-                        Name = " صدور فراخ",
-                        NumberOfMeals = 6,
+                        Name = "Meat Menu",
+                        NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 1.5m,
                         AllowProteinChange = true,
@@ -65,9 +65,9 @@ namespace Presentation.Seeding.Foods
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id = 4,
                         PlanId = basicPlanId,
-                        Name = "اللحم",
+                        Name = "Twagen Meat",
                         NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 2m,
@@ -76,9 +76,9 @@ namespace Presentation.Seeding.Foods
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id =5,
                         PlanId = basicPlanId,
-                        Name = "طاجن اللحم",
+                        Name = "Sea Food Menu",
                         NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 2m,
@@ -87,9 +87,9 @@ namespace Presentation.Seeding.Foods
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id = 6,
                         PlanId = basicPlanId,
-                        Name = " بيتزا حبوب كاملة",
+                        Name = "Pizaa Menu",
                         NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 2m,
@@ -98,9 +98,9 @@ namespace Presentation.Seeding.Foods
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                        //Id = 7,
                         PlanId = basicPlanId,
-                        Name = "الحواوشي",
+                        Name = "Hawawshi Menu",
                         NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 2m,

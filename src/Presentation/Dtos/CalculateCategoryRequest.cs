@@ -2,7 +2,7 @@
 {
     public class CalculateCategoryRequest
     {
-        public Guid CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public uint? NumberOfMeals { get; set; }
         public uint? ProteinGrams { get; set; }
     }

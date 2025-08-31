@@ -27,7 +27,7 @@ public record PlaceOrderPlanCategory(
     decimal PricePerGram,
     bool AllowProteinChange,
     uint MaxProteinGrams,
-    Guid? CategoryId
+    int? SubCategoryId
 );
 
 public record PlaceOrderCommandResponse(Guid SubscriptionId);

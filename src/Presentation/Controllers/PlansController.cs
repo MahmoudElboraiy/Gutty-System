@@ -80,7 +80,7 @@ public class PlansController : ControllerBase
             RiceCarbGrams: request.RiceCarbGrams,
             StartDate: request.StartDate,
             IsActive: request.IsActive,
-            LunchCategories: request.LunchCategories?.Select(c => new PlaceOrderPlanCategory(c.Name, c.NumberOfMeals, c.ProteinGrams, c.PricePerGram, c.AllowProteinChange, c.MaxProteinGrams, c.CategoryId)).ToList() ?? new(),
+            LunchCategories: request.LunchCategories?.Select(c => new PlaceOrderPlanCategory(c.Name, c.NumberOfMeals, c.ProteinGrams, c.PricePerGram, c.AllowProteinChange, c.MaxProteinGrams, c.SubCategoryId)).ToList() ?? new(),
             PromoCodeId: request.PromoCodeId
         );
         var result = await _mediator.Send(command);

@@ -3,7 +3,7 @@ using ErrorOr;
 using MediatR;
 
 namespace Application.Plans.Queries.NewFolder1;
-public record CategoryModificationDto(Guid CategoryId, uint? NumberOfMeals, uint? ProteinGrams);
+public record CategoryModificationDto(int CategoryId, uint? NumberOfMeals, uint? ProteinGrams);
 
 public record CalculatePlanPriceQuery(
     Guid PlanId,
@@ -15,7 +15,7 @@ List<CategoryModificationDto>? Categories
 ) : IRequest<ErrorOr<CalculatePlanPriceResponse>>;
 
 public record CategoryCalculationItemDto(
-    Guid CategoryId,
+    int CategoryId,
     string Name,
     uint NumberOfMeals,
     uint ProteinGrams,

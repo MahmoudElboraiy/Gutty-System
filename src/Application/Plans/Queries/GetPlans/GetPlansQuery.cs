@@ -7,7 +7,7 @@ public record GetPlansQuery() : IRequest<GetPlansQueryResponse>;
 
 public record GetPlansQueryResponse(List<GetPlanQueryResponseItem> Plans);
 public record GetPlanCategoryResponseItem(
-    Guid Id,
+    int Id,
     string Name,
     uint NumberOfMeals,
     uint ProteinGrams,

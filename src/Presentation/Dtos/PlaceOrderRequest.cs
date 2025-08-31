@@ -21,7 +21,7 @@ namespace Presentation.Dtos
 
     public class PlaceOrderPlanCategoryDto
     {
-        public Guid? CategoryId { get; set; }
+        public int? SubCategoryId { get; set; }
         public string Name { get; set; }
         public uint NumberOfMeals { get; set; }
         public uint ProteinGrams { get; set; }

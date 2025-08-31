@@ -45,7 +45,6 @@ public class CalculatePlanPriceQueryHandler
         foreach (var cat in plan.LunchCategories)
         {
             var mod = request.Categories?.FirstOrDefault(c => c.CategoryId == cat.Id);
-
             uint requestedMeals = mod?.NumberOfMeals ?? cat.NumberOfMeals;
             uint requestedProtein = mod?.ProteinGrams ?? cat.ProteinGrams;
 

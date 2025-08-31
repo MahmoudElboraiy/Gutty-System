@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250828192407_add-menue")]
+    partial class addmenue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,33 +79,14 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal?>("DefaultQuantityGrams")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("FixedCalories")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("FixedCarbs")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("FixedFats")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("FixedProtein")
+                    b.Property<decimal>("DefaultQuantityGrams")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MealType")
+                    b.Property<int>("IngredientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -203,17 +187,24 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.PlanCategory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("AllowProteinChange")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<long>("MaxProteinGrams")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedAtAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -416,6 +407,9 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("AllowProteinChange")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -444,9 +438,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<long>("ProteinGrams")
                         .HasColumnType("bigint");
-
-                    b.Property<int?>("SubCategoryId")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
@@ -717,7 +708,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Models.Entities.Ingredient", "Ingredient")
                         .WithMany("Meals")
-                        .HasForeignKey("IngredientId");
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Entities.Subcategory", "Subcategory")
                         .WithMany("Meals")

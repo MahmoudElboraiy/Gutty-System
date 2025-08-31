@@ -42,7 +42,7 @@ public class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, Error
             PromoCodeId = request.PromoCodeId,
             LunchCategories = request.LunchCategories.Select(c => new SubscriptionCategory
             {
-                CategoryId = c.CategoryId,
+                SubCategoryId = c.SubCategoryId,
                 Name = c.Name,
                 NumberOfMeals = c.NumberOfMeals,
                 ProteinGrams = c.ProteinGrams,

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Models.Entities
 {
-    public class PlanCategory : BaseEntity<Guid>
+    public class PlanCategory 
     {
+        public int Id { get; set; }
         [ForeignKey(nameof(PlanId))]
         public Guid PlanId { get; set; }
         public Plan Plan { get; set; }
