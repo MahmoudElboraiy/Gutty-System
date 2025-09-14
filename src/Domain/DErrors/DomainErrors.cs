@@ -1,0 +1,54 @@
+using ErrorOr;
+
+namespace Domain.DErrors;
+
+public static class DomainErrors
+{
+    public static class Authentication
+    {
+        public static Error InvalidCredentials() =>
+            Error.Unauthorized("Authentication.InvalidCredentials", "Invalid credentials.");
+
+        public static Error DuplicatePhoneNumber(string phoneNumber) =>
+            Error.Conflict(
+                "Authentication.DuplicatePhoneNumber",
+                $"User with phone number {phoneNumber} already exists."
+            );
+
+        public static Error UserNotFound(string userId) =>
+            Error.NotFound("Authentication.UserNotFound", $"User with id {userId} not found.");
+    }
+
+    public static class Ingredients
+    {
+        public static Error IngredientNotFound(int requestId) =>
+            Error.NotFound(
+                "Ingredients.IngredientNotFound",
+                $"Ingredient with id {requestId} not found."
+            );
+    }
+    public static class Meals
+    {
+        public static Error MealNotFound(Guid id) =>
+            Error.NotFound("Meals.NotFound", $"?????? ???? {id} ??? ??????");
+
+        public static Error MealAlreadyExists(string name) =>
+            Error.Conflict("Meals.AlreadyExists", $"?????? {name} ?????? ??????");
+    }
+    public static class Items
+    {
+        public static Error ExtraItemOptionNotFound(int value) =>
+            Error.NotFound(
+                "Items.ExtraItemOptionNotFound",
+                $"ExtraItemOption with id {value} not found."
+            );
+
+        public static Error ItemNotFound(Guid requestId) =>
+            Error.NotFound("Items.ItemNotFound", $"Item with id {requestId} not found.");
+        public static Error WeightMustBeGreaterThanMinWeight(int value) =>
+            Error.Conflict(
+                "Items.WeightMustBeGreaterThanMinWeight",
+                $"Weight must be greater than min weight {value}.");
+            
+    }
+}
