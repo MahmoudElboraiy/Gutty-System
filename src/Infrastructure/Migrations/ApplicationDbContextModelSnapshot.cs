@@ -52,7 +52,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("ExtraItemOptions");
+                    b.ToTable("ExtraItemOptions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Ingredient", b =>
@@ -97,7 +97,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserPrefernceId");
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredients", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.IngredientChange", b =>
@@ -133,7 +133,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("IngredientChanges");
+                    b.ToTable("IngredientChanges", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Item", b =>
@@ -213,7 +213,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserPrefernceId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ItemIngredient", b =>
@@ -251,7 +251,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("ItemIngredients");
+                    b.ToTable("ItemIngredients", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Meal", b =>
@@ -288,7 +288,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("Meals");
+                    b.ToTable("Meals", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.PaymentLog", b =>
@@ -314,7 +314,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentLogs");
+                    b.ToTable("PaymentLogs", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Plan", b =>
@@ -365,7 +365,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Plans");
+                    b.ToTable("Plans", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.PlanCategory", b =>
@@ -413,7 +413,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("PlanCategories");
+                    b.ToTable("PlanCategories", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ReferralCode", b =>
@@ -448,7 +448,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ReferralCodes");
+                    b.ToTable("ReferralCodes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Subscription", b =>
@@ -491,7 +491,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.UserPrefernce", b =>
@@ -513,7 +513,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserPrefernces");
+                    b.ToTable("UserPrefernces", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Identity.User", b =>
