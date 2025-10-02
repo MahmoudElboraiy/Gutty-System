@@ -56,10 +56,8 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, G
         else if(meal.MealType == MealType.Protien)
         {  
             ingredient = subscriptionCategory.ProteinGrams;
-        }else if(meal.MealType ==MealType.Carb_Rice)
-            ingredient =subscription.RiceCarbGrams;
-        else if (meal.MealType == MealType.Carb_Pasta)
-            ingredient = subscription.PastaCarbGrams;
+        }else if(meal.MealType ==MealType.Carb)
+            ingredient =subscription.CarbGrams;
         decimal ratio = ingredient / 100;
          responseItem =new GetMealDetailsQueryResponse
         (

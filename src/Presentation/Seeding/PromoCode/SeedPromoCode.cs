@@ -19,7 +19,7 @@ namespace Presentation.Seeding.PromoCode
                     DiscountType= DiscountType.Percentage,
                     DiscountValue =10,
                     IsActive = true,
-                    ExpiryDate = DateTime.UtcNow.AddMonths(1),
+                    ExpiryDate = DateTime.UtcNow.AddMonths(3),
                     OwnerUserId = "4f4e45bc-5fc1-4b38-b7ea-a78f70a5a0d2"
                 },
                 new Domain.Models.Entities.PromoCode
@@ -29,7 +29,7 @@ namespace Presentation.Seeding.PromoCode
                     DiscountType= DiscountType.Fixed,
                     DiscountValue =200,
                     IsActive = true,
-                    ExpiryDate = DateTime.UtcNow.AddMonths(1),
+                    ExpiryDate = DateTime.UtcNow.AddMonths(3),
                 }
             };
             await context.PromoCodes.AddRangeAsync(promoCodes);

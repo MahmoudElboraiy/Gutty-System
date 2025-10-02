@@ -17,20 +17,22 @@ namespace Domain.Models.Entities;
 public class Subscription : BaseEntity<Guid>
 {
     public string UserId { get; set; }
-    public string PlanName { get; set; }
-    public uint DurationInDays { get; set; }
-    public uint NumberOfLunchMeals { get; set; }
-    public decimal BreakfastPrice { get; set; }
-    public decimal DinnerPrice { get; set; }
-    public uint PastaCarbGrams { get; set; }
-    public uint RiceCarbGrams { get; set; }
+    public Guid PlanId { get; set; }
+    public  Plan Plan { get; set; }
+    // public string PlanName { get; set; }
+    public uint DaysLeft { get; set; }
+    public uint LunchMealsLeft { get; set; }
+   // public decimal BreakfastPrice { get; set; }
+   // public decimal DinnerPrice { get; set; }
+    public uint CarbGrams { get; set; }
     public DateTime StartDate { get; set; }
     public Guid? PromoCodeId { get; set; }
     public PromoCode? PromoCode { get; set; }
-    public bool IsActive { get; set; }
+    public bool IsCurrent { get; set; }
+    public bool IsPaused { get; set; }
     public ICollection<SubscriptionCategory> LunchCategories { get; set; } = new List<SubscriptionCategory>();
     public decimal GetTotalPrice()
     {
-        return BreakfastPrice + DinnerPrice + LunchCategories.Sum(c => c.GetCategoryPrice());
+        return Plan.BreakfastPrice + Plan.DinnerPrice + LunchCategories.Sum(c => c.GetCategoryPrice());
     }
 }

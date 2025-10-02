@@ -76,6 +76,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("AcceptCarb")
+                        .HasColumnType("bit");
+
                     b.Property<decimal?>("DefaultQuantityGrams")
                         .HasColumnType("decimal(18,2)");
 
@@ -121,6 +124,75 @@ namespace Infrastructure.Migrations
                     b.ToTable("Meals");
                 });
 
+            modelBuilder.Entity("Domain.Models.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DayNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly?>("DeliveryDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateOnly>("OrderDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.OrderMeal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CarbMealId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MealType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProteinMealId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarbMealId");
+
+                    b.HasIndex("MealId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProteinMealId");
+
+                    b.ToTable("OrderMeals");
+                });
+
             modelBuilder.Entity("Domain.Models.Entities.PaymentLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -153,8 +225,14 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<long>("BDMealsPerDay")
+                        .HasColumnType("bigint");
+
                     b.Property<decimal>("BreakfastPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("CarbGrams")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -173,10 +251,10 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<long>("MaxPastaCarbGrams")
+                    b.Property<long>("LMealsPerDay")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("MaxRiceCarbGrams")
+                    b.Property<long>("MaxCarbGrams")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifiedAtAt")
@@ -186,15 +264,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<long>("NumberOfLunchMeals")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PastaCarbGrams")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RiceCarbGrams")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -337,6 +406,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -354,42 +427,38 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("BreakfastPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<long>("CarbGrams")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DinnerPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<long>("DurationInDays")
+                    b.Property<long>("DaysLeft")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsCurrent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaused")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("LunchMealsLeft")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("ModifiedAtAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("NumberOfLunchMeals")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PastaCarbGrams")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("PlanName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("PlanId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("PromoCodeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("ReferralCodeId")
                         .HasColumnType("int");
-
-                    b.Property<long>("RiceCarbGrams")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -399,6 +468,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlanId");
 
                     b.HasIndex("PromoCodeId");
 
@@ -422,21 +493,16 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<long>("MaxMeals")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("MaxProteinGrams")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifiedAtAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<long>("NumberOfMeals")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("NumberOfMealsLeft")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("PricePerGram")
@@ -456,6 +522,25 @@ namespace Infrastructure.Migrations
                     b.HasIndex("SubscriptionId");
 
                     b.ToTable("SubscriptionCategories");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.SystemConfiguration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DailyCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinimumDaysToOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemConfigurations");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.UserPrefernce", b =>
@@ -730,6 +815,46 @@ namespace Infrastructure.Migrations
                     b.Navigation("Subcategory");
                 });
 
+            modelBuilder.Entity("Domain.Models.Entities.Order", b =>
+                {
+                    b.HasOne("Domain.Models.Entities.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.OrderMeal", b =>
+                {
+                    b.HasOne("Domain.Models.Entities.Meal", "CarbMeal")
+                        .WithMany()
+                        .HasForeignKey("CarbMealId");
+
+                    b.HasOne("Domain.Models.Entities.Meal", "Meal")
+                        .WithMany()
+                        .HasForeignKey("MealId");
+
+                    b.HasOne("Domain.Models.Entities.Order", "Order")
+                        .WithMany("Meals")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Entities.Meal", "ProteinMeal")
+                        .WithMany()
+                        .HasForeignKey("ProteinMealId");
+
+                    b.Navigation("CarbMeal");
+
+                    b.Navigation("Meal");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("ProteinMeal");
+                });
+
             modelBuilder.Entity("Domain.Models.Entities.PlanCategory", b =>
                 {
                     b.HasOne("Domain.Models.Entities.Plan", "Plan")
@@ -776,6 +901,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.Subscription", b =>
                 {
+                    b.HasOne("Domain.Models.Entities.Plan", "Plan")
+                        .WithMany()
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Models.Entities.PromoCode", "PromoCode")
                         .WithMany()
                         .HasForeignKey("PromoCodeId");
@@ -783,6 +914,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Entities.ReferralCode", null)
                         .WithMany("Subscriptions")
                         .HasForeignKey("ReferralCodeId");
+
+                    b.Navigation("Plan");
 
                     b.Navigation("PromoCode");
                 });
@@ -855,6 +988,11 @@ namespace Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Ingredient", b =>
+                {
+                    b.Navigation("Meals");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.Order", b =>
                 {
                     b.Navigation("Meals");
                 });

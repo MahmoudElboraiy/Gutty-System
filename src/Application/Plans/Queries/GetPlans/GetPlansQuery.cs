@@ -21,14 +21,13 @@ public record GetPlanQueryResponseItem(
     string Name,
     string Description,
     uint DurationInDays,
-    uint NumberOfLunchMeals,
+    uint LMealsPerDay,
+    uint BDMealsPerDay,
     decimal BreakfastPrice,
     decimal DinnerPrice,
     decimal TotalPrice,
-    uint RiceCarbGrams,
-    uint PastaCarbGrams,
-    uint MaxRiceCarbGrams,
-    uint MaxPastaCarbGrams,
+    uint CarbGrams,
+    uint MaxCarbGrams,
      List<GetPlanCategoryResponseItem> Categories
 )
 {

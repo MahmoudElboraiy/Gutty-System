@@ -11,14 +11,11 @@ public class SubscriptionCategory : BaseEntity<Guid>
 
     public int? SubCategoryId { get; set; }
 
-    [MaxLength(255)]
-    public required string Name { get; set; }
-
     public uint NumberOfMeals { get; set; }
+    public uint NumberOfMealsLeft { get; set; }
     public uint ProteinGrams { get; set; }
     public decimal PricePerGram { get; set; }
     public bool AllowProteinChange { get; set; }
-    public uint MaxMeals { get; set; }
     public uint MaxProteinGrams { get; set; }
 
     public decimal GetCategoryPrice()

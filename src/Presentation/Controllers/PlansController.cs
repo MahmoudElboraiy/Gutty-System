@@ -43,8 +43,7 @@ public class PlansController : ControllerBase
     {
         var query = new CalculatePlanPriceQuery(
             PlanId: id,
-            RiceCarbGrams: request.RiceCarbGrams,
-            PastaCarbGrams: request.PastaCarbGrams,
+            CarbGrams: request.CarbGrams,
             PromoCode: request.PromoCode,
             UserId: User.FindFirstValue("UserId") ?? string.Empty,
             Categories: request.Categories?
@@ -63,24 +62,22 @@ public class PlansController : ControllerBase
         return Ok("Test very successful");
     }
 
-    [HttpPost("placeorder")]
+    [HttpPost("PlaceSubscription")]
     [Authorize]
-    public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderRequest request)
+    public async Task<IActionResult> PlaceSubscription([FromBody] PlaceSubscriptionRequest request)
     {
         var userId = HttpContext.User.Identity.Name;
         // userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("UserId") ?? string.Empty;
-        var command = new PlaceOrderCommand(
+        var command = new PlaceSubscriptionCommand(
             UserId: userId,
-            PlanName: request.PlanName,
-            DurationInDays: request.DurationInDays,
-            NumberOfLunchMeals: request.NumberOfLunchMeals,
-            BreakfastPrice: request.BreakfastPrice,
-            DinnerPrice: request.DinnerPrice,
-            PastaCarbGrams: request.PastaCarbGrams,
-            RiceCarbGrams: request.RiceCarbGrams,
+            PlanId: request.PlanId,
+            DaysLeft: request.DaysLeft,
+            LunchMealsLeft: request.LunchMealsLeft,
+            CarbGrams: request.CarbGrams,
             StartDate: request.StartDate,
-            IsActive: request.IsActive,
-            LunchCategories: request.LunchCategories?.Select(c => new PlaceOrderPlanCategory(c.Name, c.NumberOfMeals, c.ProteinGrams, c.PricePerGram, c.AllowProteinChange, c.MaxProteinGrams, c.SubCategoryId)).ToList() ?? new(),
+            IsCurrent: request.IsCurrent,
+            IsPaused: request.IsPaused,
+            LunchCategories: request.LunchCategories?.Select(c => new PlaceSubscriptionPlanCategory(c.NumberOfMeals,c.NumberOfMealsLeft, c.ProteinGrams, c.PricePerGram, c.AllowProteinChange, c.MaxProteinGrams, c.SubCategoryId)).ToList() ?? new(),
             PromoCodeId: request.PromoCodeId
         );
         var result = await _mediator.Send(command);

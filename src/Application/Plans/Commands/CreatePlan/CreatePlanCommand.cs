@@ -10,10 +10,8 @@ public record CreatePlanCommand(
     uint DurationInDays,
     decimal BreakfastPrice,
     decimal DinnerPrice,
-    uint RiceCarbGrams,
-    uint PastaCarbGrams,
-    uint MaxRiceCarbGrams,
-    uint MaxPastaCarbGrams,
+    uint CarbGrams,
+    uint MaxCarbGrams,
     List<PlanCategoryDto> LunchCategories
 ) : IRequest<ErrorOr<CreatePlanCommandResponse>>;
 public record PlanCategoryDto(
