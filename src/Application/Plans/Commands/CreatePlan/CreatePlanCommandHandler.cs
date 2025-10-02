@@ -32,10 +32,8 @@ public class CreatePlanCommandHandler
             DurationInDays = request.DurationInDays,
             BreakfastPrice = request.BreakfastPrice,
             DinnerPrice = request.DinnerPrice,
-            RiceCarbGrams = request.RiceCarbGrams,
-            PastaCarbGrams = request.PastaCarbGrams,
-            MaxRiceCarbGrams = request.MaxRiceCarbGrams,
-            MaxPastaCarbGrams = request.MaxPastaCarbGrams,
+            CarbGrams = request.CarbGrams,
+            MaxCarbGrams = request.MaxCarbGrams,
             LunchCategories = request.LunchCategories.Select(c => new PlanCategory
             {
                 Name = c.Name,

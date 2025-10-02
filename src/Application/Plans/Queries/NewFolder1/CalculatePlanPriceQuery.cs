@@ -7,8 +7,7 @@ public record CategoryModificationDto(int CategoryId, uint? NumberOfMeals, uint?
 
 public record CalculatePlanPriceQuery(
     Guid PlanId,
-    uint? RiceCarbGrams,
-    uint? PastaCarbGrams,
+    uint? CarbGrams,
     string? PromoCode,
     string UserId,
 List<CategoryModificationDto>? Categories
@@ -26,7 +25,6 @@ public record CalculatePlanPriceResponse(
     decimal TotalPrice,
     decimal BreakfastPrice,
     decimal DinnerPrice,
-    uint RiceCarbGrams,
-    uint PastaCarbGrams,
+    uint CarbGrams,
     List<CategoryCalculationItemDto> Categories
 );

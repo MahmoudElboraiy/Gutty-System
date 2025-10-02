@@ -30,14 +30,11 @@ public class CalculatePlanPriceQueryHandler
         if (plan is null)
             return Error.NotFound("Plan.NotFound", $"Plan {request.PlanId} not found.");
 
-        var rice = request.RiceCarbGrams ?? plan.RiceCarbGrams;
-        var pasta = request.PastaCarbGrams ?? plan.PastaCarbGrams;
+        var carb = request.CarbGrams ?? plan.CarbGrams;
 
-        if (rice > plan.MaxRiceCarbGrams)
-            return Error.Validation("RiceCarbGrams.TooHigh", $"Rice carbs cannot exceed {plan.MaxRiceCarbGrams} grams.");
+        if (carb > plan.MaxCarbGrams)
+            return Error.Validation("CarbGrams.TooHigh", $"Carbs cannot exceed {plan.MaxCarbGrams} grams.");
 
-        if (pasta > plan.MaxPastaCarbGrams)
-            return Error.Validation("PastaCarbGrams.TooHigh", $"Pasta carbs cannot exceed {plan.MaxPastaCarbGrams} grams.");
 
         var resultItems = new List<CategoryCalculationItemDto>();
         decimal sumCategories = 0m;
@@ -96,8 +93,7 @@ public class CalculatePlanPriceQueryHandler
             TotalPrice: total,
             BreakfastPrice: plan.BreakfastPrice,
             DinnerPrice: plan.DinnerPrice,
-            RiceCarbGrams: rice,
-            PastaCarbGrams: pasta,
+            CarbGrams: carb,
             Categories: resultItems
         );
     }

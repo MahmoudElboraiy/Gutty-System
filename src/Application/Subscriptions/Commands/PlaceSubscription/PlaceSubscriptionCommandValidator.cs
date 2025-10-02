@@ -1,10 +1,11 @@
+using Application.Subscriptions.Commands.PlaceOrder;
 using FluentValidation;
 
-namespace Application.Subscriptions.Commands.PlaceOrder;
+namespace Application.Subscriptions.Commands.PlaceSubscription;
 
-public class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderCommand>
+public class PlaceSubscriptionCommandValidator : AbstractValidator<PlaceSubscriptionCommand>
 {
-    public PlaceOrderCommandValidator()
+    public PlaceSubscriptionCommandValidator()
     {
         //RuleFor(x => x.UserId).NotEmpty();
         //RuleFor(x => x.PlanName).NotEmpty().MaximumLength(255);  

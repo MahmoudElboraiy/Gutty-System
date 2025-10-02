@@ -8,6 +8,8 @@ namespace Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
+    private IRepository<Order, int> _orderRepository;
+    private IRepository<OrderMeal, int> _orderMealRepository;
     private IRepository<Meal, int> _mealRepository;
     private IRepository<Subcategory,int> _subcategoryRepository;
     private IRepository<Category, int> _categoryRepository;
@@ -54,6 +56,10 @@ public class UnitOfWork : IUnitOfWork
         _subcategoryRepository ??= new Repository<Subcategory, int>(_context);
     public IRepository<Meal, int> Meals =>
         _mealRepository ??= new Repository<Meal, int>(_context);
+    public IRepository<Order, int> Orders =>
+        _orderRepository ??= new Repository<Order, int>(_context);
+    public IRepository<OrderMeal, int> OrderMeals =>
+        _orderMealRepository ??= new Repository<OrderMeal, int>(_context);
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();

@@ -34,6 +34,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserPrefernceRepository, UserPrefernceRepository>();
+        services.AddScoped<ISystemConfigurationRepository, SystemConfigurationRepository>();
 
         services
             .AddIdentityCore<User>(o =>
@@ -78,7 +79,8 @@ public static class DependencyInjection
             );
 
         services.AddAuthorization();
-
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddHttpContextAccessor();
         return services;
     }
 }

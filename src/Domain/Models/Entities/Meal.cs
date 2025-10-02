@@ -15,6 +15,7 @@ public class Meal
     public decimal? FixedCarbs { get; set; }
     public decimal? FixedFats { get; set; }
     public MealType? MealType { get; set; }
+    public bool AcceptCarb { get; set; }
     // Subcategory
     public int SubcategoryId { get; set; }
     public Subcategory Subcategory { get; set; }

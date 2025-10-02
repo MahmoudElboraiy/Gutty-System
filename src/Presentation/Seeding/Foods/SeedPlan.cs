@@ -21,13 +21,12 @@ namespace Presentation.Seeding.Foods
                 Name = "Lunch Meal Per Month",
                 Description = "That is the best and most healthy Packdage",
                 DurationInDays = 28,
-                NumberOfLunchMeals = 28,
+                LMealsPerDay = 1,
+                BDMealsPerDay =2,
                 BreakfastPrice = 2000,
                 DinnerPrice = 2000,
-                PastaCarbGrams = 250,
-                RiceCarbGrams = 250,
-                MaxRiceCarbGrams = 400,
-                MaxPastaCarbGrams = 400,
+                CarbGrams = 250,
+                MaxCarbGrams = 400,
                 LunchCategories = new List<PlanCategory>
                 {
                     new PlanCategory

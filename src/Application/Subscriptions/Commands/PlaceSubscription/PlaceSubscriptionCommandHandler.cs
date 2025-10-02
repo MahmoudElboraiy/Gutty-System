@@ -6,16 +6,16 @@ using MediatR;
 
 namespace Application.Subscriptions.Commands.PlaceOrder;
 
-public class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, ErrorOr<PlaceOrderCommandResponse>>
+public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscriptionCommand, ErrorOr<PlaceSubscriptionCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public PlaceOrderCommandHandler(IUnitOfWork unitOfWork)
+    public PlaceSubscriptionCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<ErrorOr<PlaceOrderCommandResponse>> Handle(PlaceOrderCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<PlaceSubscriptionCommandResponse>> Handle(PlaceSubscriptionCommand request, CancellationToken cancellationToken)
     {
         PromoCode? promo = null;
         if (request.PromoCodeId.HasValue)
@@ -30,25 +30,23 @@ public class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, Error
         var subscription = new Subscription
         {
             UserId = request.UserId,
-            PlanName = request.PlanName,
-            DurationInDays = request.DurationInDays,
-            NumberOfLunchMeals = request.NumberOfLunchMeals,
-            BreakfastPrice = request.BreakfastPrice,
-            DinnerPrice = request.DinnerPrice,
-            PastaCarbGrams = request.PastaCarbGrams,
-            RiceCarbGrams = request.RiceCarbGrams,
+            PlanId =request.PlanId,
+            DaysLeft =request.DaysLeft,
+            LunchMealsLeft = request.LunchMealsLeft,
+            CarbGrams = request.CarbGrams,
             StartDate = request.StartDate,
-            IsActive = request.IsActive,
             PromoCodeId = request.PromoCodeId,
+            IsCurrent = request.IsCurrent,
+            IsPaused = request.IsPaused,
             LunchCategories = request.LunchCategories.Select(c => new SubscriptionCategory
             {
                 SubCategoryId = c.SubCategoryId,
-                Name = c.Name,
                 NumberOfMeals = c.NumberOfMeals,
+                NumberOfMealsLeft = c.NumberOfMeals,
                 ProteinGrams = c.ProteinGrams,
                 PricePerGram = c.PricePerGram,
                 AllowProteinChange = c.AllowProteinChange,
-                MaxProteinGrams = c.MaxProteinGrams
+                MaxProteinGrams = c.MaxProteinGrams,   
             }).ToList()
         };
 
@@ -68,6 +66,6 @@ public class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, Error
 
         await _unitOfWork.CompleteAsync();
 
-        return new PlaceOrderCommandResponse(subscription.Id);
+        return new PlaceSubscriptionCommandResponse(subscription.Id);
     }
 }
