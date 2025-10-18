@@ -7,16 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Orders.Commands.GetOrCreateOrder;
 
-public class GetOrCreateOrderCommandHandler : IRequestHandler<GetOrCreateOrderCommand, GetOrCreateOrderCommandResponse>
+public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CreateOrderCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
-    public GetOrCreateOrderCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+    public CreateOrderCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
     {
         _unitOfWork = unitOfWork;
         _currentUserService = currentUserService;
     }
-    public async Task<GetOrCreateOrderCommandResponse> Handle(GetOrCreateOrderCommand request ,CancellationToken cancellationToken)
+    public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommand request ,CancellationToken cancellationToken)
     {
         var userId = _currentUserService.UserId;
         var subscription = await _unitOfWork.Subscriptions.GetQueryable()
@@ -26,7 +26,7 @@ public class GetOrCreateOrderCommandHandler : IRequestHandler<GetOrCreateOrderCo
 
         if(subscription == null)
         {
-            return new GetOrCreateOrderCommandResponse(0, "No active subscription found for the user.");
+            return new CreateOrderCommandResponse(0, "No active subscription found for the user.");
         }
 
         var order = await _unitOfWork.Orders
@@ -34,6 +34,11 @@ public class GetOrCreateOrderCommandHandler : IRequestHandler<GetOrCreateOrderCo
             .FirstOrDefaultAsync(
                 o => o.SubscriptionId == subscription.Id && !o.IsCompleted,
                 cancellationToken);
+
+        if(order != null)
+        {
+            return new CreateOrderCommandResponse(-1, "There is already an existing order");
+        }
 
         if (order == null)
         {      
@@ -46,7 +51,7 @@ public class GetOrCreateOrderCommandHandler : IRequestHandler<GetOrCreateOrderCo
 
             if (lastDelivery.HasValue && lastDelivery >= DateOnly.FromDateTime(DateTime.UtcNow))
             {
-                return new GetOrCreateOrderCommandResponse(0, "The old order does not arriave yet");
+                return new CreateOrderCommandResponse(0, "The old order does not arriave yet");
             }
             order = new Order
             {
@@ -59,7 +64,7 @@ public class GetOrCreateOrderCommandHandler : IRequestHandler<GetOrCreateOrderCo
             await _unitOfWork.Orders.AddAsync(order);
             await _unitOfWork.CompleteAsync();
         }
-        return new GetOrCreateOrderCommandResponse(order.Id, "This is you Current Order");
+        return new CreateOrderCommandResponse(order.Id, "This is you Current Order");
     }
 
 }

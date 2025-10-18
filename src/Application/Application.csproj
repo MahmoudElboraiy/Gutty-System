@@ -18,7 +18,7 @@
     <ItemGroup>
       <Folder Include="Ingredients\Commands\" />
       <Folder Include="Ingredients\Queries\GetIngredients\" />
-      <Folder Include="Plans\Queries\NewFolder\" />
+      <Folder Include="Orders\Commands\FreezeAccount\" />
     </ItemGroup>
 
 </Project>

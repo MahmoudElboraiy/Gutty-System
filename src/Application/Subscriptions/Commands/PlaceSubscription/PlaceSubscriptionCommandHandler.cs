@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.DErrors;
 using Domain.Models.Entities;
@@ -9,14 +10,24 @@ namespace Application.Subscriptions.Commands.PlaceOrder;
 public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscriptionCommand, ErrorOr<PlaceSubscriptionCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUserService _currentUserService;
 
-    public PlaceSubscriptionCommandHandler(IUnitOfWork unitOfWork)
+    public PlaceSubscriptionCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
     {
         _unitOfWork = unitOfWork;
+        _currentUserService = currentUserService;
     }
 
     public async Task<ErrorOr<PlaceSubscriptionCommandResponse>> Handle(PlaceSubscriptionCommand request, CancellationToken cancellationToken)
     {
+        var subscriptionExist = await _unitOfWork.Subscriptions
+            .FindAsync(s => s.UserId == request.UserId && s.IsCurrent);
+
+        if(subscriptionExist != null)
+        {
+            return Error.Validation("Subscription.AlreadyExists", "User already has an active subscription.");
+        }
+
         PromoCode? promo = null;
         if (request.PromoCodeId.HasValue)
         {

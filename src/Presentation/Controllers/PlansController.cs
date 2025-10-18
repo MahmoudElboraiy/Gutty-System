@@ -56,31 +56,5 @@ public class PlansController : ControllerBase
         
 
     }
-    [HttpGet("test")]
-    public async Task<IActionResult> Test()
-    {
-        return Ok("Test very successful");
-    }
-
-    [HttpPost("PlaceSubscription")]
-    [Authorize]
-    public async Task<IActionResult> PlaceSubscription([FromBody] PlaceSubscriptionRequest request)
-    {
-        var userId = HttpContext.User.Identity.Name;
-        // userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("UserId") ?? string.Empty;
-        var command = new PlaceSubscriptionCommand(
-            UserId: userId,
-            PlanId: request.PlanId,
-            DaysLeft: request.DaysLeft,
-            LunchMealsLeft: request.LunchMealsLeft,
-            CarbGrams: request.CarbGrams,
-            StartDate: request.StartDate,
-            IsCurrent: request.IsCurrent,
-            IsPaused: request.IsPaused,
-            LunchCategories: request.LunchCategories?.Select(c => new PlaceSubscriptionPlanCategory(c.NumberOfMeals,c.NumberOfMealsLeft, c.ProteinGrams, c.PricePerGram, c.AllowProteinChange, c.MaxProteinGrams, c.SubCategoryId)).ToList() ?? new(),
-            PromoCodeId: request.PromoCodeId
-        );
-        var result = await _mediator.Send(command);
-        return result.Match<IActionResult>(Ok, BadRequest);
-    }
+    
 }

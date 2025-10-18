@@ -1,4 +1,5 @@
 ﻿
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Enums;
 using MediatR;
@@ -9,14 +10,21 @@ namespace Application.Orders.Query.CheckCompleteOrder
     public class CheckCompleteOrderQueryHandler : IRequestHandler<CheckCompleteOrderQuery, CheckCompleteOrderQueryResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CheckCompleteOrderQueryHandler(IUnitOfWork unitOfWork)
+        private readonly ICurrentUserService _currentUserService;
+        public CheckCompleteOrderQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
         {
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
         public async Task<CheckCompleteOrderQueryResponse> Handle(CheckCompleteOrderQuery request, CancellationToken cancellationToken)
         {
+           var userId =  _currentUserService.UserId;
+
             var result = await _unitOfWork.Orders.GetQueryable()
-                 .Where(o => o.Id == request.OrderId)
+                 .Where(o => o.Subscription.UserId == userId &&
+                  o.Subscription.IsCurrent &&
+                  !o.Subscription.IsPaused &&
+                  !o.IsCompleted)
                  .Select(o => new
                  {
                     o.Id,

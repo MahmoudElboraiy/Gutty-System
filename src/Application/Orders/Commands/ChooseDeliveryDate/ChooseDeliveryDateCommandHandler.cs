@@ -1,5 +1,7 @@
 ﻿
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
+using Domain.Models.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,14 +11,28 @@ public class ChooseDeliveryDateCommandHandler : IRequestHandler<ChooseDeliveryDa
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISystemConfigurationRepository _systemConfigurationRepository;
-    public ChooseDeliveryDateCommandHandler(IUnitOfWork unitOfWork, ISystemConfigurationRepository systemConfigurationRepository)
+    private readonly ICurrentUserService _currentUserService;
+    public ChooseDeliveryDateCommandHandler(IUnitOfWork unitOfWork, ISystemConfigurationRepository systemConfigurationRepository , ICurrentUserService currentUserService)
     {
         _unitOfWork = unitOfWork;
         _systemConfigurationRepository = systemConfigurationRepository;
+        _currentUserService = currentUserService;
     }
     public async Task<ChooseDeliveryDateCommandResponse> Handle(ChooseDeliveryDateCommand request, CancellationToken cancellationToken)
     {
-        var order = await _unitOfWork.Orders.GetByIdAsync(request.orderId);
+        var userId = _currentUserService.UserId;
+
+        var order = await _unitOfWork.Orders.GetQueryable()
+        .AsNoTracking()
+        .Where(o =>
+        o.Subscription.UserId == userId &&
+        o.Subscription.IsCurrent &&
+        !o.Subscription.IsPaused &&
+        !o.IsCompleted)
+        .FirstOrDefaultAsync(cancellationToken);
+
+
+        //var order = await _unitOfWork.Orders.GetByIdAsync(request.orderId);
         var config = await _systemConfigurationRepository.GetAsync(cancellationToken);
         if (order == null)
         {
@@ -41,6 +57,6 @@ public class ChooseDeliveryDateCommandHandler : IRequestHandler<ChooseDeliveryDa
         order.DeliveryDate = request.deliveryDate;
         //_unitOfWork.Orders.Update(order);
         await _unitOfWork.CompleteAsync();
-        return new ChooseDeliveryDateCommandResponse(true, "Delivery date chosen successfully.");
+        return new ChooseDeliveryDateCommandResponse(true, "Delivery date choosen successfully.");
     }
 }

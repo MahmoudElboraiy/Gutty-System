@@ -1,4 +1,5 @@
 ﻿
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Application.Profiles;
 using MediatR;
@@ -9,12 +10,15 @@ namespace Application.Orders.Query.ShowOrderDetails;
 public class ShowOrderDetailsQueryHandler : IRequestHandler<ShowOrderDetailsQuery, ShowOrderDetailsQueryResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public ShowOrderDetailsQueryHandler(IUnitOfWork unitOfWork)
+    private readonly ICurrentUserService _currentUserService;
+    public ShowOrderDetailsQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
     {
         _unitOfWork = unitOfWork;
+        _currentUserService = currentUserService;
     }
     public async Task<ShowOrderDetailsQueryResponse> Handle(ShowOrderDetailsQuery request, CancellationToken cancellationToken)
     {
+        var userId = _currentUserService.UserId;
         var orderMeals = await _unitOfWork.OrderMeals.GetQueryable()
             .AsNoTracking()
             .Where(om => om.OrderId == request.OrderId)
