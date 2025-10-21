@@ -2,7 +2,9 @@
 using Application.Meals.Query.GetMealDetails;
 using Application.Meals.Query.GetMeals;
 using Application.Plans.Queries.GetPlans;
+using Application.SubCategories.Query.GetBreakFastAndDinner;
 using Application.SubCategories.Query.GetSubCategories;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -46,5 +48,13 @@ namespace Presentation.Controllers
             var result = await _mediator.Send(new GetMealDetailsQuery(id, identity));
             return Ok(result);
         }
+        [HttpGet("GetSubCategoryByType")]
+
+        public async Task<IActionResult> GetSubCategoryByType([FromQuery] MealType type)
+        {
+            var result = await _mediator.Send(new GetSubCategoriesByTypeQuery(type));
+            return Ok(result);
+        }
+
     }
 }

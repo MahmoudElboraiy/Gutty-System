@@ -15,6 +15,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Application.Orders.Query.IsThereOrder;
 
 namespace Presentation.Controllers
 {
@@ -105,6 +106,12 @@ namespace Presentation.Controllers
         public async Task<IActionResult> ConfirmOrder()
         {
             var result = await _mediator.Send(new ConfirmOrderCommand());
+            return Ok(result);
+        }
+        [HttpGet("IsThereOrder")]
+        public async Task<IActionResult> IsThereOrder()
+        {
+            var result = await _mediator.Send(new IsThereOrderQuery());
             return Ok(result);
         }
     }

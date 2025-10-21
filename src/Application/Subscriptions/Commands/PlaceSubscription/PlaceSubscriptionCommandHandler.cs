@@ -4,6 +4,7 @@ using Domain.DErrors;
 using Domain.Models.Entities;
 using ErrorOr;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Subscriptions.Commands.PlaceOrder;
 
@@ -20,10 +21,11 @@ public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscription
 
     public async Task<ErrorOr<PlaceSubscriptionCommandResponse>> Handle(PlaceSubscriptionCommand request, CancellationToken cancellationToken)
     {
-        var subscriptionExist = await _unitOfWork.Subscriptions
-            .FindAsync(s => s.UserId == request.UserId && s.IsCurrent);
-
-        if(subscriptionExist != null)
+       // var subscriptionExist = await _unitOfWork.Subscriptions
+         ///   .FindAsync(s => s.UserId == request.UserId && s.IsCurrent);
+        var subscriptionExist = await _unitOfWork.Subscriptions.GetQueryable()
+            .AnyAsync(s => s.UserId == request.UserId && s.IsCurrent, cancellationToken);
+        if (subscriptionExist ==true)
         {
             return Error.Validation("Subscription.AlreadyExists", "User already has an active subscription.");
         }

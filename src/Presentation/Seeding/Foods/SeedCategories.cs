@@ -1,4 +1,5 @@
-﻿using Domain.Models.Entities;
+﻿using Domain.Enums;
+using Domain.Models.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,9 @@ public static class SeedCategories
 
         var categories = new List<Category>
         {
-            new Category { Name = "Breakfast And Dinner" },
-            new Category { Name = "Protein Lunch" },
-            new Category { Name = "Carb Lunch" }
+            new Category { Name = "Breakfast And Dinner" ,MealType=MealType.BreakFastAndDinner},
+            new Category { Name = "Protein Lunch" ,MealType =MealType.Protien},
+            new Category { Name = "Carb Lunch" , MealType =MealType.Carb}
         };
 
         await context.Categories.AddRangeAsync(categories);
