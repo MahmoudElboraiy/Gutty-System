@@ -1,9 +1,10 @@
 ﻿
+using ErrorOr;
 using MediatR;
 
 namespace Application.Orders.Query.ShowOrderDetails;
 
-public record ShowOrderDetailsQuery(int OrderId) : IRequest<ShowOrderDetailsQueryResponse>;
+public record ShowOrderDetailsQuery() : IRequest<ErrorOr<ShowOrderDetailsQueryResponse>>;
 public record ShowOrderDetailsQueryResponse(List<ShowOrderMealsDetailsQueryResponseItem> OrderMeals);
 public record ShowOrderMealsDetailsQueryResponseItem(
     int OrderMealId,

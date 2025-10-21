@@ -84,10 +84,10 @@ namespace Presentation.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        [HttpGet("ShowOrderDetails{orderId}")]
-        public async Task<IActionResult> ShowOrderDetails(int orderId)
+        [HttpGet("ShowOrderDetails")]
+        public async Task<IActionResult> ShowOrderDetails()
         {
-            var result = await _mediator.Send(new ShowOrderDetailsQuery(orderId));
+            var result = await _mediator.Send(new ShowOrderDetailsQuery());
             return Ok(result);
         }
         [HttpGet("CheckCompleteOrder")]
