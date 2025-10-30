@@ -1,6 +1,7 @@
 ﻿using Application.Subscriptions.Commands.FreezeSubscription;
 using Application.Subscriptions.Commands.PlaceOrder;
 using Application.Subscriptions.Query.GetPlanType;
+using Application.Subscriptions.Query.GetSubscriptionDetails;
 using Application.Subscriptions.Query.GetSubscriptionStatus;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -60,6 +61,12 @@ namespace Presentation.Controllers
             );
             var result = await _mediator.Send(command);
             return result.Match<IActionResult>(Ok, BadRequest);
+        }
+        [HttpGet("GetSubscriptionDetails")]
+        public async Task<IActionResult> GetSubscriptionDetails()
+        {
+            var result = await _mediator.Send(new GetSubscriptionDetailsQuery());
+            return Ok(result);
         }
     }
 }

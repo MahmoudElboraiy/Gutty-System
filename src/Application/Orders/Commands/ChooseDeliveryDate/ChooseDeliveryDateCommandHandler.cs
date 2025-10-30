@@ -21,14 +21,13 @@ public class ChooseDeliveryDateCommandHandler : IRequestHandler<ChooseDeliveryDa
     public async Task<ChooseDeliveryDateCommandResponse> Handle(ChooseDeliveryDateCommand request, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.UserId;
-
+        var todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
         var order = await _unitOfWork.Orders.GetQueryable()
-        .AsNoTracking()
         .Where(o =>
         o.Subscription.UserId == userId &&
         o.Subscription.IsCurrent &&
         !o.Subscription.IsPaused &&
-        !o.IsCompleted)
+        (!o.IsCompleted||o.DeliveryDate> todayDate))
         .FirstOrDefaultAsync(cancellationToken);
 
 
@@ -37,11 +36,14 @@ public class ChooseDeliveryDateCommandHandler : IRequestHandler<ChooseDeliveryDa
         if (order == null)
         {
             return new ChooseDeliveryDateCommandResponse(false, "Order not found");
-        }
-        var TodayDate = DateOnly.FromDateTime(DateTime.UtcNow);
-        if (request.deliveryDate <= TodayDate.AddDays(config.MinimumDaysToOrder ?? 0))
+        }     
+        if (request.deliveryDate <= todayDate.AddDays(config.MinimumDaysToOrder ?? 0))
         {
             return new ChooseDeliveryDateCommandResponse(false, $"Delivery date must be at least {config.MinimumDaysToOrder} days from today");
+        }
+        if(request.deliveryDate > todayDate.AddDays(30))
+        {
+            return new ChooseDeliveryDateCommandResponse(false, "Delivery date cannot be more than 30 days from today");
         }
         var count = await _unitOfWork.Orders
             .GetQueryable()

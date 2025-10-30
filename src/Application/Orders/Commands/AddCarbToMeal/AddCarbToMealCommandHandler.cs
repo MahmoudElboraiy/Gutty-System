@@ -57,7 +57,7 @@ public class AddCarbToMealCommandHandler : IRequestHandler<AddCarbToMealCommand,
         {
             return new AddCarbToMealCommandResponse(false, "This is not Carb");
         }
-        orderMeal.OrderMeal.CarbMealId = request.CarbId;
+        orderMeal.OrderMeal.CarbMealId = request.CarbId;       
         _unitOfWork.OrderMeals.Update(orderMeal.OrderMeal);
         await _unitOfWork.CompleteAsync();
         return new AddCarbToMealCommandResponse(true , "The Carb had been added Successfully");

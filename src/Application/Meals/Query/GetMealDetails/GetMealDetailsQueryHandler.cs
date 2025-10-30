@@ -4,6 +4,7 @@ using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Application.Meals.Query.GetMealDetails;
 
@@ -23,6 +24,7 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, G
             .Include(i=>i.Ingredient)
             .FirstOrDefaultAsync(cancellationToken);
         GetMealDetailsQueryResponse responseItem = null;
+
         if (meal.IngredientId == null)
         {
             responseItem = new GetMealDetailsQueryResponse
@@ -40,15 +42,20 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, G
             return responseItem;
         }
 
-        var subscription = _unitOfWork.Subscriptions
+        var subscription = await _unitOfWork.Subscriptions
             .GetQueryable()
-            .Where(s => s.UserId == request.UserId && s.IsActive)
-            .Include(s => s.LunchCategories)
             .AsNoTracking()
-            .FirstOrDefault();
+            .Where(s => s.UserId == request.UserId && s.IsCurrent)
+            .Include(s => s.LunchCategories)          
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (subscription == null)
+        {
+        }
         decimal ingredient =100;
         var subscriptionCategory = subscription?.LunchCategories
                 .FirstOrDefault(lc => lc.SubCategoryId == meal.SubcategoryId);
+
         if (subscriptionCategory == null || meal.MealType == null)
         {
             ingredient = meal.DefaultQuantityGrams ?? 100;
@@ -58,7 +65,9 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, G
             ingredient = subscriptionCategory.ProteinGrams;
         }else if(meal.MealType ==MealType.Carb)
             ingredient =subscription.CarbGrams;
+
         decimal ratio = ingredient / 100;
+
          responseItem =new GetMealDetailsQueryResponse
         (
             meal.Id,

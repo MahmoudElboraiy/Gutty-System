@@ -21,7 +21,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cre
         var userId = _currentUserService.UserId;
         var subscription = await _unitOfWork.Subscriptions.GetQueryable()
             .Where(s => s.UserId == userId && s.IsCurrent && !s.IsPaused)
-            .Select(s => new { s.Id })
+            .Select(s => new { s.Id ,s.DaysLeft})
             .FirstOrDefaultAsync(cancellationToken);
 
         if(subscription == null)
@@ -38,6 +38,11 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cre
         if(order != null)
         {
             return new CreateOrderCommandResponse(-1, "There is already an existing order");
+        }
+
+        if(subscription.DaysLeft< request.dayNumber)
+        {
+            return new CreateOrderCommandResponse(0, "Not enough days left in the subscription");
         }
 
         if (order == null)

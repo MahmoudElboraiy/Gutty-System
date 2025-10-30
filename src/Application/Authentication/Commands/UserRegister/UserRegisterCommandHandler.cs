@@ -15,15 +15,18 @@ public class UserRegisterCommandHandler
     : IRequestHandler<UserRegisterCommand, ErrorOr<AuthenticationResponse>>
 {
     private readonly UserManager<User> _userManager;
+    private readonly ISmsRepository _smsRepository;
     private readonly IJwtTokenGenerator JwtTokenGenerator;
 
     public UserRegisterCommandHandler(
         UserManager<User> userManager,
-        IJwtTokenGenerator jwtTokenGenerator
+        IJwtTokenGenerator jwtTokenGenerator,
+        ISmsRepository smsRepository
     )
     {
         _userManager = userManager;
         JwtTokenGenerator = jwtTokenGenerator;
+        _smsRepository = smsRepository;
     }
 
     public async Task<ErrorOr<AuthenticationResponse>> Handle(

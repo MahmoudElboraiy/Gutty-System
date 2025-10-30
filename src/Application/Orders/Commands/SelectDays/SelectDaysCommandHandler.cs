@@ -23,6 +23,7 @@ public record SelectDaysCommandHandler : IRequestHandler<SelectDaysCommand, Sele
             .Where(s => s.UserId == userId && s.IsCurrent && !s.IsPaused)
             .Select(s => new { s.Plan.BDMealsPerDay , s.Plan.LMealsPerDay, s.DaysLeft })
             .FirstOrDefaultAsync(cancellationToken);
+
         if (subscription == null)
         {
             return new SelectDaysCommandResponse(false, "No active subscription found.",0,0,0);

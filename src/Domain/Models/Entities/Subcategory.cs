@@ -10,4 +10,5 @@ public class Subcategory
     public int CategoryId { get; set; }
     public Category Category { get; set; }
     public ICollection<Meal> Meals { get; set; }
+    public ICollection<SubscriptionCategory> SubscriptionCategories { get; set; }
 }

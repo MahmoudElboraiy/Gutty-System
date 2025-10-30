@@ -11,6 +11,7 @@ public class SubscriptionCategory : BaseEntity<Guid>
 
     public int? SubCategoryId { get; set; }
 
+    public Subcategory? Subcategory { get; set; }
     public uint NumberOfMeals { get; set; }
     public uint NumberOfMealsLeft { get; set; }
     public uint ProteinGrams { get; set; }

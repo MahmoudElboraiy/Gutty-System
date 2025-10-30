@@ -79,7 +79,10 @@ public static class DependencyInjection
             );
 
         services.AddAuthorization();
+        services.AddDistributedMemoryCache();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<ISmsRepository, SmsRepository>();
+        services.AddScoped<IOtpRepository, OtpRepository>();
         services.AddHttpContextAccessor();
         return services;
     }

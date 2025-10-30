@@ -37,7 +37,7 @@ public static class Mapping
         string mealName = null;
         string mealImage = null;
         bool acceptCarb = false;
-
+        string CarbName = null;
         if (orderMeal.MealId.HasValue && mealDetailsDict.TryGetValue(orderMeal.MealId.Value, out var mainMeal))
         {
             mealName = mainMeal.Name;
@@ -49,6 +49,10 @@ public static class Mapping
             mealName = proteinMeal.Name;
             mealImage = proteinMeal.ImageUrl;
             acceptCarb = proteinMeal.AcceptCarb;
+            if (orderMeal.CarbMeal != null)
+            {
+                CarbName = orderMeal.CarbMeal.Name;
+            }
         }
         else if (orderMeal.CarbMealId.HasValue && mealDetailsDict.TryGetValue(orderMeal.CarbMealId.Value, out var carbMeal))
         {
@@ -64,6 +68,7 @@ public static class Mapping
             orderMeal.MealId,
             orderMeal.ProteinMealId,
             orderMeal.CarbMealId,
+            CarbName ?? string.Empty,
             acceptCarb,
             orderMeal.Notes
         );
