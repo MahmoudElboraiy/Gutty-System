@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Application.Orders.Query.IsThereOrder;
+using Application.Orders.Query.GetIngredientsByDate;
+using Application.Orders.Query.GetOrdersByDateWithMeals;
 
 namespace Presentation.Controllers
 {
@@ -50,7 +52,7 @@ namespace Presentation.Controllers
         [HttpGet("RemainingMealsInSubCategory{subCategoryId}")]
         public async Task<IActionResult> GetNumberOfRemainingMealsInSubCategory(uint subCategoryId)
         {
-            var result = await _mediator.Send(new GetNumberOfRemainingMealsInSubCategoryQuery(subCategoryId));   
+            var result = await _mediator.Send(new GetNumberOfRemainingMealsInSubCategoryQuery(subCategoryId));
             return Ok(result);
         }
         [HttpPost("CreateOrder{dayNumber}")]
@@ -62,7 +64,7 @@ namespace Presentation.Controllers
         [HttpPost("AddMeal")]
         public async Task<IActionResult> AddMeal([FromBody] AddMealCommand command)
         {
-            var result =  await _mediator.Send(command);
+            var result = await _mediator.Send(command);
             return Ok(result);
         }
         [HttpPost("RemoveMeal")]
@@ -97,7 +99,7 @@ namespace Presentation.Controllers
             return Ok(result);
         }
         [HttpPost("ChooseDeliveryDate")]
-        public async Task<IActionResult> ChooseDeliveryDate([FromBody]ChooseDeliveryDateCommand command)
+        public async Task<IActionResult> ChooseDeliveryDate([FromBody] ChooseDeliveryDateCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
@@ -112,6 +114,18 @@ namespace Presentation.Controllers
         public async Task<IActionResult> IsThereOrder()
         {
             var result = await _mediator.Send(new IsThereOrderQuery());
+            return Ok(result);
+        }
+        [HttpGet("GetIngredientsByDate{DeliveryDate}")]
+        public async Task<IActionResult> GetIngredientsByDate(DateOnly DeliveryDate)
+        {
+            var result = await _mediator.Send(new GetIngredientsByDateQuery(DeliveryDate));
+            return Ok(result);
+        }
+        [HttpGet("GetOrdersByDateWithNutrition{DeliveryDate}")]
+        public async Task<IActionResult> GetOrdersByDateWithNutrition(DateOnly DeliveryDate)
+        {
+            var result = await _mediator.Send(new GetOrdersByDateWithNutritionQuery(DeliveryDate));
             return Ok(result);
         }
     }

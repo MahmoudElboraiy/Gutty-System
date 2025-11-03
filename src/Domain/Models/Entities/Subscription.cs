@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Enums;
+using Domain.Models.Identity;
 
 namespace Domain.Models.Entities;
 
@@ -17,6 +18,7 @@ namespace Domain.Models.Entities;
 public class Subscription : BaseEntity<Guid>
 {
     public string UserId { get; set; }
+    public User User { get; set; }
     public Guid PlanId { get; set; }
     public  Plan Plan { get; set; }
     // public string PlanName { get; set; }
