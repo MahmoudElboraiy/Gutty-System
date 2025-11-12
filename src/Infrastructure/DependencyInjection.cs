@@ -52,7 +52,7 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        Console.WriteLine(connectionString);
+       // Console.WriteLine(connectionString);
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
         services
@@ -80,8 +80,9 @@ public static class DependencyInjection
 
         services.AddAuthorization();
         services.AddDistributedMemoryCache();
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();;
         services.AddScoped<ISmsRepository, SmsRepository>();
+        services.AddHttpClient<ISmsRepository, SmsRepository>();
         services.AddScoped<IOtpRepository, OtpRepository>();
         services.AddHttpContextAccessor();
         return services;

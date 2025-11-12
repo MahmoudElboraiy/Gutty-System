@@ -14,7 +14,6 @@ namespace Application.Users.Commands
         string FirstName,
         string MiddleName,
         string LastName,
-        int CityId,
         string MainAddress,
         string? SecondaryAddress,
         string SecondPhoneNumber,

@@ -1,6 +1,8 @@
 ﻿
 using Application.Interfaces;
 using Microsoft.Extensions.Configuration;
+using System.Text;
+using System.Text.Json;
 using Vonage;
 using Vonage.Messaging;
 using Vonage.Request;
@@ -10,26 +12,41 @@ namespace Infrastructure.Repositories;
 
 public class SmsRepository: ISmsRepository
 {
+    private readonly HttpClient _httpClient;
+    private readonly IConfiguration _config;
     private readonly string _apiKey;
     private readonly string _apiSecret;
-    public SmsRepository(IConfiguration config)
+    public SmsRepository(HttpClient httpClient, IConfiguration config)
     {
-        _apiKey = config["Vonage:ApiKey"];
-        _apiSecret = config["Vonage:ApiSecret"];
+        _httpClient = httpClient;
+        _config = config;
     }
 
-    public async Task<bool> SendSmsAsync(string to, string message)
+    public async Task<string> SendSmsAsync(string phoneNumber, string message)
     {
-        var creds = Credentials.FromApiKeyAndSecret(_apiKey, _apiSecret);
-        var client = new VonageClient(creds);
+      
 
-        var response = await client.SmsClient.SendAnSmsAsync(new SendSmsRequest
+        var payload = new
         {
-            To = to,
-            From = "Gutty",
-            Text = message
-        });
+            api_token = _config["WhySms:ApiToken"],
+            recipient = phoneNumber,
+            sender_id = _config["WhySms:SenderId"],
+            type = "plain ",
+            message = message
+        };
 
-        return response.Messages[0].Status == "0"; // "0" means success
+        var json = JsonSerializer.Serialize(payload);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync(_config["WhySms:BaseUrl"], content);
+        var body = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return "Failed to send SMS";
+        }
+
+        return  "SMS sent successfully"  ;
+
     }
 }

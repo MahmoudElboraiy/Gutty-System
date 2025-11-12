@@ -1,9 +1,17 @@
+using Application.Authentication.Commands.AddRole;
 using Application.Authentication.Commands.ForgetPassword.ResetPassword;
 using Application.Authentication.Commands.ForgetPassword.VerifyForgetPasswordOtp;
 using Application.Authentication.Commands.Otp;
+using Application.Authentication.Commands.Otp.SendOtp;
+using Application.Authentication.Commands.Otp.VerifyOtp;
+using Application.Authentication.Commands.RemoveUser;
 using Application.Authentication.Commands.UserRegister;
 using Application.Authentication.Commands.UserRegisterTemp;
 using Application.Authentication.Commands.VerifyRegisterOtp;
+using Application.Authentication.Common.EditAddress;
+using Application.Authentication.Common.EditName;
+using Application.Authentication.Common.EditPhoneNumber;
+using Application.Authentication.Common.EditUser;
 using Application.Authentication.Queries.UserLogin;
 using Application.Authentication.Queries.UserVerify;
 using MediatR;
@@ -53,35 +61,70 @@ public class AuthController : Controller
         var result = await _mediator.Send(new SendOtpCommand(phone));
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPost("UserRegisterTemp")]
-    public async Task<IActionResult> UserRegisterTemp([FromBody] UserRegisterTempCommand command)
+    //[HttpPost("UserRegisterTemp")]
+    //public async Task<IActionResult> UserRegisterTemp([FromBody] UserRegisterTempCommand command)
+    //{
+    //    var result = await _mediator.Send(command);
+    //    return result.Match<IActionResult>(Ok, BadRequest);
+    //}
+    [HttpPost("VerifyOtp")]
+    public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPost("VerifyRegisterOtp")]
-    public async Task<IActionResult> VerifyRegisterOtp([FromBody] VerifyRegisterOtpCommand command)
-    {
-        var result = await _mediator.Send(command);
-        return result.Match<IActionResult>(Ok, BadRequest);
-    }
-    [HttpPost("SendForgetPasswordOtp({phoneNumber})")]
-    public async Task<IActionResult> SendForgetPasswordOtp(string phoneNumber)
-    {
-        var result = await _mediator.Send(new SendOtpCommand(phoneNumber));
-        return result.Match<IActionResult>(Ok, BadRequest);
-    }
-    [HttpPost("VerifyForgetPasswordOtp")]
-    public async Task<IActionResult> VerifyForgetPasswordOtp([FromBody] VerifyForgetPasswordOtpCommand command)
-    {
-        var result = await _mediator.Send(command);
-        return result.Match<IActionResult>(Ok, BadRequest);
-    }
+    //[HttpPost("SendOtp({phoneNumber})")]
+    //public async Task<IActionResult> SendOtp(string phoneNumber)
+    //{
+    //    var result = await _mediator.Send(new SendOtpCommand(phoneNumber));
+    //    return result.Match<IActionResult>(Ok, BadRequest);
+    //}
+    //[HttpPost("VerifyForgetPasswordOtp")]
+    //public async Task<IActionResult> VerifyForgetPasswordOtp([FromBody] VerifyForgetPasswordOtpCommand command)
+    //{
+    //    var result = await _mediator.Send(command);
+    //    return result.Match<IActionResult>(Ok, BadRequest);
+    //}
     [HttpPost("ResetPassword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-
+    //[HttpPost("EditName"),Authorize]
+    //public async Task<IActionResult> EditName([FromBody]EditNameCommand command)
+    //{
+    //    var result = await _mediator.Send(command);
+    //    return result.Match<IActionResult>(Ok, BadRequest);
+    //}
+    //[HttpPost("EditAddress"), Authorize]
+    //public async Task<IActionResult> EditAddress([FromBody] EditAddressCommand command)
+    //{
+    //    var result = await _mediator.Send(command);
+    //    return result.Match<IActionResult>(Ok, BadRequest);
+    //}
+    [HttpPost("AddRole"), Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AddRole([FromBody] AddRoleCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+    [HttpPost("RemoveUser"),Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RemoveUser([FromBody] RemoveUserCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+    [HttpPost("EditUser"),Authorize]
+    public async Task<IActionResult> EditUser([FromBody] EditUserCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+    [HttpPost("EditPhoneNumber"), Authorize]
+    public async Task<IActionResult> EditPhoneNumber([FromBody] EditPhoneNumberCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
 }

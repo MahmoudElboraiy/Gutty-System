@@ -17,16 +17,19 @@ public class UserRegisterCommandHandler
     private readonly UserManager<User> _userManager;
     private readonly ISmsRepository _smsRepository;
     private readonly IJwtTokenGenerator JwtTokenGenerator;
+    private readonly IOtpRepository _otpRepository;
 
     public UserRegisterCommandHandler(
         UserManager<User> userManager,
         IJwtTokenGenerator jwtTokenGenerator,
-        ISmsRepository smsRepository
+        ISmsRepository smsRepository,
+        IOtpRepository otpRepository
     )
     {
         _userManager = userManager;
         JwtTokenGenerator = jwtTokenGenerator;
         _smsRepository = smsRepository;
+        _otpRepository = otpRepository;
     }
 
     public async Task<ErrorOr<AuthenticationResponse>> Handle(
@@ -34,6 +37,11 @@ public class UserRegisterCommandHandler
         CancellationToken cancellationToken
     )
     {
+        var verified = await _otpRepository.GetOtpAsync($"{request.PhoneNumber}");
+
+        if (verified == null || !verified.IsVerified)
+            return Error.Validation("Otp.NotVerified", "The code must be verified first before resetting.");
+        
         var user = new User
         {
             FirstName = request.FirstName,
@@ -43,7 +51,6 @@ public class UserRegisterCommandHandler
             MainAddress = request.MainAddress,
             SecondaryAddress = request.SecondaryAddress,
             UserName = request.PhoneNumber,
-            CityId = request.CityId,
         };
 
         var phoneExists = await _userManager.Users.AnyAsync(
@@ -63,6 +70,8 @@ public class UserRegisterCommandHandler
         }
 
         await _userManager.AddToRoleAsync(user, Roles.User.ToString());
+
+        await _otpRepository.RemoveOtpAsync($"{request.PhoneNumber}");
 
         // TODO: Send verification sms to user`
 

@@ -8,6 +8,8 @@ public record CreatePlanCommand(
     string Name,
     string Description,
     uint DurationInDays,
+    uint LMealsPerDay,
+    uint BDMealsPerDay,
     decimal BreakfastPrice,
     decimal DinnerPrice,
     uint CarbGrams,

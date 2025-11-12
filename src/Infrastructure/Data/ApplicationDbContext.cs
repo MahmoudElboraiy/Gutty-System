@@ -9,6 +9,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
+    public DbSet<UserOtp> UserOtps { get; set; }
     public DbSet<SystemConfiguration> SystemConfigurations { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderMeal> OrderMeals { get; set; }

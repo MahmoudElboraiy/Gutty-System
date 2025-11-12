@@ -7,6 +7,7 @@ public record UserVerifyQueryResponse(
     string MiddleName,
     string LastName,
     string MainAddress,
+    string? SecondMainAddress,
     string SecondPhoneNumber,
     string? Email,
     bool PhoneNumberConfirmed,

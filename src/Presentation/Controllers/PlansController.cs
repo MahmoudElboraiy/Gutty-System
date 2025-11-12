@@ -9,6 +9,12 @@ using System.Security.Claims;
 using Infrastructure.Data;
 using Application.Subscriptions.Commands.PlaceOrder;
 using Domain.Models.Entities;
+using Vonage.Video.Authentication;
+using Domain.Enums;
+using Application.Authentication.Commands.Otp.SendOtp;
+using System.Numerics;
+using Application.Plans.Commands.DeletePlan;
+using Application.Plans.Commands.EditPlan;
 
 namespace Presentation.Controllers;
 
@@ -30,7 +36,7 @@ public class PlansController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("admin")]
+    [HttpPost("CreatePlan")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreatePlanAdmin([FromBody] CreatePlanCommand command)
     {
@@ -52,9 +58,18 @@ public class PlansController : ControllerBase
         );
 
         var response = await _mediator.Send(query);
-        return Ok(response);
-        
-
+        return Ok(response);      
     }
-    
+    [HttpDelete("DeletePlan{id}"),Authorize(Roles = "Admin,CustomerService")]
+    public async Task<IActionResult> DeletePlan(Guid id)
+    {
+        var result = await _mediator.Send(new DeletePlanCommand(id));
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+    [HttpPost("EditPlan"), Authorize(Roles = "Admin,CustomerService")]
+    public async Task<IActionResult> EditPlan( [FromBody] EditPlanCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
 }

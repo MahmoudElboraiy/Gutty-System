@@ -37,6 +37,7 @@ public class UserVerifyQueryHandler
             user.MiddleName,
             user.LastName,
             user.MainAddress,
+            user.SecondaryAddress,
             user.SecondPhoneNumber,
             user.Email,
             user.PhoneNumberConfirmed,

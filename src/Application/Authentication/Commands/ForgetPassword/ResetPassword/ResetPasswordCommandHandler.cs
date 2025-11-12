@@ -23,8 +23,9 @@ public class ResetPasswordCommandHandler
 
     public async Task<ErrorOr<string>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
-        var verified = await _otpRepository.GetOtpAsync($"forget:{request.PhoneNumber}");
-        if (verified != "true")
+        var verified = await _otpRepository.GetOtpAsync($"{request.PhoneNumber}");
+
+        if (verified==null ||!verified.IsVerified)
             return Error.Validation("Otp.NotVerified", "The code must be verified first before resetting.");
 
         var user = await _userManager.Users.FirstOrDefaultAsync(
@@ -39,7 +40,7 @@ public class ResetPasswordCommandHandler
         if (!result.Succeeded)
             return Error.Failure("Reset.Failed", "Password change failed.");
 
-        await _otpRepository.RemoveOtpAsync($"forget:{request.PhoneNumber}");
+        await _otpRepository.RemoveOtpAsync($"{request.PhoneNumber}");
 
         return "The password was successfully updated.";
     }

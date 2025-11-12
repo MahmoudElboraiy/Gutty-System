@@ -34,7 +34,6 @@ namespace Application.Users.Commands
             user.FirstName = request.FirstName;
             user.MiddleName = request.MiddleName;
             user.LastName = request.LastName;
-            user.CityId = request.CityId;
             user.MainAddress = request.MainAddress;
             user.SecondaryAddress = request.SecondaryAddress;
             user.SecondPhoneNumber = request.SecondPhoneNumber;

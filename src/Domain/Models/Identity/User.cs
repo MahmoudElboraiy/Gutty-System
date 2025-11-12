@@ -14,7 +14,6 @@ public class User : IdentityUser
 
     [MaxLength(255)]
     public required string LastName { get; set; }
-    public required int CityId { get; set; }
 
     [MaxLength(255)]
     public required string MainAddress { get; set; }

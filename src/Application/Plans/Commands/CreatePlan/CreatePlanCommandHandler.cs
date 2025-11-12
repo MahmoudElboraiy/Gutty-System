@@ -30,6 +30,8 @@ public class CreatePlanCommandHandler
             Name = request.Name,
             Description = request.Description,
             DurationInDays = request.DurationInDays,
+            LMealsPerDay = request.LMealsPerDay,
+            BDMealsPerDay = request.BDMealsPerDay,
             BreakfastPrice = request.BreakfastPrice,
             DinnerPrice = request.DinnerPrice,
             CarbGrams = request.CarbGrams,

@@ -11,9 +11,9 @@ namespace Application.Authentication.Queries.UserLogin
     {
         public UserLoginQueryValidator()
         {
-            RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("رقم الهاتف مطلوب");
+            RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Phone number is empty");
 
-            RuleFor(x => x.Password).NotEmpty().WithMessage("كلمة المرور مطلوبة");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is empty");
         }
     }
 }

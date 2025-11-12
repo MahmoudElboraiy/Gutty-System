@@ -26,41 +26,42 @@ public class VerifyRegisterOtpCommandHandler : IRequestHandler<VerifyRegisterOtp
     public async Task<ErrorOr<string>> Handle(VerifyRegisterOtpCommand request, CancellationToken cancellationToken)
     {
         var otp = await _otpRepository.GetOtpAsync(request.PhoneNumber);
-        if (otp == null || otp != request.Code)
+        if (otp == null || otp.Code != request.Code)
             return ErrorOr.Error.Validation("Otp.Invalid", "The verification code is incorrect or expired.");
 
         // استرجع بيانات المستخدم المؤقتة
-        var userJson = await _otpRepository.GetOtpAsync($"{request.PhoneNumber}:user");
-        if (userJson == null)
-            return ErrorOr.Error.NotFound("User.Pending", "Temporary user data does not exist.");
+        //var userJson = await _otpRepository.GetOtpAsync($"{request.PhoneNumber}:user");
+        //if (userJson == null)
+        //    return ErrorOr.Error.NotFound("User.Pending", "Temporary user data does not exist.");
 
-        var pendingUser = System.Text.Json.JsonSerializer.Deserialize<TempUserData>(userJson)!;
+        //var pendingUser =  System.Text.Json.JsonSerializer.Deserialize<TempUserData>(userJson)!;
 
-        // إنشاء المستخدم في AspNetUsers
-        var user = new User
-        {
-            FirstName = pendingUser.FirstName,
-            MiddleName = pendingUser.MiddleName,
-            LastName = pendingUser.LastName,
-            PhoneNumber = pendingUser.PhoneNumber,
-            UserName = pendingUser.PhoneNumber,
-            MainAddress = pendingUser.MainAddress,
-            SecondaryAddress = pendingUser.SecondaryAddress,
-            CityId = pendingUser.CityId
-        };
+        //// إنشاء المستخدم في AspNetUsers
+        //var user = new User
+        //{
+        //    FirstName = pendingUser.FirstName,
+        //    MiddleName = pendingUser.MiddleName,
+        //    LastName = pendingUser.LastName,
+        //    PhoneNumber = pendingUser.PhoneNumber,
+        //    UserName = pendingUser.PhoneNumber,
+        //    MainAddress = pendingUser.MainAddress,
+        //    SecondaryAddress = pendingUser.SecondaryAddress,
+        //    CityId = pendingUser.CityId
+        //};
 
-        var result = await _userManager.CreateAsync(user, pendingUser.Password);
-        if (!result.Succeeded)
-            return ErrorOr.Error.Failure("Register.Failed", "An error occurred while creating the account.");
+        //var result = await _userManager.CreateAsync(user, pendingUser.Password);
+        //if (!result.Succeeded)
+        //    return ErrorOr.Error.Failure("Register.Failed", "An error occurred while creating the account.");
 
-        await _userManager.AddToRoleAsync(user, Roles.User.ToString());
+        //await _userManager.AddToRoleAsync(user, Roles.User.ToString());
 
-        // نظّف الكاش
-        await _otpRepository.RemoveOtpAsync(request.PhoneNumber);
-        await _otpRepository.RemoveOtpAsync($"{request.PhoneNumber}:user");
+        //// نظّف الكاش
+        //await _otpRepository.RemoveOtpAsync(request.PhoneNumber);
+        //await _otpRepository.RemoveOtpAsync($"{request.PhoneNumber}:user");
 
-        var token = _jwt.GenerateToken(user, Roles.User.ToString());
-        return $"Account activated successfully.: {token}";
+        //var token = _jwt.GenerateToken(user, Roles.User.ToString());
+        //return $"Account activated successfully.: {token}";
+        return "";
     }
     private class TempUserData
     {

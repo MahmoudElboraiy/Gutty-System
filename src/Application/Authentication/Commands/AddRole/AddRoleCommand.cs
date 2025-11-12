@@ -1,15 +1,18 @@
+﻿
+
 using Application.Authentication.Common;
 using ErrorOr;
 using MediatR;
 
-namespace Application.Authentication.Commands.UserRegister;
+namespace Application.Authentication.Commands.AddRole;
 
-public record UserRegisterCommand(
+public record AddRoleCommand(
     string FirstName,
     string MiddleName,
     string LastName,
     string PhoneNumber,
     string Password,
     string MainAddress,
-    string? SecondaryAddress
-) : IRequest<ErrorOr<AuthenticationResponse>>;
+    string? SecondaryAddress,
+    string Role
+    ): IRequest<ErrorOr<AuthenticationResponse>>;

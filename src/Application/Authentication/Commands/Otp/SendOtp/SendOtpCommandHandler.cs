@@ -1,10 +1,8 @@
-﻿
-
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using ErrorOr;
 using MediatR;
 
-namespace Application.Authentication.Commands.Otp;
+namespace Application.Authentication.Commands.Otp.SendOtp;
 
 public class SendOtpCommandHandler : IRequestHandler<SendOtpCommand, ErrorOr<string>>
 {
@@ -21,11 +19,12 @@ public class SendOtpCommandHandler : IRequestHandler<SendOtpCommand, ErrorOr<str
     {
         var otp = new Random().Next(100000, 999999).ToString();
 
-        var sent = await _smsRepository.SendSmsAsync(request.PhoneNumber, $"Your verification code is :  {otp}");
-        if (!sent)
-            return Error.Failure("Sms.Failed", "Failed to send Sms");
-
         await _otpRepository.SaveOtpAsync(request.PhoneNumber, otp);
-        return "Sms was sent successfully";
+
+        var PhoneNumber = "2" + request.PhoneNumber;
+
+        await _smsRepository.SendSmsAsync(PhoneNumber, $"Your Otp code is: {otp}");
+
+        return "OTP has been sent successfully.";
     }
 }
