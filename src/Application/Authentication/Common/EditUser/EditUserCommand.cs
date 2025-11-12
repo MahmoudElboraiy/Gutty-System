@@ -6,9 +6,7 @@ using MediatR;
 namespace Application.Authentication.Common.EditUser;
 
 public record EditUserCommand(
-    string FirstName,
-    string? MiddleName,
-    string LastName,
+    string Name,
     string MainAddress,
     string? SecondaryAddress
     ):IRequest<ErrorOr<ResultMessage>>;

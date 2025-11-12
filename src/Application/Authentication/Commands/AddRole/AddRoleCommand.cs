@@ -7,9 +7,7 @@ using MediatR;
 namespace Application.Authentication.Commands.AddRole;
 
 public record AddRoleCommand(
-    string FirstName,
-    string MiddleName,
-    string LastName,
+    string Name,
     string PhoneNumber,
     string Password,
     string MainAddress,

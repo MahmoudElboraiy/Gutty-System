@@ -13,9 +13,7 @@ public static class Mapping
         new(
             user.Id,
             user.PhoneNumber ?? "",
-            user.FirstName,
-            user.MiddleName,
-            user.LastName,
+            user.Name,
             user.MainAddress,
             user.SecondPhoneNumber,
             user.Email,

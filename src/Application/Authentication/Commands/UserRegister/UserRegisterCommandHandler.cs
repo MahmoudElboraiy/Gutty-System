@@ -37,16 +37,14 @@ public class UserRegisterCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var verified = await _otpRepository.GetOtpAsync($"{request.PhoneNumber}");
+       // var verified = await _otpRepository.GetOtpAsync($"{request.PhoneNumber}");
 
-        if (verified == null || !verified.IsVerified)
-            return Error.Validation("Otp.NotVerified", "The code must be verified first before resetting.");
+       // if (verified == null || !verified.IsVerified)
+       //     return Error.Validation("Otp.NotVerified", "The code must be verified first before resetting.");
         
         var user = new User
         {
-            FirstName = request.FirstName,
-            MiddleName = request.MiddleName,
-            LastName = request.LastName,
+            Name = request.Name,
             PhoneNumber = request.PhoneNumber,
             MainAddress = request.MainAddress,
             SecondaryAddress = request.SecondaryAddress,
@@ -71,7 +69,7 @@ public class UserRegisterCommandHandler
 
         await _userManager.AddToRoleAsync(user, Roles.User.ToString());
 
-        await _otpRepository.RemoveOtpAsync($"{request.PhoneNumber}");
+     //   await _otpRepository.RemoveOtpAsync($"{request.PhoneNumber}");
 
         // TODO: Send verification sms to user`
 

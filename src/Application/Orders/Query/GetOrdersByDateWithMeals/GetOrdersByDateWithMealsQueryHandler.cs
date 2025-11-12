@@ -51,7 +51,7 @@ public class GetOrdersByDateWithNutritionQueryHandler
             var orderResponse = new OrderWithNutritionResponse
             {
                 OrderId = order.Id,
-                CustomerName = user?.FirstName+user?.LastName ?? "N/A",
+                CustomerName = user?.Name,
                 PhoneNumber = user?.PhoneNumber ?? "N/A",
                 Address = user?.MainAddress ?? "N/A"
             };

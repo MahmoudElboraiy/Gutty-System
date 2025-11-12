@@ -27,9 +27,7 @@ public class EditUserCommandHandler: IRequestHandler<EditUserCommand, ErrorOr<Re
         {
             return Error.Failure("User.NotFound", "User not found.");
         }
-        user.FirstName = string.IsNullOrEmpty(request.FirstName) ? user.FirstName : request.FirstName;
-        user.MiddleName = string.IsNullOrEmpty(request.MiddleName) ? user.MiddleName : request.MiddleName;
-        user.LastName = string.IsNullOrEmpty(request.LastName) ? user.LastName : request.LastName;
+        user.Name = string.IsNullOrEmpty(request.Name) ? user.Name : request.Name;
         user.MainAddress = string.IsNullOrEmpty(request.MainAddress) ? user.MainAddress : request.MainAddress;
         user.SecondaryAddress = string.IsNullOrEmpty(request.SecondaryAddress) ? user.SecondaryAddress : request.SecondaryAddress;
 

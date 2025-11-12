@@ -36,9 +36,7 @@ public class AddRoleCommandHandler :
         {
             user = new User
             {
-                FirstName = request.FirstName,
-                MiddleName = request.MiddleName,
-                LastName = request.LastName,
+                Name = request.Name,
                 PhoneNumber = request.PhoneNumber,
                 MainAddress = request.MainAddress,
                 SecondaryAddress = request.SecondaryAddress,

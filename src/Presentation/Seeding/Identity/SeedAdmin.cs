@@ -11,9 +11,9 @@ public class SeedAdmin
 
         var admin = new User
         {
-            FirstName = "Ahmed",
+            Name = "Ahmed Ashraf",
             MiddleName = "",
-            LastName = "Ashraf",
+            LastName = "",
             PhoneNumber = "01124559909",
             SecondPhoneNumber = "01000000000",
             Email = "ahmedashraf21499@gmail.com",

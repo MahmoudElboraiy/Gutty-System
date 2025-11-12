@@ -34,9 +34,7 @@ namespace Application.Authentication.Common.EditName
             }
             // Here you would update the user's name based on the request data
             // For example:
-            user.FirstName = string.IsNullOrEmpty(request.FirstName) ? user.FirstName : request.FirstName;
-            user.MiddleName = string.IsNullOrEmpty(request.MiddleName) ? user.MiddleName :request.MiddleName;
-            user.LastName = string.IsNullOrEmpty(request.LastName) ? user.LastName : request.LastName;
+            user.Name = string.IsNullOrEmpty(request.Name) ? user.Name : request.Name;
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
