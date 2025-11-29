@@ -93,7 +93,7 @@ app.UseCors(corsPolicyName);
     app.UseSwaggerUI();
 }
 
-//if (args.Length > 0 && (args[0] == "seedRoles" || args[0] == "seed"))
+if (args.Length > 0 && (args[0] == "seedRoles" || args[0] == "seed"))
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -109,12 +109,14 @@ if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
 }
 
 
-using (var scope = app.Services.CreateScope())
+if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
+    using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedPromoCode.SeedAsync(dbContext);
 }
-using(var scope = app.Services.CreateScope())
+if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
+    using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedCategories.SeedAsync(dbContext);
@@ -123,7 +125,7 @@ using(var scope = app.Services.CreateScope())
     await SeedMeals.SeedAsync(dbContext);
 }
 
-//if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
+if (args.Length > 0 && (args[0] == "seedPlans" || args[0] == "seed"))
 {
     var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
