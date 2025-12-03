@@ -1,8 +1,8 @@
 ﻿
 
 using Domain.Enums;
+using Domain.Models.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
-using Vonage.Users;
 
 namespace Domain.Models.Entities;
 

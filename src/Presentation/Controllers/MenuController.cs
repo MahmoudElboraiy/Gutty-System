@@ -40,7 +40,7 @@ namespace Presentation.Controllers
             var result = await _mediator.Send(new GetMealsQuery(id));
             return Ok(result);
         }
-        [Authorize]
+       // [Authorize]
         [HttpGet("GetMealDetails{id}")]
         public async Task<IActionResult> GetMealDetails(int id)
         {

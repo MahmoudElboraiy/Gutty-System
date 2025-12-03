@@ -75,7 +75,7 @@ public class GetIngredientsByDateQueryHandler
             }
         }
 
-        // تحويل النتيجة إلى شكل منظم
+        
         var resultList = totalIngredients
             .Select(i => new IngredientQuantity(i.Key, i.Value))
             .ToList();

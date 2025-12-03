@@ -115,7 +115,7 @@ if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedPromoCode.SeedAsync(dbContext);
 }
-if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
+//if (args.Length > 0 && (args[0] == "seedAdmin" || args[0] == "seed"))
     using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

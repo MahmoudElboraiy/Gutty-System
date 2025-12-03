@@ -15,6 +15,7 @@ using Application.Authentication.Commands.Otp.SendOtp;
 using System.Numerics;
 using Application.Plans.Commands.DeletePlan;
 using Application.Plans.Commands.EditPlan;
+using Application.Plans.Queries.GetPlanById;
 
 namespace Presentation.Controllers;
 
@@ -35,9 +36,15 @@ public class PlansController : ControllerBase
         var result = await _mediator.Send(new GetPlansQuery());
         return Ok(result);
     }
+    [HttpGet("GetPlanById/{id:guid}")]
+    public async Task<IActionResult> GetPlanById([FromRoute] Guid id)
+    {
+        var result = await _mediator.Send(new GetPlanByIdQuery(id));
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
 
     [HttpPost("CreatePlan")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreatePlanAdmin([FromBody] CreatePlanCommand command)
     {
         var result = await _mediator.Send(command);
@@ -66,10 +73,11 @@ public class PlansController : ControllerBase
         var result = await _mediator.Send(new DeletePlanCommand(id));
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPost("EditPlan"), Authorize(Roles = "Admin,CustomerService")]
+    [HttpPut("EditPlan"), Authorize(Roles = "Admin,CustomerService")]
     public async Task<IActionResult> EditPlan( [FromBody] EditPlanCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
+
 }

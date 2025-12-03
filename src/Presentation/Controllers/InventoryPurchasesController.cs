@@ -2,7 +2,9 @@
 using Application.Inventory.Purchases.Command.DeleteInventoryPurchase;
 using Application.Inventory.Purchases.Command.UpdateInventoryPurchase;
 using Application.Inventory.Purchases.Query.GetPriceSummaryByDays;
+using Application.Inventory.Purchases.Query.GetPurchaseOrderById;
 using Application.Inventory.Purchases.Query.GetPurchasesByDays;
+using Application.Inventory.Sales.Query.GetSaleOrderById;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +31,12 @@ namespace Presentation.Controllers
             var result = await _mediator.Send(query);
             return result.Match<IActionResult>(Ok, BadRequest);
 
+        }
+        [HttpGet("GetSalePurchaseById/{id:int}")]
+        public async Task<IActionResult> GetPurchaseOrderById([FromRoute] int id)
+        {
+            var result = await _mediator.Send(new GetPurchaseOrderByIdQuery(id));
+            return result.Match<IActionResult>(Ok, BadRequest);
         }
         [HttpPost("CreateInventoryPurchase")]
         public async Task<IActionResult> CreateInventoryPurchase([FromBody] CreateInventoryPurchaseCommand command)

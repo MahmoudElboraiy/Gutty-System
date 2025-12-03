@@ -23,7 +23,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -126,7 +126,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetOrdersByDateWithNutrition(DateOnly DeliveryDate)
         {
             var result = await _mediator.Send(new GetOrdersByDateWithNutritionQuery(DeliveryDate));
-            return Ok(result);
+            return result.Match<IActionResult>(Ok, BadRequest);
         }
     }
 }
