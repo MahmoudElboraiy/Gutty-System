@@ -2,20 +2,21 @@
 
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Enums;
+using ErrorOr;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Application.Meals.Query.GetMealDetails;
 
-public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, GetMealDetailsQueryResponse>
+public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, ErrorOr<GetMealDetailsQueryResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
     public GetMealDetailsQueryHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<GetMealDetailsQueryResponse> Handle(GetMealDetailsQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<GetMealDetailsQueryResponse>> Handle(GetMealDetailsQuery request, CancellationToken cancellationToken)
     {
         var meal = await _unitOfWork.Meals
             .GetQueryable()
@@ -24,7 +25,9 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, G
             .Include(i=>i.Ingredient)
             .FirstOrDefaultAsync(cancellationToken);
         GetMealDetailsQueryResponse responseItem = null;
-
+        if(meal == null) {
+            return Error.NotFound("Meal.NotFound", "Meal not found");
+        }
         if (meal.IngredientId == null)
         {
             responseItem = new GetMealDetailsQueryResponse

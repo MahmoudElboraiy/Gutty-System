@@ -44,7 +44,7 @@ public class PlansController : ControllerBase
     }
 
     [HttpPost("CreatePlan")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreatePlanAdmin([FromBody] CreatePlanCommand command)
     {
         var result = await _mediator.Send(command);

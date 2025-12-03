@@ -91,18 +91,7 @@ public class AuthController : Controller
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    //[HttpPost("EditName"),Authorize]
-    //public async Task<IActionResult> EditName([FromBody]EditNameCommand command)
-    //{
-    //    var result = await _mediator.Send(command);
-    //    return result.Match<IActionResult>(Ok, BadRequest);
-    //}
-    //[HttpPost("EditAddress"), Authorize]
-    //public async Task<IActionResult> EditAddress([FromBody] EditAddressCommand command)
-    //{
-    //    var result = await _mediator.Send(command);
-    //    return result.Match<IActionResult>(Ok, BadRequest);
-    //}
+
     [HttpPost("AddRole"), Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddRole([FromBody] AddRoleCommand command)
     {

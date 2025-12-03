@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using ErrorOr;
+using MediatR;
 
 namespace Application.Meals.Query.GetMealDetails;
 
-public record GetMealDetailsQuery(int MealId,string UserId) : IRequest<GetMealDetailsQueryResponse>;
+public record GetMealDetailsQuery(int MealId,string UserId) : IRequest<ErrorOr<GetMealDetailsQueryResponse>>;
 public record GetMealDetailsQueryResponse(
     int Id,
     string Name,

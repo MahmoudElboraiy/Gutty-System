@@ -17,8 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Ingredients\Commands\" />
-      <Folder Include="Ingredients\Queries\GetIngredients\" />
       <Folder Include="Orders\Commands\FreezeAccount\" />
     </ItemGroup>
 

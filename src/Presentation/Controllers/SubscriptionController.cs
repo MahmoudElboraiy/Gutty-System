@@ -13,7 +13,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class SubscriptionController : ControllerBase
     {
         private readonly IMediator _mediator;
