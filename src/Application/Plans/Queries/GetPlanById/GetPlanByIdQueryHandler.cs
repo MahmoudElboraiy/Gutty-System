@@ -40,6 +40,7 @@ public class GetPlanByIdQueryHandler : IRequestHandler<GetPlanByIdQuery, ErrorOr
             Id: plan.Id,
             Name: plan.Name,
             Description: plan.Description,
+            ImageUrl: plan.ImageUrl,
             DurationInDays: plan.DurationInDays,
             LMealsPerDay: plan.LMealsPerDay,
             BDMealsPerDay: plan.BDMealsPerDay,

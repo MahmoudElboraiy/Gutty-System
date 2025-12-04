@@ -20,6 +20,7 @@ public record GetPlanQueryResponseItem(
     Guid Id,
     string Name,
     string Description,
+    string? ImageUrl,
     uint DurationInDays,
     uint LMealsPerDay,
     uint BDMealsPerDay,

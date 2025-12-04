@@ -7,6 +7,7 @@ namespace Application.Plans.Commands.CreatePlan;
 public record CreatePlanCommand(
     string Name,
     string Description,
+    string? ImageUrl,
     uint DurationInDays,
     uint LMealsPerDay,
     uint BDMealsPerDay,

@@ -27,6 +27,7 @@ public class EditPlanCommandHandler :
         }
         planExits.Name = string.IsNullOrEmpty(request.Name) ? planExits.Name : request.Name;
         planExits.Description = string.IsNullOrEmpty(request.Description) ? planExits.Description : request.Description;
+        planExits.ImageUrl = string.IsNullOrEmpty(request.ImageUrl) ? planExits.ImageUrl : request.ImageUrl;
         planExits.DurationInDays = (uint) request.DurationInDays;
         planExits.LMealsPerDay = request.LMealsPerDay;
         planExits.BDMealsPerDay = request.BDMealsPerDay;

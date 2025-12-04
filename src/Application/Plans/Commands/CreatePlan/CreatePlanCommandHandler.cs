@@ -29,6 +29,7 @@ public class CreatePlanCommandHandler
         {
             Name = request.Name,
             Description = request.Description,
+            ImageUrl = request.ImageUrl,
             DurationInDays = request.DurationInDays,
             LMealsPerDay = request.LMealsPerDay,
             BDMealsPerDay = request.BDMealsPerDay,

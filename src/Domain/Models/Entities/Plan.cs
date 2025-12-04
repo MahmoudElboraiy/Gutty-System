@@ -13,6 +13,7 @@ public class Plan : BaseEntity<Guid>
     [MaxLength(1000)]
     public required string Description { get; set; }
 
+    public string? ImageUrl { get; set; }
     public uint DurationInDays { get; set; }
     public uint LMealsPerDay { get; set; }
     public uint BDMealsPerDay { get; set; }

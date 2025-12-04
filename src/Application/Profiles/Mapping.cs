@@ -77,6 +77,7 @@ public static class Mapping
         plan.Id,
         plan.Name,
         plan.Description,
+        plan.ImageUrl,
         plan.DurationInDays,
         plan.LMealsPerDay,
         plan.BDMealsPerDay,

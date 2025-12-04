@@ -11,6 +11,7 @@ namespace Application.Plans.Queries.GetPlanById
            Guid Id,
     string Name,
     string Description,
+    string? ImageUrl,
     uint DurationInDays,
     uint LMealsPerDay,
     uint BDMealsPerDay,

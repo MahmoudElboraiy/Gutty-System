@@ -9,6 +9,7 @@ public record EditPlanCommand(
     Guid Id,
     string Name,
     string Description,
+    string? ImageUrl,
     int DurationInDays,
     uint LMealsPerDay,
     uint BDMealsPerDay,
