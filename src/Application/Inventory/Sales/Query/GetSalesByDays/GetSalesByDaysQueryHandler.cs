@@ -17,15 +17,16 @@ public class GetSalesByDaysQueryHandler:IRequestHandler<GetSalesByDaysQuery,Erro
     public async Task<ErrorOr<List<GetSalesByDaysQueryResponse>>> Handle(GetSalesByDaysQuery request, CancellationToken cancellationToken)
     {
         var cutoffDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-request.Days));
-        var sales = _unitOfWork.Sales
+        var sales = await _unitOfWork.Sales
             .GetQueryable()
-            .Include(s=>s.Customer)
+            .AsNoTracking()
+            .Include(s => s.Customer)
             .Where(s => s.SaleDate >= cutoffDate)
             .OrderByDescending(s => s.SaleDate)
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
-            .ToList();
-     
+            .ToListAsync(cancellationToken);
+
         var response = sales.Select(s => new GetSalesByDaysQueryResponse(
             s.Id,
             s.ItemName,

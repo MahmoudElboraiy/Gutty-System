@@ -12,6 +12,7 @@ using Application.Authentication.Common.EditAddress;
 using Application.Authentication.Common.EditName;
 using Application.Authentication.Common.EditPhoneNumber;
 using Application.Authentication.Common.EditUser;
+using Application.Authentication.Queries.GetCoustmors;
 using Application.Authentication.Queries.UserLogin;
 using Application.Authentication.Queries.UserVerify;
 using MediatR;
@@ -98,13 +99,13 @@ public class AuthController : Controller
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPost("RemoveUser"),Authorize(Roles = "Admin")]
+    [HttpPost("RemoveUser"), Authorize(Roles = "Admin")]
     public async Task<IActionResult> RemoveUser([FromBody] RemoveUserCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPost("EditUser"),Authorize]
+    [HttpPost("EditUser"), Authorize]
     public async Task<IActionResult> EditUser([FromBody] EditUserCommand command)
     {
         var result = await _mediator.Send(command);
@@ -114,6 +115,12 @@ public class AuthController : Controller
     public async Task<IActionResult> EditPhoneNumber([FromBody] EditPhoneNumberCommand command)
     {
         var result = await _mediator.Send(command);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+    [HttpGet("GetCoustmors")]//, Authorize]
+    public async Task<IActionResult> GetCoustmor([FromRoute] int pageNumber = 1, int pageSize = 10)
+    {
+        var result = await _mediator.Send(new GetCoustmorsQuery(pageNumber, pageSize));
         return result.Match<IActionResult>(Ok, BadRequest);
     }
 }
