@@ -12,21 +12,21 @@ namespace Application.Authentication.Commands.ForgetPassword.ResetPassword;
 public class ResetPasswordCommandHandler
  : IRequestHandler<ResetPasswordCommand, ErrorOr<string>>
 {
-    private readonly IOtpRepository _otpRepository;
+   // private readonly IOtpRepository _otpRepository;
     private readonly UserManager<User> _userManager;
 
     public ResetPasswordCommandHandler(IOtpRepository otpRepository, UserManager<User> userManager)
     {
-        _otpRepository = otpRepository;
+        //_otpRepository = otpRepository;
         _userManager = userManager;
     }
 
     public async Task<ErrorOr<string>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
-        var verified = await _otpRepository.GetOtpAsync($"{request.PhoneNumber}");
+       // var verified = await _otpRepository.GetOtpAsync($"{request.PhoneNumber}");
 
-        if (verified==null ||!verified.IsVerified)
-            return Error.Validation("Otp.NotVerified", "The code must be verified first before resetting.");
+       // if (verified==null ||!verified.IsVerified)
+         //   return Error.Validation("Otp.NotVerified", "The code must be verified first before resetting.");
 
         var user = await _userManager.Users.FirstOrDefaultAsync(
             u => u.PhoneNumber == request.PhoneNumber, cancellationToken);
@@ -40,7 +40,7 @@ public class ResetPasswordCommandHandler
         if (!result.Succeeded)
             return Error.Failure("Reset.Failed", "Password change failed.");
 
-        await _otpRepository.RemoveOtpAsync($"{request.PhoneNumber}");
+      //  await _otpRepository.RemoveOtpAsync($"{request.PhoneNumber}");
 
         return "The password was successfully updated.";
     }

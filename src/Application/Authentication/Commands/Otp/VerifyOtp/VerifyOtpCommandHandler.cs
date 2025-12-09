@@ -27,12 +27,17 @@ namespace Application.Authentication.Commands.Otp.VerifyOtp
         {
             var cachedOtp = await _otpRepository.GetOtpAsync(request.PhoneNumber);
 
-            if (cachedOtp == null || cachedOtp.Code != request.OtpCode)
-                return Error.Validation("Otp.Invalid", "The verification code is incorrect or expired.");
+            if (cachedOtp == null || cachedOtp.Code != request.OtpCode )
+                return Error.Validation("Otp.Invalid", "The verification code is incorrect");
+            if (cachedOtp.ExpirationTime < DateTime.UtcNow)
+            {
+                await _otpRepository.RemoveOtpAsync(request.PhoneNumber);
+                return Error.Validation("Otp.Expired", "The verification code has expired.");
+            }
 
-            await _otpRepository.SaveOtpAsync($"{request.PhoneNumber}", cachedOtp.Code, true);
+            //   await _otpRepository.SaveOtpAsync($"{request.PhoneNumber}", cachedOtp.Code, true);
 
-            // await _otpRepository.RemoveOtpAsync(request.PhoneNumber);
+            await _otpRepository.RemoveOtpAsync(request.PhoneNumber);
 
             return "The code has been successfully verified.";
         }

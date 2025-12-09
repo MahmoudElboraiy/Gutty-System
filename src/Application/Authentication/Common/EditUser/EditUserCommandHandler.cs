@@ -4,6 +4,7 @@ using Domain.Models.Identity;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Authentication.Common.EditUser;
 
@@ -27,6 +28,15 @@ public class EditUserCommandHandler: IRequestHandler<EditUserCommand, ErrorOr<Re
         {
             return Error.Failure("User.NotFound", "User not found.");
         }
+        var phoneNumberExists = await _userManager.Users.AnyAsync(
+            u => u.PhoneNumber == request.PhoneNumber && u.Id != userId,
+            cancellationToken: cancellationToken
+        );
+        if (phoneNumberExists)
+        {
+            return Error.Failure("User.DuplicatePhoneNumber", "Phone number is already in use.");
+        }
+        user.PhoneNumber = string.IsNullOrEmpty(request.PhoneNumber) ? user.PhoneNumber : request.PhoneNumber;
         user.Name = string.IsNullOrEmpty(request.Name) ? user.Name : request.Name;
         user.MainAddress = string.IsNullOrEmpty(request.MainAddress) ? user.MainAddress : request.MainAddress;
         user.SecondaryAddress = string.IsNullOrEmpty(request.SecondaryAddress) ? user.SecondaryAddress : request.SecondaryAddress;

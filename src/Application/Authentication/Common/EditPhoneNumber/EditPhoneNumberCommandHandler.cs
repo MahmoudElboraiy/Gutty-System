@@ -11,24 +11,24 @@ public class EditPhoneNumberCommandHandler : IRequestHandler<EditPhoneNumberComm
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly UserManager<User> _userManager;
-    private readonly IOtpRepository _otpRepository;
+ //   private readonly IOtpRepository _otpRepository;
 
     public EditPhoneNumberCommandHandler(
          ICurrentUserService currentUserService,
-         UserManager<User> userManager,
-            IOtpRepository otpRepository
+         UserManager<User> userManager
+   //         IOtpRepository otpRepository
          )
     {
         _currentUserService = currentUserService;
         _userManager = userManager;
-        _otpRepository = otpRepository;
+     //   _otpRepository = otpRepository;
     }
     public async Task<ErrorOr<ResultMessage>> Handle(EditPhoneNumberCommand request, CancellationToken cancellationToken)
     {
-        var verified = await _otpRepository.GetOtpAsync($"{request.NewPhoneNumber}");
+     //   var verified = await _otpRepository.GetOtpAsync($"{request.NewPhoneNumber}");
 
-        if (verified == null || !verified.IsVerified)
-            return Error.Validation("Otp.NotVerified", "The code must be verified first before resetting.");
+       // if (verified == null || !verified.IsVerified)
+       //     return Error.Validation("Otp.NotVerified", "The code must be verified first before resetting.");
 
         var userId = _currentUserService.UserId;
         var user = await _userManager.FindByIdAsync(userId);
@@ -42,7 +42,7 @@ public class EditPhoneNumberCommandHandler : IRequestHandler<EditPhoneNumberComm
         var result = await _userManager.UpdateAsync(user);       
         if (result.Succeeded)
         {
-            await _otpRepository.RemoveOtpAsync($"{request.NewPhoneNumber}");
+          //  await _otpRepository.RemoveOtpAsync($"{request.NewPhoneNumber}");
             return new ResultMessage(true, "Phone number updated successfully.");
         }
         else
