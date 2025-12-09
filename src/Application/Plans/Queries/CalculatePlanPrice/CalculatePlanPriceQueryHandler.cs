@@ -90,11 +90,11 @@ public class CalculatePlanPriceQueryHandler
             }
         }
         return new CalculatePlanPriceResponse(
-            TotalPrice: total,
-            BreakfastPrice: plan.BreakfastPrice,
-            DinnerPrice: plan.DinnerPrice,
-            CarbGrams: carb,
-            Categories: resultItems
+            TotalPrice: total
+            //BreakfastPrice: plan.BreakfastPrice,
+            //DinnerPrice: plan.DinnerPrice,
+            //CarbGrams: carb,
+            //Categories: resultItems
         );
     }
 }

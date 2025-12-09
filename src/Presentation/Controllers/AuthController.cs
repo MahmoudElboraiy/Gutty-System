@@ -56,7 +56,7 @@ public class AuthController : Controller
         var result = await _mediator.Send(query);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpGet("SendOtp")]
+    [HttpPost("SendOtp")]
     public async Task<IActionResult> SendOtp(string phone)
     {
         var result = await _mediator.Send(new SendOtpCommand(phone));
@@ -93,7 +93,7 @@ public class AuthController : Controller
         return result.Match<IActionResult>(Ok, BadRequest);
     }
 
-    [HttpPost("AddRole"), Authorize(Roles = "Admin")]
+    [HttpPost("AddRole") ,Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddRole([FromBody] AddRoleCommand command)
     {
         var result = await _mediator.Send(command);

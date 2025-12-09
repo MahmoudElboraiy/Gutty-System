@@ -9,9 +9,16 @@ public record CalculatePlanPriceQuery(
     Guid PlanId,
     uint? CarbGrams,
     string? PromoCode,
-    string UserId,
 List<CategoryModificationDto>? Categories
 ) : IRequest<ErrorOr<CalculatePlanPriceResponse>>;
+
+public record CalculatePlanPriceResponse(
+    decimal TotalPrice
+    //decimal BreakfastPrice,
+    //decimal DinnerPrice,
+    //uint CarbGrams,
+    //List<CategoryCalculationItemDto> Categories
+);
 
 public record CategoryCalculationItemDto(
     int CategoryId,
@@ -19,12 +26,4 @@ public record CategoryCalculationItemDto(
     uint NumberOfMeals,
     uint ProteinGrams,
     decimal CategoryPrice
-);
-
-public record CalculatePlanPriceResponse(
-    decimal TotalPrice,
-    decimal BreakfastPrice,
-    decimal DinnerPrice,
-    uint CarbGrams,
-    List<CategoryCalculationItemDto> Categories
 );

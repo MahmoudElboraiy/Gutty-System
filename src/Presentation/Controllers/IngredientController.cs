@@ -35,7 +35,7 @@ public class IngredientController : Controller
     }
 
     [HttpPost("CreateIngredient")]
-    public async Task<IActionResult> UpdateIngredient([FromBody] CreateIngredientCommand command)
+    public async Task<IActionResult> CreateIngredient([FromBody] CreateIngredientCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);

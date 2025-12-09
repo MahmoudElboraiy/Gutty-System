@@ -6,36 +6,110 @@ namespace Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EnumsController
+public class EnumsController : ControllerBase
 {
     
     [HttpGet("itemMenuType")]
-    public IEnumerable<string> GetItemMenuType()
+    public IActionResult GetItemMenuType()
     {
-        return Enum.GetNames(typeof(ItemMenuType));
+        //return Enum.GetNames(typeof(ItemMenuType));
+        var result = Enum.GetValues(typeof(ItemMenuType))
+           .Cast<ItemMenuType>()
+           .Select(e => new {
+               Name = e.ToString(),
+               Value = (int)e
+           });
+
+        return Ok(result);
     }
     
     [HttpGet("itemType")]
-    public IEnumerable<string> GetItemType()
+    public IActionResult GetItemType()
     {
-        return Enum.GetNames(typeof(ItemType));
+         //return Enum.GetNames(typeof(ItemType));
+        var result = Enum.GetValues(typeof(ItemType))
+           .Cast<ItemType>()
+           .Select(e => new {
+               Name = e.ToString(),
+               Value = (int)e
+           });
+
+        return Ok(result);
     }
     
     [HttpGet("mealType")]
-    public IEnumerable<string> GetMealType()
+    public IActionResult GetMealType()
     {
-        return Enum.GetNames(typeof(MealType));
+        // return Enum.GetNames(typeof(MealType));
+        var result = Enum.GetValues(typeof(MealType))
+           .Cast<MealType>()
+           .Select(e => new {
+               Name = e.ToString(),
+               Value = (int)e
+           });
+
+        return Ok(result);
     }
     
-    [HttpGet("paymentMethod")]
-    public IEnumerable<string> GetPaymentMethod()
+    [HttpGet("discount-types")]
+    public IActionResult GetDiscountTypes()
     {
-        return Enum.GetNames(typeof(PaymentMethod));
+        var result = Enum.GetValues(typeof(DiscountType))
+            .Cast<DiscountType>()
+            .Select(e => new {
+                Name = e.ToString(),
+                Value = (int)e
+            });
+
+        return Ok(result);
     }
-    
-    [HttpGet("paymentStatus")]
-    public IEnumerable<string> GetPaymentStatus()
+    [HttpGet("RoleTypes")]
+    public IActionResult GetRoleTypes()
     {
-        return Enum.GetNames(typeof(PaymentStatus));
+        var result = Enum.GetValues(typeof(Roles))
+            .Cast<Roles>()
+            .Select(e => new
+            {
+                Name = e.ToString(),
+                Value = (int)e
+            });
+        return Ok(result);
+    }
+    [HttpGet("SaleType")]
+    public IActionResult GetSaleType()
+    {
+        var result = Enum.GetValues(typeof(SaleType))
+            .Cast<SaleType>()
+            .Select(e => new
+            {
+                Name = e.ToString(),
+                Value = (int)e
+            });
+        return Ok(result);
+    }
+    [HttpGet("UnitType")]
+    public IActionResult GetUnitType()
+    {
+        var result = Enum.GetValues(typeof(UnitType))
+            .Cast<UnitType>()
+            .Select(e => new
+            {
+                Name = e.ToString(),
+                Value = (int)e
+            });
+        return Ok(result);
+    }
+}
+public static class EnumExtensions
+{
+    public static IEnumerable<object> ToList<T>() where T : Enum
+    {
+        return Enum.GetValues(typeof(T))
+            .Cast<T>()
+            .Select(e => new
+            {
+                Value = Convert.ToInt32(e),
+                Name = e.ToString()
+            });
     }
 }

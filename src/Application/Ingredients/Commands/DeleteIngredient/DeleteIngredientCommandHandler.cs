@@ -2,6 +2,7 @@
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Ingredients.Commands.DeleteIngredient;
 
@@ -20,7 +21,17 @@ public class DeleteIngredientCommandHandler :
         {
             return Error.NotFound(description: $"Ingredient with id {request.Id} not found.");
         }
-        _unitOfWork.Ingredients.Remove(ingredient);
+        var mealsUsingIngredient = await _unitOfWork.Meals
+            .GetQueryable()
+            .AnyAsync(m => m.IngredientId == request.Id, cancellationToken);
+        if (mealsUsingIngredient)
+        {
+            return Error.Validation(
+                code: "Ingredient.DeleteError",
+                description: $"Cannot delete ingredient with id {request.Id} because it is used by one or more meals."
+                );
+        }
+            _unitOfWork.Ingredients.Remove(ingredient);
         await _unitOfWork.CompleteAsync();
         var response = new DeleteIngredientCommandResponse(
             true,

@@ -51,21 +51,21 @@ public class PlansController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{id}/calculate")]
-    public async Task<IActionResult> Calculate(Guid id, [FromBody] CalculatePlanPriceRequest request)
+    [HttpPost("calculatePrice")]
+    public async Task<IActionResult> Calculate( [FromBody] CalculatePlanPriceQuery query)
     {
-        var query = new CalculatePlanPriceQuery(
-            PlanId: id,
-            CarbGrams: request.CarbGrams,
-            PromoCode: request.PromoCode,
-            UserId: User.FindFirstValue("UserId") ?? string.Empty,
-            Categories: request.Categories?
-                .Select(c => new CategoryModificationDto(c.CategoryId, c.NumberOfMeals, c.ProteinGrams))
-                .ToList()
-        );
+        //var query = new CalculatePlanPriceQuery(
+        //    PlanId: id,
+        //    CarbGrams: request.CarbGrams,
+        //    PromoCode: request.PromoCode,
+        //    UserId: User.FindFirstValue("UserId") ?? string.Empty,
+        //    Categories: request.Categories?
+        //        .Select(c => new CategoryModificationDto(c.CategoryId, c.NumberOfMeals, c.ProteinGrams))
+        //        .ToList()
+        //);
 
-        var response = await _mediator.Send(query);
-        return Ok(response);      
+        var result = await _mediator.Send(query);
+        return result.Match<IActionResult>(Ok, BadRequest);
     }
     [HttpDelete("DeletePlan{id}"),Authorize(Roles = "Admin,CustomerService")]
     public async Task<IActionResult> DeletePlan(Guid id)

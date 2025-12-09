@@ -15,7 +15,7 @@ public record PlaceSubscriptionCommand(
     bool IsCurrent,
     bool IsPaused,
     List<PlaceSubscriptionPlanCategory> LunchCategories,
-    Guid? PromoCodeId
+    string? PromoCode
 ) : IRequest<ErrorOr<PlaceSubscriptionCommandResponse>>;
 
 public record PlaceSubscriptionPlanCategory(

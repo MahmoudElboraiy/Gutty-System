@@ -13,7 +13,7 @@ namespace Presentation.Dtos
         public bool IsCurrent { get; set; }
         public bool IsPaused { get; set; }
         public List<PlaceSubscriptionPlanCategoryDto> LunchCategories { get; set; } = new();
-        public Guid? PromoCodeId { get; set; }
+        public string? PromoCode { get; set; }
     }
 
     public class PlaceSubscriptionPlanCategoryDto

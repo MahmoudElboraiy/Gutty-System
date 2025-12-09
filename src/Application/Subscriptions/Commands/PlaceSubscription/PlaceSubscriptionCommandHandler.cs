@@ -25,15 +25,19 @@ public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscription
          ///   .FindAsync(s => s.UserId == request.UserId && s.IsCurrent);
         var subscriptionExist = await _unitOfWork.Subscriptions.GetQueryable()
             .AnyAsync(s => s.UserId == request.UserId && s.IsCurrent, cancellationToken);
-        if (subscriptionExist ==true)
+        if (subscriptionExist == true)
         {
             return Error.Validation("Subscription.AlreadyExists", "User already has an active subscription.");
         }
 
+
         PromoCode? promo = null;
-        if (request.PromoCodeId.HasValue)
+        if (request.PromoCode!=null)
         {
-            promo = await _unitOfWork.PromoCodes.GetByIdAsync(request.PromoCodeId.Value);
+            promo = await _unitOfWork.PromoCodes
+                .GetQueryable()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Code == request.PromoCode);
             if (promo is null || !promo.IsActive || promo.ExpiryDate < DateTime.UtcNow)
             {
                 return Error.Validation("PromoCode.InvalidOrExpired", "Invalid or expired promo code.");
@@ -48,7 +52,7 @@ public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscription
             LunchMealsLeft = request.LunchMealsLeft,
             CarbGrams = request.CarbGrams,
             StartDate = request.StartDate,
-            PromoCodeId = request.PromoCodeId,
+            PromoCodeId = promo?.Id,
             IsCurrent = request.IsCurrent,
             IsPaused = request.IsPaused,
             LunchCategories = request.LunchCategories.Select(c => new SubscriptionCategory

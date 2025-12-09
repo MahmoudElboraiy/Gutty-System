@@ -30,10 +30,8 @@ namespace Application.Authentication.Commands.Otp.VerifyOtp
             if (cachedOtp == null || cachedOtp.Code != request.OtpCode)
                 return Error.Validation("Otp.Invalid", "The verification code is incorrect or expired.");
 
-            // نحفظ حالة التحقق المؤقتة لمدة قصيرة (مثلاً 10 دقايق)
             await _otpRepository.SaveOtpAsync($"{request.PhoneNumber}", cachedOtp.Code, true);
 
-            // نحذف الـ OTP القديم علشان الأمان
             // await _otpRepository.RemoveOtpAsync(request.PhoneNumber);
 
             return "The code has been successfully verified.";

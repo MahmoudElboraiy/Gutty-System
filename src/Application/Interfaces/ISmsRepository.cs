@@ -3,5 +3,5 @@ namespace Application.Interfaces;
 
 public interface ISmsRepository
 {
-    Task<string> SendSmsAsync(string phoneNumber, string message);
+    Task<bool> SendSmsAsync(string phoneNumber, string message);
 }

@@ -1,6 +1,8 @@
 ﻿
 using Application.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Vonage;
@@ -22,31 +24,19 @@ public class SmsRepository: ISmsRepository
         _config = config;
     }
 
-    public async Task<string> SendSmsAsync(string phoneNumber, string message)
+    public async Task<bool> SendSmsAsync(string phoneNumber, string message)
     {
-      
+        var token = _config["WhySms:ApiToken"];
+        var sender = _config["WhySms:SenderId"];
+        var baseUrl = _config["WhySms:BaseUrl"];
 
-        var payload = new
-        {
-            api_token = _config["WhySms:ApiToken"],
-            recipient = phoneNumber,
-            sender_id = _config["WhySms:SenderId"],
-            type = "plain ",
-            message = message
-        };
+        var url = $"{baseUrl}?recipient=+{phoneNumber}&sender_id={sender}&message={Uri.EscapeDataString(message)}&type=plain";
 
-        var json = JsonSerializer.Serialize(payload);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Post, url);
+        request.Headers.Add("Authorization", $"Bearer {token}");
 
-        var response = await _httpClient.PostAsync(_config["WhySms:BaseUrl"], content);
-        var body = await response.Content.ReadAsStringAsync();
+        var response = await _httpClient.SendAsync(request);
 
-        if (!response.IsSuccessStatusCode)
-        {
-            return "Failed to send SMS";
-        }
-
-        return  "SMS sent successfully"  ;
-
+        return response.IsSuccessStatusCode;
     }
 }

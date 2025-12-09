@@ -23,8 +23,13 @@ public class SendOtpCommandHandler : IRequestHandler<SendOtpCommand, ErrorOr<str
 
         var PhoneNumber = "2" + request.PhoneNumber;
 
-        await _smsRepository.SendSmsAsync(PhoneNumber, $"Your Otp code is: {otp}");
+        var restult = await _smsRepository.SendSmsAsync(PhoneNumber, $"Your OTP code is: {otp}");
 
-        return "OTP has been sent successfully.";
+        if (restult == false)
+        {
+            return Error.Failure(code: "Sms.SendError", description: "Failed to send OTP SMS.");
+        }
+
+        return "OTP was sent successfully";
     }
 }

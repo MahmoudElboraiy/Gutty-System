@@ -80,7 +80,7 @@ namespace Infrastructure.Migrations
                         column: x => x.IngredientId,
                         principalTable: "Ingredients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Meals_Subcategories_SubcategoryId",
                         column: x => x.SubcategoryId,
