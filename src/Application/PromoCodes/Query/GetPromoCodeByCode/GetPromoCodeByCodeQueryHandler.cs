@@ -25,16 +25,22 @@ public class GetPromoCodeByCodeQueryHandler : IRequestHandler<GetPromoCodeByCode
         {
             return Error.NotFound("PromoCode.NotFound", "Promo code not found.");
         }
-        var usedCount = promoCode.Usages.Count;
         var response = new GetPromoCodeByCodeQueryResponse(
-            promoCode.Id,
-            promoCode.Code!,
-            promoCode.DiscountType,
-            promoCode.DiscountValue,
-            promoCode.ExpiryDate,
-            promoCode.IsActive,
-            usedCount
-        );
+           promoCode.Id,
+           promoCode.Code!,
+           promoCode.DiscountType,
+           promoCode.DiscountValue,
+           promoCode.ExpiryDate,
+           promoCode.IsActive,
+           promoCode.Usages.Count,
+           promoCode.OwnerUserId,
+           promoCode.Usages.Select(u => new PromoCodeUsageItem(
+               u.Id,
+               u.UserId,
+               u.UsedAt
+           )).ToList()
+       );
+
         return response;
     }
 }

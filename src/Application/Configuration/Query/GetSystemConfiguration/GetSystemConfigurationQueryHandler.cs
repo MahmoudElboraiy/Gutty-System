@@ -1,19 +1,29 @@
 ﻿
 using Application.Interfaces.UnitOfWorkInterfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Configuration.Query.GetSystemConfiguration;
 
 public class GetSystemConfigurationQueryHandler : IRequestHandler<GetSystemConfigurationQuery, GetSystemConfigurationQueryResponse>
 {
-    private readonly ISystemConfigurationRepository _systemConfigurationRepository;
-    public GetSystemConfigurationQueryHandler(ISystemConfigurationRepository systemConfigurationRepository)
+    private readonly IUnitOfWork _unitOfWork;
+
+    public GetSystemConfigurationQueryHandler(IUnitOfWork unitOfWork)
     {
-        _systemConfigurationRepository = systemConfigurationRepository;
+        _unitOfWork = unitOfWork;
     }
     public async Task<GetSystemConfigurationQueryResponse> Handle(GetSystemConfigurationQuery request, CancellationToken cancellationToken)
     {
-        var config = await _systemConfigurationRepository.GetAsync(cancellationToken);
-        return new GetSystemConfigurationQueryResponse(config.DailyCapacity ?? 0,config.MinimumDaysToOrder ?? 0);
+        var config = await _unitOfWork
+            .Configurations
+            .GetQueryable()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
+        if(config == null)
+        {
+            return new GetSystemConfigurationQueryResponse(0,0,0);
+        }
+        return new GetSystemConfigurationQueryResponse(config.DailyCapacity,config.MinimumDaysToOrder,config.MaximumDaysToOrder);
     }
 }

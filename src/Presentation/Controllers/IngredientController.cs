@@ -4,13 +4,16 @@ using Application.Ingredients.Commands.DeleteIngredient;
 using Application.Ingredients.Commands.UpdateIngredient;
 using Application.Ingredients.Queries.GetIngredientById;
 using Application.Ingredients.Queries.GetIngredients;
+using Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
 public class IngredientController : Controller
 {
     private readonly ISender _mediator;
@@ -22,9 +25,9 @@ public class IngredientController : Controller
 
     [HttpGet("GetIngredient")]
     public async Task<IActionResult> GetIngredients([FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10)
+        [FromQuery] int pageSize = 10, [FromQuery] string? searchName =null)
     {
-        var result = await _mediator.Send(new GetIngredientsQuery(pageNumber, pageSize));
+        var result = await _mediator.Send(new GetIngredientsQuery(pageNumber, pageSize, searchName));
         return result.Match<IActionResult>(Ok, BadRequest);
     }
     [HttpGet("GetIngredientById/{id:int}")]

@@ -5,14 +5,20 @@ using MediatR;
 
 namespace Application.Inventory.Purchases.Query.GetPurchasesByDays;
 
-public record GetPurchasesByDaysQuery(int Days, int PageNumber, int PageSize) : IRequest<ErrorOr<List<GetPurchasesByDaysResponse>>>;
+public record GetPurchasesByDaysQuery(int Days, int PageNumber, int PageSize,string? searchName) : IRequest<ErrorOr<GetPurchasesByDaysResponse>>;
 public record GetPurchasesByDaysResponse
-{
-    public int Id { get; set; }
-    public string ItemName { get; set; }
-    public int Quantity { get; set; }
-    public UnitType Unit { get; set; }
-    public decimal Price { get; set; }
-    public DateOnly PurchaseDate { get; set; }
-}
+(
+    int pageNumber,
+    int pageSize,
+    int TotalCount,
+    List<GetPurchasesByDaysItem> Purchases);
+public record  GetPurchasesByDaysItem
+(
+    int Id,
+    string ItemName,
+    int Quantity,
+    UnitType Unit,
+    decimal Price ,
+    DateOnly PurchaseDate
+);
 

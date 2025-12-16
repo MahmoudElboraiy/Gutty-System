@@ -24,6 +24,13 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
             .AsNoTracking()
             .Include(i=>i.Ingredient)
             .FirstOrDefaultAsync(cancellationToken);
+
+        var category = await _unitOfWork.SubCategories
+            .GetQueryable()
+            .Where(c => c.Id == meal.SubcategoryId)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
+
         GetMealDetailsQueryResponse responseItem = null;
         if(meal == null) {
             return Error.NotFound("Meal.NotFound", "Meal not found");
@@ -40,6 +47,8 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
                 meal.FixedProtein.Value,
                 meal.FixedCarbs.Value,
                 meal.FixedFats.Value,
+                category.CategoryId,
+                meal.SubcategoryId,
                 meal.DefaultQuantityGrams
             );
             return responseItem;
@@ -81,6 +90,8 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
             meal.Ingredient.ProteinPer100g * ratio,
             meal.Ingredient.CarbsPer100g * ratio,
             meal.Ingredient.FatsPer100g * ratio,
+            category.CategoryId,
+            meal.SubcategoryId,
             ingredient
         );
         return responseItem;

@@ -18,7 +18,7 @@ public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, Get
             .GetQueryable()
             .AsNoTracking()
             .ToListAsync(cancellationToken);
-        var responseItems = categories.Select(c => new GetCategoryQueryResponseItem(c.Id, c.Name)).ToList();
+        var responseItems = categories.Select(c => new GetCategoryQueryResponseItem(c.Id, c.Name,c.MealType)).ToList();
         return new GetCategoriesQueryResponse(responseItems);
     }
 }

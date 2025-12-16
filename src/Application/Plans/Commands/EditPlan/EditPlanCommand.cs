@@ -2,6 +2,7 @@
 
 using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Plans.Commands.EditPlan;
 
@@ -9,7 +10,7 @@ public record EditPlanCommand(
     Guid Id,
     string Name,
     string Description,
-    string? ImageUrl,
+    IFormFile Image,
     int DurationInDays,
     uint LMealsPerDay,
     uint BDMealsPerDay,

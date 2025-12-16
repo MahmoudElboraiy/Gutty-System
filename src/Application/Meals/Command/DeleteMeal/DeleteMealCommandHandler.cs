@@ -3,6 +3,7 @@
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Meals.Command.DeleteMeal;
 
@@ -20,7 +21,25 @@ public class DeleteMealCommandHandler : IRequestHandler<DeleteMealCommand, Error
         {
             return Error.NotFound("Meal.NotFound", "Meal not found");
         }
-        _unitOfWork.Meals.Remove(meal);
+        var today = DateOnly.FromDateTime(DateTime.Now);
+
+        bool isUsedInOrders = await _unitOfWork.Orders
+            .GetQueryable()
+            .AsNoTracking()
+            .Where(o => o.DeliveryDate >= today)
+            .SelectMany(o => o.Meals) 
+            .AnyAsync(om => om.MealId == meal.Id
+                           || om.ProteinMealId == meal.Id
+                           || om.CarbMealId == meal.Id,
+                       cancellationToken);
+        if (isUsedInOrders)
+        {
+            return Error.Validation(
+                code: "Meal.DeleteError",
+                description: $"Cannot delete meal with id {request.Id} because it is used in upcoming orders."
+                );
+        }
+            _unitOfWork.Meals.Remove(meal);
         await _unitOfWork.CompleteAsync();
         return new ResultMessage
         {

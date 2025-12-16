@@ -1,6 +1,7 @@
 using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.DErrors;
+using Domain.Enums;
 using Domain.Models.Entities;
 using ErrorOr;
 using MediatR;
@@ -29,7 +30,14 @@ public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscription
         {
             return Error.Validation("Subscription.AlreadyExists", "User already has an active subscription.");
         }
-
+        var plan = await _unitOfWork.Plans
+            .GetQueryable()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == request.PlanId, cancellationToken);
+        if (plan is null)
+        {
+            return Error.Validation("Plan.NotFound", "Subscription plan not found.");
+        }
 
         PromoCode? promo = null;
         if (request.PromoCode!=null)
@@ -43,7 +51,12 @@ public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscription
                 return Error.Validation("PromoCode.InvalidOrExpired", "Invalid or expired promo code.");
             }
         }
+        var numberOfMealsSelected = request.LunchCategories.Sum(c => c.NumberOfMeals);
+        if (numberOfMealsSelected != plan.DurationInDays*plan.LMealsPerDay)
+        {
+            return Error.Validation("Subscription.InvalidMealsCount", $"The total number of lunch meals selected ({numberOfMealsSelected}) does not match the plan's allowed lunch meals ({plan.DurationInDays * plan.LMealsPerDay}).");
 
+        }
         var subscription = new Subscription
         {
             UserId = request.UserId,
@@ -67,8 +80,30 @@ public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscription
             }).ToList()
         };
 
+        //decimal total = subscription.GetTotalPrice();
+        decimal total = CalculateSubscriptionPrice(plan, request);
+        decimal discountAmount = 0;
 
+        if(promo is not null)
+        {
+            if (promo.DiscountType == DiscountType.Percentage)
+                discountAmount = total * (promo.DiscountValue / 100m);
+            else
+                discountAmount = promo.DiscountValue;
+        }
+        total -= discountAmount;
+        var sale = new Sales
+        {
+            ItemType = SaleType.Subscription,
+            ItemName = plan.Name,
+            Quantity = 1,
+            UnitType = UnitType.Package,
+            Price = total,
+            CustomerId = request.UserId,
+            SaleDate = DateOnly.FromDateTime(DateTime.UtcNow)
+        };
         await _unitOfWork.Subscriptions.AddAsync(subscription);
+        await _unitOfWork.Sales.AddAsync(sale);
 
         if (promo is not null)
         {
@@ -85,4 +120,16 @@ public class PlaceSubscriptionCommandHandler : IRequestHandler<PlaceSubscription
 
         return new PlaceSubscriptionCommandResponse(subscription.Id);
     }
+    private decimal CalculateSubscriptionPrice(Plan plan, PlaceSubscriptionCommand request)
+    {
+        decimal price = plan.BreakfastPrice + plan.DinnerPrice;
+
+        price += request.LunchCategories.Sum(c =>
+            c.NumberOfMeals * c.PricePerGram * c.ProteinGrams
+        );
+
+        return price;
+    }
+
 }
+

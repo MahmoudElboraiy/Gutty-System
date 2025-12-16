@@ -13,5 +13,7 @@ public record GetMealDetailsQueryResponse(
     decimal Protein,
     decimal Carbs,
     decimal Fats,
+    int CategoryId,
+    int SubcategoryId,
     decimal? DefaultQuantityGrams
     );

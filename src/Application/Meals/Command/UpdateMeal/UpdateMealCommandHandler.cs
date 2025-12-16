@@ -9,9 +9,11 @@ namespace Application.Meals.Command.UpdateMeal;
 public class UpdateMealCommandHandler : IRequestHandler<UpdateMealCommand, ErrorOr<ResultMessage>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public UpdateMealCommandHandler(IUnitOfWork unitOfWork)
+    private readonly IFileStorageService _fileService;
+    public UpdateMealCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService)
     {
         _unitOfWork = unitOfWork;
+        _fileService = fileService;
     }
     public async Task<ErrorOr<ResultMessage>> Handle(UpdateMealCommand request, CancellationToken cancellationToken)
     {
@@ -20,8 +22,13 @@ public class UpdateMealCommandHandler : IRequestHandler<UpdateMealCommand, Error
         {
             return Error.NotFound("Meal.NotFound", "Meal not found");
         }
+        if(request.Image ==null || request.Image.Length == 0)
+        {
+            return Error.Validation("Meal.ImageMissing", "Image file is required for the meal.");
+        }
+        var imageUrl = await _fileService.SaveImageAsync(request.Image);
         meal.Name = request.Name;
-        meal.ImageUrl = request.ImageUrl;
+        meal.ImageUrl = imageUrl;
         meal.Description = request.Description;
         meal.FixedCalories = request.FixedCalories;
         meal.FixedProtein = request.FixedProtein;

@@ -43,9 +43,8 @@ public class PlansController : ControllerBase
         return result.Match<IActionResult>(Ok, BadRequest);
     }
 
-    [HttpPost("CreatePlan")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> CreatePlanAdmin([FromBody] CreatePlanCommand command)
+    [HttpPost("CreatePlan"), Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    public async Task<IActionResult> CreatePlanAdmin([FromForm] CreatePlanCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(result);
@@ -53,28 +52,18 @@ public class PlansController : ControllerBase
 
     [HttpPost("calculatePrice")]
     public async Task<IActionResult> Calculate( [FromBody] CalculatePlanPriceQuery query)
-    {
-        //var query = new CalculatePlanPriceQuery(
-        //    PlanId: id,
-        //    CarbGrams: request.CarbGrams,
-        //    PromoCode: request.PromoCode,
-        //    UserId: User.FindFirstValue("UserId") ?? string.Empty,
-        //    Categories: request.Categories?
-        //        .Select(c => new CategoryModificationDto(c.CategoryId, c.NumberOfMeals, c.ProteinGrams))
-        //        .ToList()
-        //);
-
+    {   
         var result = await _mediator.Send(query);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpDelete("DeletePlan{id}"),Authorize(Roles = "Admin,CustomerService")]
+    [HttpDelete("DeletePlan/{id}"), Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
     public async Task<IActionResult> DeletePlan(Guid id)
     {
         var result = await _mediator.Send(new DeletePlanCommand(id));
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPut("EditPlan"), Authorize(Roles = "Admin,CustomerService")]
-    public async Task<IActionResult> EditPlan( [FromBody] EditPlanCommand command)
+    [HttpPut("EditPlan"), Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    public async Task<IActionResult> EditPlan( [FromForm] EditPlanCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);

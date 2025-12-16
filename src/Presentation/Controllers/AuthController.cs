@@ -12,9 +12,11 @@ using Application.Authentication.Common.EditAddress;
 using Application.Authentication.Common.EditName;
 using Application.Authentication.Common.EditPhoneNumber;
 using Application.Authentication.Common.EditUser;
+using Application.Authentication.Common.EditUserDashBoard;
 using Application.Authentication.Queries.GetCoustmors;
 using Application.Authentication.Queries.UserLogin;
 using Application.Authentication.Queries.UserVerify;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -99,28 +101,34 @@ public class AuthController : Controller
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPost("RemoveUser"), Authorize(Roles = "Admin")]
-    public async Task<IActionResult> RemoveUser([FromBody] RemoveUserCommand command)
+    [HttpDelete("RemoveUser/{userId}"), Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RemoveUser([FromRoute] string userId)
     {
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new RemoveUserCommand(userId));
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPost("EditUser"), Authorize]
+    [HttpPut("EditUser"), Authorize]
     public async Task<IActionResult> EditUser([FromBody] EditUserCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpPost("EditPhoneNumber"), Authorize]
-    public async Task<IActionResult> EditPhoneNumber([FromBody] EditPhoneNumberCommand command)
+    [HttpPut("EditUserDashBoard"), Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    public async Task<IActionResult> EditUserDashBoard([FromBody] EditUserDashBoardCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
-    [HttpGet("GetCoustmors")]//, Authorize]
-    public async Task<IActionResult> GetCoustmor([FromRoute] int pageNumber = 1, int pageSize = 10)
+    //[HttpPost("EditPhoneNumber"), Authorize]
+    //public async Task<IActionResult> EditPhoneNumber([FromBody] EditPhoneNumberCommand command)
+    //{
+    //    var result = await _mediator.Send(command);
+    //    return result.Match<IActionResult>(Ok, BadRequest);
+    //}
+    [HttpGet("GetCoustmors"), Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    public async Task<IActionResult> GetCoustmor( int pageNumber = 1, int pageSize = 10, string? searchName= null)
     {
-        var result = await _mediator.Send(new GetCoustmorsQuery(pageNumber, pageSize));
+        var result = await _mediator.Send(new GetCoustmorsQuery(pageNumber, pageSize, searchName));
         return result.Match<IActionResult>(Ok, BadRequest);
     }
 }

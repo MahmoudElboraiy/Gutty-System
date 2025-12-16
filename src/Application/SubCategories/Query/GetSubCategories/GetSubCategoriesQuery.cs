@@ -8,5 +8,6 @@ public record GetSubCategoriesQueryResponse(List<GetSubCategoryQueryResponseItem
 public record GetSubCategoryQueryResponseItem(
     int Id,
     string Name,
+    string ImageUrl,
     int CategoryId
     );

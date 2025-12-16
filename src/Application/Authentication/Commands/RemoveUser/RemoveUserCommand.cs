@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Authentication.Commands.RemoveUser
 {
-    public record RemoveUserCommand(string PhoneNumber) : IRequest<ErrorOr<ResultSuccess>>;
+    public record RemoveUserCommand(string userId) : IRequest<ErrorOr<ResultSuccess>>;
     public record ResultSuccess(
         bool IsSuccess,
         string Message

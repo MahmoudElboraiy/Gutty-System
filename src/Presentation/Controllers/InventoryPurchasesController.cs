@@ -5,7 +5,9 @@ using Application.Inventory.Purchases.Query.GetPriceSummaryByDays;
 using Application.Inventory.Purchases.Query.GetPurchaseOrderById;
 using Application.Inventory.Purchases.Query.GetPurchasesByDays;
 using Application.Inventory.Sales.Query.GetSaleOrderById;
+using Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -14,6 +16,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
     public class InventoryPurchasesController : ControllerBase
     {
         private readonly ISender _mediator;
@@ -25,9 +28,10 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetPurchases(
          [FromQuery] int days = 7,
          [FromQuery] int pageNumber = 1,
-         [FromQuery] int pageSize = 10)
+         [FromQuery] int pageSize = 10,
+         [FromQuery] string? searchName =null)
         {
-            var query = new GetPurchasesByDaysQuery(days, pageNumber, pageSize);
+            var query = new GetPurchasesByDaysQuery(days, pageNumber, pageSize, searchName);
             var result = await _mediator.Send(query);
             return result.Match<IActionResult>(Ok, BadRequest);
 

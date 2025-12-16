@@ -3,13 +3,14 @@
 using Domain.Enums;
 using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Meals.Command.UpdateMeal;
 
 public record UpdateMealCommand(
     int Id,
     string Name,
-    string ImageUrl,
+    IFormFile Image,
     string Description,
     decimal? FixedCalories,
     decimal? FixedProtein,

@@ -13,11 +13,12 @@ public class CreatePlanCommandHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
-
-    public CreatePlanCommandHandler(IUnitOfWork unitOfWork, UserManager<User> userManager)
+    private readonly IFileStorageService _fileService;
+    public CreatePlanCommandHandler(IUnitOfWork unitOfWork, UserManager<User> userManager, IFileStorageService fileService)
     {
         _unitOfWork = unitOfWork;
         _userManager = userManager;
+        _fileService = fileService;
     }
 
     public async Task<ErrorOr<CreatePlanCommandResponse>> Handle(
@@ -25,11 +26,16 @@ public class CreatePlanCommandHandler
         CancellationToken cancellationToken
     )
     {
+        if(request.Image == null || request.Image.Length == 0)
+        {
+            return Error.Validation("Plan.ImageMissing", "Image file is required for the plan.");
+        }
+        var imageUrl = await _fileService.SaveImageAsync(request.Image);
         var plan = new Plan
         {
             Name = request.Name,
             Description = request.Description,
-            ImageUrl = request.ImageUrl,
+            ImageUrl = imageUrl,
             DurationInDays = request.DurationInDays,
             LMealsPerDay = request.LMealsPerDay,
             BDMealsPerDay = request.BDMealsPerDay,

@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
-using Vonage.Voice;
+
 
 namespace Application.Orders.Query.GetOrdersByDateWithMeals;
 
@@ -13,7 +13,7 @@ public class OrderWithNutritionResponse
     public string PhoneNumber { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public List<MealWithNutritionResponse> BreakfastAndDinner { get; set; } = new();
-    // الغداء (بروتين ومعاه كارب)
+  
     public List<LunchProteinWithCarbResponse> Lunch { get; set; } = new();
 }
 
@@ -35,7 +35,6 @@ public class LunchProteinWithCarbResponse
 
     public NutritionResponse ProteinNutrition { get; set; } = new();
 
-    // الكارب المرتبط بالبروتين
     public CarbResponse? Carb { get; set; }
 }
 public class CarbResponse

@@ -24,6 +24,7 @@ public class UnitOfWork : IUnitOfWork
     private IRepository<PromoCode, Guid> _promoCodeRepository;
     private IRepository<PromoCodeUsage, Guid> _promoCodeUsageRepository;
     private IRepository<Ingredient, int> _ingredientRepository;
+    private IRepository<Configurations, int> _configurationsRepository;
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
@@ -69,6 +70,8 @@ public class UnitOfWork : IUnitOfWork
         _salesRepository ??= new Repository<Sales, int>(_context);
     public IRepository<Ingredient, int> Ingredients =>
         _ingredientRepository ??= new Repository<Ingredient, int>(_context);
+    public IRepository<Configurations, int> Configurations =>
+        _configurationsRepository ??= new Repository<Configurations, int>(_context);
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();

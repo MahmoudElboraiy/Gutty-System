@@ -1,5 +1,4 @@
 using Domain.Models.Entities;
-
 namespace Application.Interfaces.UnitOfWorkInterfaces;
 
 public interface IUnitOfWork
@@ -21,6 +20,7 @@ public interface IUnitOfWork
     IRepository<ShippingAddress, int> ShippingAddresses { get; }
     IRepository<PromoCode,Guid>  PromoCodes { get; }
     IRepository<PromoCodeUsage ,Guid> PromoCodeUsages { get; }
+    IRepository<Configurations, int> Configurations { get; }
 
     // Specialized repositories
     // IItemRepository ItemsSpecialized { get; }

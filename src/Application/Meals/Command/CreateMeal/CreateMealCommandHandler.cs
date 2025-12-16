@@ -11,16 +11,23 @@ namespace Application.Meals.Command.CreateMeal;
 public class CreateMealCommandHandler : IRequestHandler<CreateMealCommand, ErrorOr<ResultMessage>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public CreateMealCommandHandler(IUnitOfWork unitOfWork)
+    private readonly IFileStorageService _fileService;
+    public CreateMealCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService)
     {
         _unitOfWork = unitOfWork;
+        _fileService = fileService;
     }
     public async Task<ErrorOr<ResultMessage>> Handle(CreateMealCommand request, CancellationToken cancellationToken)
     {
+        if(request.Image == null || request.Image.Length == 0)
+        {
+            return Error.Validation("Meal.ImageMissing", "Image file is required for the meal.");
+        }
+        var imageUrl = await _fileService.SaveImageAsync(request.Image);
         var meal = new Meal
         {
             Name = request.Name,
-            ImageUrl = request.ImageUrl,
+            ImageUrl = imageUrl,
             Description = request.Description,
             FixedCalories = request.FixedCalories,
             FixedProtein = request.FixedProtein,

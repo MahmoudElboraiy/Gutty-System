@@ -42,6 +42,28 @@ namespace Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Domain.Models.Entities.Configurations", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DailyCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaximumDaysToOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinimumDaysToOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Configurations");
+                });
+
             modelBuilder.Entity("Domain.Models.Entities.Ingredient", b =>
                 {
                     b.Property<int>("Id")

@@ -7,10 +7,13 @@ using Application.PromoCodes.Commands.CreatePromoCode;
 using Application.PromoCodes.Query.GetPromoCodeByCode;
 using Application.PromoCodes.Commands.EditPromoCode;
 using Application.PromoCodes.Commands.DeletePromoCode;
+using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
     public class PromoCodeController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -20,9 +23,11 @@ namespace Presentation.Controllers
         }
         [HttpGet("GetPromocodes")]
         public async Task<IActionResult> GetPromocodes([FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10)
+        [FromQuery] int pageSize = 10
+            , [FromQuery] string? searchName = null
+            , [FromQuery] bool? isActive = null)
         {
-            var result = await _mediator.Send(new GetPromoCodesQuery(pageNumber,pageSize));
+            var result = await _mediator.Send(new GetPromoCodesQuery(pageNumber,pageSize, searchName, isActive));
             return result.Match<IActionResult>(Ok, BadRequest);
         }
         [HttpGet("GetPromocodeByCode/{code}")]

@@ -84,6 +84,7 @@ public static class DependencyInjection
         services.AddScoped<ISmsRepository, SmsRepository>();
         services.AddHttpClient<ISmsRepository, SmsRepository>();
         services.AddScoped<IOtpRepository, OtpRepository>();
+        services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddHttpContextAccessor();
         return services;
     }

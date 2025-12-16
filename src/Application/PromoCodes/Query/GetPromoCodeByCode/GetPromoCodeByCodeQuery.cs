@@ -14,5 +14,12 @@ public record GetPromoCodeByCodeQueryResponse(
     decimal DiscountPercentage,
     DateTime ExpiryDate,
     bool IsActive, 
-    int UsedCount
+    int UsedCount,
+    string? OwnerUserId,
+     List<PromoCodeUsageItem> Usages
     );
+public record PromoCodeUsageItem(
+    Guid Id,
+    string? UsedByUserId,
+    DateTime UsedAt
+);

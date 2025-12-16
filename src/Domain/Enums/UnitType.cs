@@ -8,6 +8,7 @@ namespace Domain.Enums
         Gram = 2,    
         Kilogram = 3,
         Liter = 4,
-        Box = 5
+        Box = 5,
+        Package = 6
     }
 }

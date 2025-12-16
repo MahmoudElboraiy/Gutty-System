@@ -10,12 +10,10 @@ namespace Application.Orders.Commands.ChooseDeliveryDate;
 public class ChooseDeliveryDateCommandHandler : IRequestHandler<ChooseDeliveryDateCommand, ChooseDeliveryDateCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ISystemConfigurationRepository _systemConfigurationRepository;
     private readonly ICurrentUserService _currentUserService;
-    public ChooseDeliveryDateCommandHandler(IUnitOfWork unitOfWork, ISystemConfigurationRepository systemConfigurationRepository , ICurrentUserService currentUserService)
+    public ChooseDeliveryDateCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
     {
         _unitOfWork = unitOfWork;
-        _systemConfigurationRepository = systemConfigurationRepository;
         _currentUserService = currentUserService;
     }
     public async Task<ChooseDeliveryDateCommandResponse> Handle(ChooseDeliveryDateCommand request, CancellationToken cancellationToken)
@@ -32,16 +30,25 @@ public class ChooseDeliveryDateCommandHandler : IRequestHandler<ChooseDeliveryDa
 
 
         //var order = await _unitOfWork.Orders.GetByIdAsync(request.orderId);
-        var config = await _systemConfigurationRepository.GetAsync(cancellationToken);
+        var config = await _unitOfWork
+            .Configurations
+            .GetQueryable()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
+
         if (order == null)
         {
             return new ChooseDeliveryDateCommandResponse(false, "Order not found");
         }     
-        if (request.deliveryDate <= todayDate.AddDays(config.MinimumDaysToOrder ?? 0))
+        if (request.deliveryDate <= todayDate.AddDays(config.MinimumDaysToOrder))
         {
             return new ChooseDeliveryDateCommandResponse(false, $"Delivery date must be at least {config.MinimumDaysToOrder} days from today");
         }
-        if(request.deliveryDate > todayDate.AddDays(30))
+        if(order.DeliveryDate.HasValue && order.DeliveryDate.Value == todayDate)
+        {
+            return new ChooseDeliveryDateCommandResponse(false, "Cannot change delivery date on the day of delivery");
+        }
+        if (request.deliveryDate > todayDate.AddDays(config.MaximumDaysToOrder))
         {
             return new ChooseDeliveryDateCommandResponse(false, "Delivery date cannot be more than 30 days from today");
         }
@@ -52,7 +59,7 @@ public class ChooseDeliveryDateCommandHandler : IRequestHandler<ChooseDeliveryDa
             .Select(o => o.Id)
             .CountAsync(cancellationToken);
 
-        if (count >= (config.DailyCapacity ?? 0))
+        if (count >= (config.DailyCapacity))
         {
             return new ChooseDeliveryDateCommandResponse(false, "Selected delivery date is fully booked. Please choose another date.");
         }

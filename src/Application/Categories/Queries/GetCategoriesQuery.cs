@@ -1,5 +1,6 @@
 ﻿
 
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Categories.Queries;
@@ -9,5 +10,6 @@ public record  GetCategoriesQueryResponse(List<GetCategoryQueryResponseItem> Cat
 
 public record GetCategoryQueryResponseItem (
     int Id,
-    string Name
+    string Name,
+    MealType Type
     );

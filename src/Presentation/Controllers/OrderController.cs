@@ -116,14 +116,14 @@ namespace Presentation.Controllers
             var result = await _mediator.Send(new IsThereOrderQuery());
             return Ok(result);
         }
-        [HttpGet("GetIngredientsByDate{DeliveryDate}")]
-        public async Task<IActionResult> GetIngredientsByDate(DateOnly DeliveryDate)
+        [HttpGet("GetIngredientsByDate/{DeliveryDate}")]
+        public async Task<IActionResult> GetIngredientsByDate([FromRoute] DateOnly DeliveryDate)
         {
             var result = await _mediator.Send(new GetIngredientsByDateQuery(DeliveryDate));
             return Ok(result);
         }
-        [HttpGet("GetOrdersByDateWithNutrition{DeliveryDate}")]
-        public async Task<IActionResult> GetOrdersByDateWithNutrition(DateOnly DeliveryDate)
+        [HttpGet("GetOrdersByDateWithNutrition/{DeliveryDate}")]
+        public async Task<IActionResult> GetOrdersByDateWithNutrition([FromRoute] DateOnly DeliveryDate)
         {
             var result = await _mediator.Send(new GetOrdersByDateWithNutritionQuery(DeliveryDate));
             return result.Match<IActionResult>(Ok, BadRequest);

@@ -3,6 +3,7 @@
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Plans.Commands.DeletePlan;
 
@@ -19,6 +20,17 @@ public class DeletePlanCommandHandler: IRequestHandler<DeletePlanCommand,ErrorOr
         if (planExits == null)
         {
             return Error.NotFound(description: "Plan not found");
+        }
+        bool isUsed = await _unitOfWork.Subscriptions
+          .GetQueryable()
+          .AsNoTracking()
+          .AnyAsync(s => s.PlanId == planExits.Id && s.IsCurrent, cancellationToken);
+        if (isUsed)
+        {
+            return Error.Validation(
+                code: "Plan.DeleteError",
+                description: $"Cannot delete plan with id {request.id} because it is associated with active subscriptions."
+                );
         }
         _unitOfWork.Plans.Remove(planExits);
         await _unitOfWork.CompleteAsync();

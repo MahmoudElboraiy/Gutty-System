@@ -29,10 +29,14 @@ public class AddMealCommandHandler : IRequestHandler<AddMealCommand, AddMealComm
         {
             return new AddMealCommandResponse(false, "No active subscription found for the user.");
         }
-        var orderId = await _unitOfWork.Orders.GetQueryable()
+        var order = await _unitOfWork.Orders.GetQueryable()
             .Where(o => o.SubscriptionId == subscription.Id && !o.IsCompleted)
-            .Select(o => o.Id)
             .FirstOrDefaultAsync(cancellationToken);
+
+        if (order == null)
+        {
+            return new AddMealCommandResponse(false, "Order not found.");
+        }
 
         var meal =await _unitOfWork.Meals.GetQueryable()
             .AsNoTracking()
@@ -46,15 +50,6 @@ public class AddMealCommandHandler : IRequestHandler<AddMealCommand, AddMealComm
         }
 
         var mealType = meal?.MealType;
-
-        var order = await _unitOfWork.Orders.GetQueryable()
-           .Include(o => o.Meals)
-           .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
-
-        if (order == null)
-        {
-            return new AddMealCommandResponse(false, "Order not found.");
-        }
 
             var subCategoryId = meal!.SubcategoryId;
 
@@ -100,7 +95,7 @@ public class AddMealCommandHandler : IRequestHandler<AddMealCommand, AddMealComm
         {
             var orderMeal = new OrderMeal
             {
-                OrderId = orderId,
+                OrderId = order.Id,
                 MealType = (MealType)mealType!,
                 Notes = request.Notes
             };

@@ -12,9 +12,11 @@ public class EditPlanCommandHandler :
     IRequestHandler<EditPlanCommand, ErrorOr<EditPlanCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public EditPlanCommandHandler(IUnitOfWork unitOfWork)
+    private readonly IFileStorageService _fileService;
+    public EditPlanCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService)
     {
         _unitOfWork = unitOfWork;
+        _fileService = fileService;
     }
     public async Task<ErrorOr<EditPlanCommandResponse>> Handle(EditPlanCommand request, CancellationToken cancellationToken)
     {
@@ -25,9 +27,14 @@ public class EditPlanCommandHandler :
         {
             return Error.NotFound(description: "Plan not found");
         }
+        if(request.Image ==null || request.Image.Length == 0)
+        {
+            return Error.Validation("Plan.ImageMissing", "Image file is required for the plan.");
+        }
+        var imageUrl = await _fileService.SaveImageAsync(request.Image);
         planExits.Name = string.IsNullOrEmpty(request.Name) ? planExits.Name : request.Name;
         planExits.Description = string.IsNullOrEmpty(request.Description) ? planExits.Description : request.Description;
-        planExits.ImageUrl = string.IsNullOrEmpty(request.ImageUrl) ? planExits.ImageUrl : request.ImageUrl;
+        planExits.ImageUrl = string.IsNullOrEmpty(imageUrl) ? planExits.ImageUrl : imageUrl;
         planExits.DurationInDays = (uint) request.DurationInDays;
         planExits.LMealsPerDay = request.LMealsPerDay;
         planExits.BDMealsPerDay = request.BDMealsPerDay;

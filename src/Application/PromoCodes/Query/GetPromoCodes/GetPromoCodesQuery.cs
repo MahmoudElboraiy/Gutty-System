@@ -8,13 +8,17 @@ namespace Application.PromoCodes.Query.GetPromoCodes;
 
 public record GetPromoCodesQuery(
     int PageNumber,
-    int PageSize
-):IRequest<ErrorOr<GetPromoCodesQueryResponse>>;
+    int PageSize,
+    string? SearchName = null,
+    bool? IsActive = null
+) :IRequest<ErrorOr<GetPromoCodesQueryResponse>>;
 public record GetPromoCodesQueryResponse(
-    List<PromoCodeResponseItem> PromoCodes,
-    int TotalCount
+    int pageNumber,
+    int pageSize,
+    int TotalCount,
+    List<PromoCodeItem> PromoCodes
 );
-public record PromoCodeResponseItem(
+public record PromoCodeItem(
     Guid Id,
     string Code,
     DiscountType DiscountType,

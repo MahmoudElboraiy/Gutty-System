@@ -28,6 +28,7 @@ public class GetSubCategoriesQueryHandler : IRequestHandler<GetSubCategoriesQuer
                     new GetSubCategoryQueryResponseItem(
                         sc.Id,
                         sc.Name,
+                        sc.ImageUrl,
                         sc.CategoryId
                     )
             )

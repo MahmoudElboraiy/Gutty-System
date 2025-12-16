@@ -28,11 +28,20 @@ public class RemoveMealCommandHandler : IRequestHandler<RemoveMealCommand, Remov
         if (subscription == null)
             return new RemoveMealCommandResponse(false, "No active subscription found.");
 
-        var orderMeal = await _unitOfWork.OrderMeals.GetByIdAsync(request.orderMealId); 
+        var orderMeal = await _unitOfWork.OrderMeals
+            .GetQueryable()
+            .Include(om => om.Order)
+            .FirstOrDefaultAsync(o =>o.Id == request.orderMealId); 
         if (orderMeal == null)
         {
             return new RemoveMealCommandResponse (false,"Meal not found in the order.");
         }
+
+        if(orderMeal.Order.IsCompleted)
+        {
+            return new RemoveMealCommandResponse(false, "Cannot remove meal from a completed order.");
+        }
+
         var meal = await _unitOfWork.Meals.GetQueryable()
             .AsNoTracking()
             .Where(m => m.Id == request.mealId)
