@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.UnitOfWorkInterfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Meals.Query.GetMeals;
@@ -7,9 +8,11 @@ namespace Application.Meals.Query.GetMeals;
 public class GetMealsQueryHandler : IRequestHandler<GetMealsQuery, GetMealsQueryResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public GetMealsQueryHandler(IUnitOfWork unitOfWork)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public GetMealsQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
+        _httpContextAccessor = httpContextAccessor;
     }
     public async Task<GetMealsQueryResponse> Handle(GetMealsQuery request, CancellationToken cancellationToken)
     {
@@ -18,6 +21,10 @@ public class GetMealsQueryHandler : IRequestHandler<GetMealsQuery, GetMealsQuery
             .Where(m => m.SubcategoryId == request.SubCategoryId)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
+
+        var httpRequest = _httpContextAccessor.HttpContext!.Request;
+        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+
         var responseItems = meals
             .Select(
                 m =>
@@ -25,7 +32,7 @@ public class GetMealsQueryHandler : IRequestHandler<GetMealsQuery, GetMealsQuery
                         m.Id,
                         m.Name,
                         m.Description,
-                        m.ImageUrl
+                        baseUrl + m.ImageUrl
                     )
             )
             .ToList();

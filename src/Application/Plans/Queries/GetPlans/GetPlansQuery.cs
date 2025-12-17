@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Plans.Queries.GetPlans;
 
-public record GetPlansQuery() : IRequest<GetPlansQueryResponse>;
+public record GetPlansQuery(int pageNumber , int pageSize) : IRequest<GetPlansQueryResponse>;
 
 public record GetPlansQueryResponse(List<GetPlanQueryResponseItem> Plans);
 public record GetPlanCategoryResponseItem(

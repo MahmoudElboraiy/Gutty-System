@@ -4,6 +4,7 @@ using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Enums;
 using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -12,9 +13,11 @@ namespace Application.Meals.Query.GetMealDetails;
 public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, ErrorOr<GetMealDetailsQueryResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public GetMealDetailsQueryHandler(IUnitOfWork unitOfWork)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public GetMealDetailsQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
+        _httpContextAccessor = httpContextAccessor;
     }
     public async Task<ErrorOr<GetMealDetailsQueryResponse>> Handle(GetMealDetailsQuery request, CancellationToken cancellationToken)
     {
@@ -35,6 +38,8 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
         if(meal == null) {
             return Error.NotFound("Meal.NotFound", "Meal not found");
         }
+        var httpRequest = _httpContextAccessor.HttpContext!.Request;
+        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
         if (meal.IngredientId == null)
         {
             responseItem = new GetMealDetailsQueryResponse
@@ -42,7 +47,7 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
                 meal.Id,
                 meal.Name,
                 meal.Description,
-                meal.ImageUrl,
+                baseUrl + meal.ImageUrl,
                 meal.FixedCalories.Value,
                 meal.FixedProtein.Value,
                 meal.FixedCarbs.Value,
@@ -80,12 +85,13 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
 
         decimal ratio = ingredient / 100;
 
-         responseItem =new GetMealDetailsQueryResponse
+
+        responseItem =new GetMealDetailsQueryResponse
         (
             meal.Id,
             meal.Name,
             meal.Description,
-            meal.ImageUrl,
+            baseUrl + meal.ImageUrl,
             meal.Ingredient.CaloriesPer100g * ratio,
             meal.Ingredient.ProteinPer100g * ratio,
             meal.Ingredient.CarbsPer100g * ratio,

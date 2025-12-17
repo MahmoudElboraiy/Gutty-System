@@ -1,3 +1,4 @@
+using Application.Cache;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.DErrors;
 using Domain.Models.Entities;
@@ -5,6 +6,7 @@ using Domain.Models.Identity;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Plans.Commands.CreatePlan;
 
@@ -14,11 +16,14 @@ public class CreatePlanCommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
     private readonly IFileStorageService _fileService;
-    public CreatePlanCommandHandler(IUnitOfWork unitOfWork, UserManager<User> userManager, IFileStorageService fileService)
+    private readonly IMemoryCache _cache;
+    public CreatePlanCommandHandler(IUnitOfWork unitOfWork, UserManager<User> userManager, IFileStorageService fileService
+        , IMemoryCache memoryCache)
     {
         _unitOfWork = unitOfWork;
         _userManager = userManager;
         _fileService = fileService;
+        _cache = memoryCache;
     }
 
     public async Task<ErrorOr<CreatePlanCommandResponse>> Handle(
@@ -56,7 +61,7 @@ public class CreatePlanCommandHandler
 
         await _unitOfWork.Plans.AddAsync(plan);
         await _unitOfWork.CompleteAsync();
-
+        _cache.Remove(CacheKeys.Plans);
         return new CreatePlanCommandResponse(plan.Id);
     }
 }

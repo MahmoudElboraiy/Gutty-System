@@ -1,18 +1,22 @@
 ﻿
 
+using Application.Cache;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Plans.Commands.DeletePlan;
 
 public class DeletePlanCommandHandler: IRequestHandler<DeletePlanCommand,ErrorOr<ResultMessage>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public DeletePlanCommandHandler(IUnitOfWork unitOfWork)
+    private readonly IMemoryCache _cache;
+    public DeletePlanCommandHandler(IUnitOfWork unitOfWork, IMemoryCache memoryCache)
     {
         _unitOfWork = unitOfWork;
+        _cache = memoryCache;
     }
     public async Task<ErrorOr<ResultMessage>> Handle (DeletePlanCommand request,CancellationToken cancellationToken)
     {
@@ -34,6 +38,7 @@ public class DeletePlanCommandHandler: IRequestHandler<DeletePlanCommand,ErrorOr
         }
         _unitOfWork.Plans.Remove(planExits);
         await _unitOfWork.CompleteAsync();
+        _cache.Remove(CacheKeys.Plans);
         return new ResultMessage(true, "Plan deleted successfully");
     }
 }

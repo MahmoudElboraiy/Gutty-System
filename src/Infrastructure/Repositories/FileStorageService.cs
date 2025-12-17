@@ -17,15 +17,18 @@ public class FileStorageService : IFileStorageService
 
     public async Task<string> SaveImageAsync(IFormFile file)
     {
-        var wwwrootPath = _env.WebRootPath;
+ 
+        var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
+
+        if (!Directory.Exists(uploadsPath))
+            Directory.CreateDirectory(uploadsPath);
 
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-        var fullPath = Path.Combine(wwwrootPath, fileName);
+        var fullPath = Path.Combine(uploadsPath, fileName);
 
         using var stream = new FileStream(fullPath, FileMode.Create);
         await file.CopyToAsync(stream);
 
-
-        return "/" + fileName;
+        return "/uploads/" + fileName;
     }
 }

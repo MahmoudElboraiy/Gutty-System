@@ -4,6 +4,7 @@ using Application.Plans.Queries.GetPlans;
 using Application.Users.Queries.GetUsers;
 using Domain.Models.Entities;
 using Domain.Models.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Profiles;
 
@@ -72,12 +73,12 @@ public static class Mapping
         );
     }
 
-    public static GetPlanQueryResponseItem MapPlanResponse(this Plan plan) =>
+    public static GetPlanQueryResponseItem MapPlanResponse(this Plan plan,string baseUrl) =>
      new(
         plan.Id,
         plan.Name,
         plan.Description,
-        plan.ImageUrl,
+        baseUrl + plan.ImageUrl,
         plan.DurationInDays,
         plan.LMealsPerDay,
         plan.BDMealsPerDay,
@@ -97,4 +98,5 @@ public static class Mapping
             c.GetCategoryPrice()
         )).ToList()
     );
+
 }

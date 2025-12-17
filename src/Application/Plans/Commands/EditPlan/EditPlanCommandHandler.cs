@@ -1,10 +1,12 @@
 ﻿
 
+using Application.Cache;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Models.Entities;
 using ErrorOr;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Plans.Commands.EditPlan;
 
@@ -13,10 +15,13 @@ public class EditPlanCommandHandler :
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileStorageService _fileService;
-    public EditPlanCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService)
+    private readonly IMemoryCache _cache;
+    public EditPlanCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService,
+        IMemoryCache memoryCache)
     {
         _unitOfWork = unitOfWork;
         _fileService = fileService;
+        _cache = memoryCache;
     }
     public async Task<ErrorOr<EditPlanCommandResponse>> Handle(EditPlanCommand request, CancellationToken cancellationToken)
     {
@@ -65,7 +70,9 @@ public class EditPlanCommandHandler :
         }
         
         _unitOfWork.Plans.Update(planExits);
+
         await _unitOfWork.CompleteAsync();
+        _cache.Remove(CacheKeys.Plans);
         return new EditPlanCommandResponse(planExits.Id);
     }
 }

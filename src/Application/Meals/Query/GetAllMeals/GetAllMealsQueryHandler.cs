@@ -3,6 +3,7 @@
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Meals.Query.GetAllMeals;
@@ -10,9 +11,11 @@ namespace Application.Meals.Query.GetAllMeals;
 public class GetAllMealsQueryHandler : IRequestHandler<GetAllMealsQuery, ErrorOr<List<GetAllMealsQueryResponse>>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public GetAllMealsQueryHandler(IUnitOfWork unitOfWork)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public GetAllMealsQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
+        _httpContextAccessor = httpContextAccessor;
     }
     public async Task<ErrorOr<List<GetAllMealsQueryResponse>>> Handle(GetAllMealsQuery request, CancellationToken cancellationToken)
     {
@@ -26,12 +29,16 @@ public class GetAllMealsQueryHandler : IRequestHandler<GetAllMealsQuery, ErrorOr
             Skip((request.pageNumber - 1) * request.pageSize)
             .Take(request.pageSize)
             .ToList();
+
+        var httpRequest = _httpContextAccessor.HttpContext!.Request;
+        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+
         var response = pagedMeals.Select(m => new GetAllMealsQueryResponse
         {
             Id = m.Id,
             Name = m.Name,
             Description = m.Description,
-            ImageUrl = m.ImageUrl,
+            ImageUrl = baseUrl + m.ImageUrl,
             Calories = m.FixedCalories ?? (m.Ingredient != null && m.DefaultQuantityGrams.HasValue
                 ? (m.Ingredient.CaloriesPer100g * m.DefaultQuantityGrams.Value) / 100
                 : 0),

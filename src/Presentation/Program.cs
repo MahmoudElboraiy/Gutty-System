@@ -4,12 +4,12 @@ using Domain.Models.Identity;
 using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Presentation.Seeding.Foods;
 using Presentation.Seeding.Identity;
 using Presentation.Seeding.PromoCode;
-
 var corsPolicyName = "AllowAll";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -80,7 +80,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
@@ -88,7 +88,7 @@ app.UseCors(corsPolicyName);
 
 //if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+  //  app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -137,7 +137,10 @@ if (args.Length > 0 && (args[0] == "seedAll" || args[0] == "seed"))
     Environment.Exit(0);
 }
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+
+
 app.MapControllers();
 
 app.MapGet("/Health", () => "I'm alive");
