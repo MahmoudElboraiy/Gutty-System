@@ -6,6 +6,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Dtos;
 using System.Security.Claims;
+using Infrastructure.Data;
+using Application.Subscriptions.Commands.PlaceOrder;
+using Domain.Models.Entities;
+using Vonage.Video.Authentication;
+using Domain.Enums;
+using Application.Authentication.Commands.Otp.SendOtp;
+using System.Numerics;
+using Application.Plans.Commands.DeletePlan;
+using Application.Plans.Commands.EditPlan;
+using Application.Plans.Queries.GetPlanById;
 
 namespace Presentation.Controllers;
 
@@ -21,40 +31,42 @@ public class PlansController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetPlans()
+    public async Task<IActionResult> GetPlans([FromQuery] int pageNumber =1 ,int pageSize =5)
     {
-        var result = await _mediator.Send(new GetPlansQuery());
+        var result = await _mediator.Send(new GetPlansQuery(pageNumber ,pageSize));
         return Ok(result);
     }
+    [HttpGet("GetPlanById/{id:guid}")]
+    public async Task<IActionResult> GetPlanById([FromRoute] Guid id)
+    {
+        var result = await _mediator.Send(new GetPlanByIdQuery(id));
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
 
-    [HttpPost("admin")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> CreatePlanAdmin([FromBody] CreatePlanCommand command)
+    [HttpPost("CreatePlan"), Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    public async Task<IActionResult> CreatePlanAdmin([FromForm] CreatePlanCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(result);
     }
 
-    [HttpPost("{id}/calculate")]
-    public async Task<IActionResult> Calculate(Guid id, [FromBody] CalculatePlanPriceRequest request)
+    [HttpPost("calculatePrice")]
+    public async Task<IActionResult> Calculate( [FromBody] CalculatePlanPriceQuery query)
+    {   
+        var result = await _mediator.Send(query);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+    [HttpDelete("DeletePlan/{id}"), Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    public async Task<IActionResult> DeletePlan(Guid id)
     {
-        var query = new CalculatePlanPriceQuery(
-            PlanId: id,
-            RiceCarbGrams: request.RiceCarbGrams,
-            PastaCarbGrams: request.PastaCarbGrams,
-            PromoCode: request.PromoCode,
-            UserId: User.FindFirstValue("UserId") ?? string.Empty,
-            Categories: request.Categories?
-                .Select(c => new CategoryModificationDto(c.CategoryId, c.NumberOfMeals, c.ProteinGrams))
-                .ToList()
-        );
+        var result = await _mediator.Send(new DeletePlanCommand(id));
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+    [HttpPut("EditPlan"), Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    public async Task<IActionResult> EditPlan( [FromForm] EditPlanCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
 
-        var response = await _mediator.Send(query);
-        return Ok(response);
-    }
-    [HttpGet("test")]
-    public async Task<IActionResult> Test()
-    {
-        return Ok("Test very successful");
-    }
 }

@@ -1,19 +1,21 @@
 using Domain.Enums;
 using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Plans.Commands.CreatePlan;
 
 public record CreatePlanCommand(
     string Name,
     string Description,
+    IFormFile Image,
     uint DurationInDays,
+    uint LMealsPerDay,
+    uint BDMealsPerDay,
     decimal BreakfastPrice,
     decimal DinnerPrice,
-    uint RiceCarbGrams,
-    uint PastaCarbGrams,
-    uint MaxRiceCarbGrams,
-    uint MaxPastaCarbGrams,
+    uint CarbGrams,
+    uint MaxCarbGrams,
     List<PlanCategoryDto> LunchCategories
 ) : IRequest<ErrorOr<CreatePlanCommandResponse>>;
 public record PlanCategoryDto(
@@ -22,7 +24,6 @@ public record PlanCategoryDto(
     uint ProteinGrams,
     decimal PricePerGram,
     bool AllowProteinChange,
-    uint MaxMeals,
     uint MaxProteinGrams
 );
 public record CreatePlanCommandResponse(Guid Id);

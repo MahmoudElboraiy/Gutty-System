@@ -8,33 +8,29 @@ namespace Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
-
-    private IRepository<Item, Guid> _itemRepository;
-    private IRepository<Ingredient, int> _ingredientRepository;
-    private IRepository<IngredientChange, int> _ingredientChangeRepository;
+    private IRepository<Purchases, int> _purchasesRepository;
+    private IRepository<Sales, int> _salesRepository;
+    private IRepository<Order, int> _orderRepository;
+    private IRepository<OrderMeal, int> _orderMealRepository;
+    private IRepository<Meal, int> _mealRepository;
+    private IRepository<Subcategory,int> _subcategoryRepository;
+    private IRepository<Category, int> _categoryRepository;
     private IRepository<Plan, Guid> _planRepository;
     private IRepository<Subscription, Guid> _subscriptionRepository;
     private IRepository<ReferralCode, int> _referralCodeRepository;
     private IRepository<UserPrefernce, int> _userPreferenceRepository;
-    private IRepository<ItemIngredient, int> _itemIngredientRepository;
-    private IRepository<ExtraItemOption, int> _extraItemOptionRepository;
     private IRepository<PaymentLog, Guid> _paymentLogRepository;
     private IRepository<ShippingAddress, int> _shippingAddressRepository;
     private IRepository<PromoCode, Guid> _promoCodeRepository;
     private IRepository<PromoCodeUsage, Guid> _promoCodeUsageRepository;
+    private IRepository<Ingredient, int> _ingredientRepository;
+    private IRepository<Configurations, int> _configurationsRepository;
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    public IRepository<Item, Guid> Items =>
-        _itemRepository ??= new Repository<Item, Guid>(_context);
 
-    public IRepository<Ingredient, int> Ingredients =>
-        _ingredientRepository ??= new Repository<Ingredient, int>(_context);
-
-    public IRepository<IngredientChange, int> IngredientChanges =>
-        _ingredientChangeRepository ??= new Repository<IngredientChange, int>(_context);
 
     public IRepository<Plan, Guid> Plans =>
         _planRepository ??= new Repository<Plan, Guid>(_context);
@@ -48,11 +44,6 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<UserPrefernce, int> UserPreferences =>
         _userPreferenceRepository ??= new Repository<UserPrefernce, int>(_context);
 
-    public IRepository<ItemIngredient, int> ItemIngredients =>
-        _itemIngredientRepository ??= new Repository<ItemIngredient, int>(_context);
-
-    public IRepository<ExtraItemOption, int> ExtraItemOptions =>
-        _extraItemOptionRepository ??= new Repository<ExtraItemOption, int>(_context);
 
     public IRepository<PaymentLog, Guid> PaymentLogs =>
         _paymentLogRepository ??= new Repository<PaymentLog, Guid>(_context);
@@ -63,6 +54,24 @@ public class UnitOfWork : IUnitOfWork
         _promoCodeRepository ??= new Repository<PromoCode, Guid>(_context);
     public IRepository<PromoCodeUsage, Guid> PromoCodeUsages =>
         _promoCodeUsageRepository ??= new Repository<PromoCodeUsage, Guid>(_context);
+    public IRepository<Category, int> Categories =>
+        _categoryRepository ??= new Repository<Category, int>(_context);
+    public IRepository<Subcategory, int> SubCategories =>
+        _subcategoryRepository ??= new Repository<Subcategory, int>(_context);
+    public IRepository<Meal, int> Meals =>
+        _mealRepository ??= new Repository<Meal, int>(_context);
+    public IRepository<Order, int> Orders =>
+        _orderRepository ??= new Repository<Order, int>(_context);
+    public IRepository<OrderMeal, int> OrderMeals =>
+        _orderMealRepository ??= new Repository<OrderMeal, int>(_context);
+    public IRepository<Purchases, int> Purchases =>
+        _purchasesRepository ??= new Repository<Purchases, int>(_context);
+    public IRepository<Sales, int> Sales =>
+        _salesRepository ??= new Repository<Sales, int>(_context);
+    public IRepository<Ingredient, int> Ingredients =>
+        _ingredientRepository ??= new Repository<Ingredient, int>(_context);
+    public IRepository<Configurations, int> Configurations =>
+        _configurationsRepository ??= new Repository<Configurations, int>(_context);
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();

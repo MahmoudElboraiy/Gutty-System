@@ -13,15 +13,15 @@ public class Plan : BaseEntity<Guid>
     [MaxLength(1000)]
     public required string Description { get; set; }
 
+    public string? ImageUrl { get; set; }
     public uint DurationInDays { get; set; }
-
+    public uint LMealsPerDay { get; set; }
+    public uint BDMealsPerDay { get; set; }
     public decimal BreakfastPrice { get; set; }
     public decimal DinnerPrice { get; set; }
 
-    public uint PastaCarbGrams { get; set; }
-    public uint RiceCarbGrams { get; set; }
-    public uint MaxRiceCarbGrams { get; set; }
-    public uint MaxPastaCarbGrams { get; set; }
+    public uint CarbGrams { get; set; }
+    public uint MaxCarbGrams { get; set; }
     public ICollection<PlanCategory> LunchCategories { get; set; } = new List<PlanCategory>();
 
     public decimal GetTotalPrice()

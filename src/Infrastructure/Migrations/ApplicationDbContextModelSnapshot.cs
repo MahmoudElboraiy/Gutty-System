@@ -22,7 +22,7 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Models.Entities.ExtraItemOption", b =>
+            modelBuilder.Entity("Domain.Models.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,29 +30,38 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("MealType")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("ModifiedAtAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Weight")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
+                    b.ToTable("Categories");
+                });
 
-                    b.ToTable("ExtraItemOptions");
+            modelBuilder.Entity("Domain.Models.Entities.Configurations", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DailyCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaximumDaysToOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinimumDaysToOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Configurations");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Ingredient", b =>
@@ -63,44 +72,28 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<decimal>("CaloriesPer100g")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<decimal>("CarbsPer100g")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedAtAt")
-                        .HasColumnType("datetime2");
+                    b.Property<decimal>("FatsPer100g")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NameAr")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<decimal>("StockQuantity")
+                    b.Property<decimal>("ProteinPer100g")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("UserPrefernceId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserPrefernceId");
 
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.IngredientChange", b =>
+            modelBuilder.Entity("Domain.Models.Entities.Meal", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,115 +101,55 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("AcceptCarb")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedAtAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("NewValue")
+                    b.Property<decimal?>("DefaultQuantityGrams")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("OldValue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("IngredientChanges");
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.Item", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("BasePrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Calories")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Carbs")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DescriptionAr")
+                    b.Property<decimal?>("FixedCalories")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("FixedCarbs")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("FixedFats")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("FixedProtein")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Fats")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Fibers")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("HasCarb")
-                        .HasColumnType("bit");
-
-                    b.PrimitiveCollection<string>("ImageUrls")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("MenuType")
+                    b.Property<int?>("IngredientId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ModifiedAtAt")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("MealType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Proteins")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Type")
+                    b.Property<int>("SubcategoryId")
                         .HasColumnType("int");
-
-                    b.Property<int?>("UserPrefernceId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Weight")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("WeightToPriceRatio")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserPrefernceId");
+                    b.HasIndex("IngredientId");
 
-                    b.ToTable("Items");
+                    b.HasIndex("SubcategoryId");
+
+                    b.ToTable("Meals");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.ItemIngredient", b =>
+            modelBuilder.Entity("Domain.Models.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -224,71 +157,65 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IngredientId")
+                    b.Property<int>("DayNumber")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<DateOnly?>("DeliveryDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsOptional")
-                        .HasColumnType("bit");
+                    b.Property<DateOnly>("OrderDate")
+                        .HasColumnType("date");
 
-                    b.Property<Guid>("ItemId")
+                    b.Property<Guid>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("ModifiedAtAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IngredientId");
+                    b.HasIndex("SubscriptionId");
 
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("ItemIngredients");
+                    b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.Meal", b =>
+            modelBuilder.Entity("Domain.Models.Entities.OrderMeal", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CarbMealId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("MealId")
+                        .HasColumnType("int");
 
                     b.Property<int>("MealType")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ModifiedAtAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("Quantity")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal>("Weight")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("ProteinMealId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("CarbMealId");
 
-                    b.ToTable("Meals");
+                    b.HasIndex("MealId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProteinMealId");
+
+                    b.ToTable("OrderMeals");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.PaymentLog", b =>
@@ -323,8 +250,14 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<long>("BDMealsPerDay")
+                        .HasColumnType("bigint");
+
                     b.Property<decimal>("BreakfastPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("CarbGrams")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -340,13 +273,16 @@ namespace Infrastructure.Migrations
                     b.Property<long>("DurationInDays")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<long>("MaxPastaCarbGrams")
+                    b.Property<long>("LMealsPerDay")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("MaxRiceCarbGrams")
+                    b.Property<long>("MaxCarbGrams")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifiedAtAt")
@@ -357,12 +293,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<long>("PastaCarbGrams")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RiceCarbGrams")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.ToTable("Plans");
@@ -370,27 +300,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.PlanCategory", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("AllowProteinChange")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<long>("MaxMeals")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("MaxProteinGrams")
                         .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("ModifiedAtAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -423,7 +343,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Code")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DiscountType")
@@ -469,6 +388,35 @@ namespace Infrastructure.Migrations
                     b.ToTable("PromoCodeUsages");
                 });
 
+            modelBuilder.Entity("Domain.Models.Entities.Purchases", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("PurchaseDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Purchases");
+                });
+
             modelBuilder.Entity("Domain.Models.Entities.ReferralCode", b =>
                 {
                     b.Property<int>("Id")
@@ -504,17 +452,136 @@ namespace Infrastructure.Migrations
                     b.ToTable("ReferralCodes");
                 });
 
+            modelBuilder.Entity("Domain.Models.Entities.Sales", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ItemType")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("SaleDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("UnitType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.Subcategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Subcategories");
+                });
+
             modelBuilder.Entity("Domain.Models.Entities.Subscription", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<long>("CarbGrams")
+                        .HasColumnType("bigint");
 
-                    b.Property<int?>("AppliedReferralCodeId")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("DaysLeft")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCurrent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaused")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("LunchMealsLeft")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedAtAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PromoCodeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("ReferralCodeId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlanId");
+
+                    b.HasIndex("PromoCodeId");
+
+                    b.HasIndex("ReferralCodeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.SubscriptionCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("AllowProteinChange")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -522,29 +589,56 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<long>("MaxProteinGrams")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("ModifiedAtAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
+                    b.Property<long>("NumberOfMeals")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("PaymentStatus")
+                    b.Property<long>("NumberOfMealsLeft")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("PricePerGram")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("ProteinGrams")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("SubCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("PlanId")
+                    b.Property<Guid>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppliedReferralCodeId");
+                    b.HasIndex("SubCategoryId");
 
-                    b.HasIndex("PlanId");
+                    b.HasIndex("SubscriptionId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("SubscriptionCategories");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.SystemConfiguration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DailyCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinimumDaysToOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemConfigurations");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.UserPrefernce", b =>
@@ -577,9 +671,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -591,16 +682,10 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<bool>("IsTestUser")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -616,6 +701,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("MiddleName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -667,6 +756,33 @@ namespace Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Models.Identity.UserOtp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpirationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserOtps");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -802,70 +918,61 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.ExtraItemOption", b =>
-                {
-                    b.HasOne("Domain.Models.Entities.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.Ingredient", b =>
-                {
-                    b.HasOne("Domain.Models.Entities.UserPrefernce", null)
-                        .WithMany("UnlovedIngredients")
-                        .HasForeignKey("UserPrefernceId");
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.IngredientChange", b =>
-                {
-                    b.HasOne("Domain.Models.Entities.Ingredient", "Ingredient")
-                        .WithMany("Changes")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.Item", b =>
-                {
-                    b.HasOne("Domain.Models.Entities.UserPrefernce", null)
-                        .WithMany("UnlovedItems")
-                        .HasForeignKey("UserPrefernceId");
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.ItemIngredient", b =>
-                {
-                    b.HasOne("Domain.Models.Entities.Ingredient", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Entities.Item", "Item")
-                        .WithMany("Ingredients")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Item");
-                });
-
             modelBuilder.Entity("Domain.Models.Entities.Meal", b =>
                 {
-                    b.HasOne("Domain.Models.Entities.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
+                    b.HasOne("Domain.Models.Entities.Ingredient", "Ingredient")
+                        .WithMany("Meals")
+                        .HasForeignKey("IngredientId");
+
+                    b.HasOne("Domain.Models.Entities.Subcategory", "Subcategory")
+                        .WithMany("Meals")
+                        .HasForeignKey("SubcategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Item");
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Subcategory");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.Order", b =>
+                {
+                    b.HasOne("Domain.Models.Entities.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.OrderMeal", b =>
+                {
+                    b.HasOne("Domain.Models.Entities.Meal", "CarbMeal")
+                        .WithMany()
+                        .HasForeignKey("CarbMealId");
+
+                    b.HasOne("Domain.Models.Entities.Meal", "Meal")
+                        .WithMany()
+                        .HasForeignKey("MealId");
+
+                    b.HasOne("Domain.Models.Entities.Order", "Order")
+                        .WithMany("Meals")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Entities.Meal", "ProteinMeal")
+                        .WithMany()
+                        .HasForeignKey("ProteinMealId");
+
+                    b.Navigation("CarbMeal");
+
+                    b.Navigation("Meal");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("ProteinMeal");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.PlanCategory", b =>
@@ -901,21 +1008,70 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Models.Entities.Sales", b =>
+                {
+                    b.HasOne("Domain.Models.Identity.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.Subcategory", b =>
+                {
+                    b.HasOne("Domain.Models.Entities.Category", "Category")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Domain.Models.Entities.Subscription", b =>
                 {
-                    b.HasOne("Domain.Models.Entities.ReferralCode", "AppliedReferralCode")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("AppliedReferralCodeId");
-
                     b.HasOne("Domain.Models.Entities.Plan", "Plan")
                         .WithMany()
                         .HasForeignKey("PlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppliedReferralCode");
+                    b.HasOne("Domain.Models.Entities.PromoCode", "PromoCode")
+                        .WithMany()
+                        .HasForeignKey("PromoCodeId");
+
+                    b.HasOne("Domain.Models.Entities.ReferralCode", null)
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("ReferralCodeId");
+
+                    b.HasOne("Domain.Models.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Plan");
+
+                    b.Navigation("PromoCode");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.SubscriptionCategory", b =>
+                {
+                    b.HasOne("Domain.Models.Entities.Subcategory", "Subcategory")
+                        .WithMany("SubscriptionCategories")
+                        .HasForeignKey("SubCategoryId");
+
+                    b.HasOne("Domain.Models.Entities.Subscription", "Subscription")
+                        .WithMany("LunchCategories")
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subcategory");
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -969,14 +1125,19 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.Ingredient", b =>
+            modelBuilder.Entity("Domain.Models.Entities.Category", b =>
                 {
-                    b.Navigation("Changes");
+                    b.Navigation("Subcategories");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.Item", b =>
+            modelBuilder.Entity("Domain.Models.Entities.Ingredient", b =>
                 {
-                    b.Navigation("Ingredients");
+                    b.Navigation("Meals");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.Order", b =>
+                {
+                    b.Navigation("Meals");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Plan", b =>
@@ -994,11 +1155,16 @@ namespace Infrastructure.Migrations
                     b.Navigation("Subscriptions");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.UserPrefernce", b =>
+            modelBuilder.Entity("Domain.Models.Entities.Subcategory", b =>
                 {
-                    b.Navigation("UnlovedIngredients");
+                    b.Navigation("Meals");
 
-                    b.Navigation("UnlovedItems");
+                    b.Navigation("SubscriptionCategories");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.Subscription", b =>
+                {
+                    b.Navigation("LunchCategories");
                 });
 #pragma warning restore 612, 618
         }

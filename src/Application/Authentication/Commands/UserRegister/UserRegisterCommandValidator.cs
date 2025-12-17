@@ -11,40 +11,31 @@ namespace Application.Authentication.Commands.UserRegister
     {
         public UserRegisterCommandValidator()
         {
-            RuleFor(u => u.FirstName)
+            RuleFor(u => u.Name)
                 .NotEmpty()
-                .Length(2, 20)
-                .WithMessage("يجب أن يكون الاسم الأول بين 2 و 20 حرفًا");
+                .Length(2, 100)
+                .WithMessage("The Name must be more than to character");
 
-            RuleFor(u => u.MiddleName)
-                .NotEmpty()
-                .Length(2, 20)
-                .WithMessage("يجب أن يكون الاسم الأوسط بين 2 و 20 حرفًا");
-
-            RuleFor(u => u.LastName)
-                .NotEmpty()
-                .Length(2, 20)
-                .WithMessage("يجب أن يكون اسم العائلة بين 2 و 20 حرفًا");
 
             RuleFor(u => u.PhoneNumber)
                 .NotEmpty()
                 .Matches(@"^01[0-2,5]{1}[0-9]{8}$")
-                .WithMessage("رقم الهاتف غير صحيح");
+                .WithMessage("Not valid number");
 
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .WithMessage("كلمة المرور مطلوبة")
+                .WithMessage("Password is empty")
                 .MinimumLength(8)
-                .WithMessage("كلمة المرور يجب أن تكون على الأقل 8 أحرف")
+                .WithMessage("Password must be more than 8 character")
                 .Matches("[A-Z]")
-                .WithMessage("يجب أن تحتوي على حرف كبير واحد على الأقل")
+                .WithMessage("Password must has at least one Captial Letter")
                 .Matches("[0-9]")
-                .WithMessage("يجب أن تحتوي على رقم واحد على الأقل")
+                .WithMessage("Password must has at least one number")
                 .Matches("[^a-zA-Z0-9]")
-                .WithMessage("يجب أن تحتوي على رمز خاص واحد على الأقل");
+                .WithMessage("Password must has at least one number");
 
-            RuleFor(x => x.MainAddress).NotEmpty().WithMessage("العنوان الرئيسي مطلوب");
+            RuleFor(x => x.MainAddress).NotEmpty().WithMessage("Main address is required");
         }
     }
 }

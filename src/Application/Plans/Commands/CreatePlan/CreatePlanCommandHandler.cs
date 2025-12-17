@@ -1,3 +1,4 @@
+using Application.Cache;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.DErrors;
 using Domain.Models.Entities;
@@ -5,6 +6,7 @@ using Domain.Models.Identity;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Plans.Commands.CreatePlan;
 
@@ -13,11 +15,15 @@ public class CreatePlanCommandHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
-
-    public CreatePlanCommandHandler(IUnitOfWork unitOfWork, UserManager<User> userManager)
+    private readonly IFileStorageService _fileService;
+    private readonly IMemoryCache _cache;
+    public CreatePlanCommandHandler(IUnitOfWork unitOfWork, UserManager<User> userManager, IFileStorageService fileService
+        , IMemoryCache memoryCache)
     {
         _unitOfWork = unitOfWork;
         _userManager = userManager;
+        _fileService = fileService;
+        _cache = memoryCache;
     }
 
     public async Task<ErrorOr<CreatePlanCommandResponse>> Handle(
@@ -25,17 +31,23 @@ public class CreatePlanCommandHandler
         CancellationToken cancellationToken
     )
     {
+        if(request.Image == null || request.Image.Length == 0)
+        {
+            return Error.Validation("Plan.ImageMissing", "Image file is required for the plan.");
+        }
+        var imageUrl = await _fileService.SaveImageAsync(request.Image);
         var plan = new Plan
         {
             Name = request.Name,
             Description = request.Description,
+            ImageUrl = imageUrl,
             DurationInDays = request.DurationInDays,
+            LMealsPerDay = request.LMealsPerDay,
+            BDMealsPerDay = request.BDMealsPerDay,
             BreakfastPrice = request.BreakfastPrice,
             DinnerPrice = request.DinnerPrice,
-            RiceCarbGrams = request.RiceCarbGrams,
-            PastaCarbGrams = request.PastaCarbGrams,
-            MaxRiceCarbGrams = request.MaxRiceCarbGrams,
-            MaxPastaCarbGrams = request.MaxPastaCarbGrams,
+            CarbGrams = request.CarbGrams,
+            MaxCarbGrams = request.MaxCarbGrams,
             LunchCategories = request.LunchCategories.Select(c => new PlanCategory
             {
                 Name = c.Name,
@@ -43,14 +55,13 @@ public class CreatePlanCommandHandler
                 ProteinGrams = c.ProteinGrams,
                 PricePerGram = c.PricePerGram,
                 AllowProteinChange = c.AllowProteinChange,
-                MaxMeals = c.MaxMeals,
                 MaxProteinGrams = c.MaxProteinGrams
             }).ToList()
         };
 
         await _unitOfWork.Plans.AddAsync(plan);
         await _unitOfWork.CompleteAsync();
-
+        _cache.Remove(CacheKeys.Plans);
         return new CreatePlanCommandResponse(plan.Id);
     }
 }

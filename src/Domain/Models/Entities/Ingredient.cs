@@ -1,16 +1,16 @@
-using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace Domain.Models.Entities;
 
-public class Ingredient : BaseEntity<int>
+public class Ingredient
 {
-    [MaxLength(255)]
-    public required string Name { get; set; }
-    [MaxLength(255)]
-    public required string NameAr { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
 
-    [MaxLength(255)]
-    public string Description { get; set; } = string.Empty;
-    public decimal StockQuantity { get; set; }
-    public ICollection<IngredientChange>? Changes { get; set; }
+    // Nutritional values per 100 grams
+    public decimal CaloriesPer100g { get; set; }
+    public decimal ProteinPer100g { get; set; }
+    public decimal CarbsPer100g { get; set; }
+    public decimal FatsPer100g { get; set; }
+
+    public ICollection<Meal> Meals { get; set; }
 }

@@ -1,10 +1,10 @@
-using Application.Ingredients.Queries.GetIngredients;
-using Application.IngredientsChanges.Queries;
-using Application.Items.Queries.GetItem;
+
+using Application.Orders.Query.ShowOrderDetails;
 using Application.Plans.Queries.GetPlans;
 using Application.Users.Queries.GetUsers;
 using Domain.Models.Entities;
 using Domain.Models.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Profiles;
 
@@ -14,80 +14,89 @@ public static class Mapping
         new(
             user.Id,
             user.PhoneNumber ?? "",
-            user.FirstName,
-            user.MiddleName,
-            user.LastName,
+            user.Name,
             user.MainAddress,
             user.SecondPhoneNumber,
             user.Email,
             user.PhoneNumberConfirmed
         );
 
-    public static GetItemQueryResponse MapItemResponse(this Item item) =>
-        new(
-            item.Id,
-            item.Name,
-            item.NameAr,
-            item.Description,
-            item.DescriptionAr,
-            item.Weight,
-            item.Calories,
-            item.Fats,
-            item.Carbs,
-            item.Proteins,
-            item.Fibers,
-            item.Type,
-            item.ImageUrls,
-            item.Ingredients.Select(x => x.MapRecipeIngredientResponse()).ToList(),
-            item.WeightToPriceRatio
+
+
+
+    //public static GetIngredientsQueryResponseItem MapIngredientResponse(
+    //    this Ingredient ingredient
+    //) => new(ingredient.Id, ingredient.Name, ingredient.NameAr, ingredient.StockQuantity);
+
+    public static ShowOrderMealsDetailsQueryResponseItem MapOrderMealResponse(
+       this OrderMeal orderMeal,
+       Dictionary<int, (string Name, string ImageUrl, bool AcceptCarb)> mealDetailsDict)
+    {
+        // äÌíÈ ÊÝÇÕíá ÇáÜ meal (ÓæÇÁ main / protein / carb)
+        string mealName = null;
+        string mealImage = null;
+        bool acceptCarb = false;
+        string CarbName = null;
+        if (orderMeal.MealId.HasValue && mealDetailsDict.TryGetValue(orderMeal.MealId.Value, out var mainMeal))
+        {
+            mealName = mainMeal.Name;
+            mealImage = mainMeal.ImageUrl;
+            acceptCarb = mainMeal.AcceptCarb;
+        }
+        else if (orderMeal.ProteinMealId.HasValue && mealDetailsDict.TryGetValue(orderMeal.ProteinMealId.Value, out var proteinMeal))
+        {
+            mealName = proteinMeal.Name;
+            mealImage = proteinMeal.ImageUrl;
+            acceptCarb = proteinMeal.AcceptCarb;
+            if (orderMeal.CarbMeal != null)
+            {
+                CarbName = orderMeal.CarbMeal.Name;
+            }
+        }
+        else if (orderMeal.CarbMealId.HasValue && mealDetailsDict.TryGetValue(orderMeal.CarbMealId.Value, out var carbMeal))
+        {
+            mealName = carbMeal.Name;
+            mealImage = carbMeal.ImageUrl;
+            acceptCarb = carbMeal.AcceptCarb;
+        }
+
+        return new ShowOrderMealsDetailsQueryResponseItem(
+            orderMeal.Id,
+            mealName ?? "Unknown Meal",
+            mealImage ?? string.Empty,
+            orderMeal.MealId,
+            orderMeal.ProteinMealId,
+            orderMeal.CarbMealId,
+            CarbName ?? string.Empty,
+            acceptCarb,
+            orderMeal.Notes
         );
+    }
 
-    private static GetItemRecipeIngredientResponse MapRecipeIngredientResponse(
-        this ItemIngredient recipeIngredient
-    ) => new(recipeIngredient.IngredientId, recipeIngredient.Ingredient.Name, recipeIngredient.Ingredient.NameAr, recipeIngredient.Quantity, IsOptional: recipeIngredient.IsOptional);
-
-    public static GetIngredientsQueryResponseItem MapIngredientResponse(
-        this Ingredient ingredient
-    ) => new(ingredient.Id, ingredient.Name, ingredient.NameAr, ingredient.StockQuantity);
-
-    public static GetIngredientsChangesQueryResponseItem MapIngredientChangeResponse(
-        this IngredientChange ingredientChange
-    ) =>
-        new(
-            ingredientChange.CreatedAt,
-            ingredientChange.Quantity,
-            ingredientChange.OldValue,
-            ingredientChange.NewValue,
-            ingredientChange.Ingredient.MapIngredientChangeResponseIngredient()
-        );
-
-    private static GetIngredientsChangesResponseIngredientQuery MapIngredientChangeResponseIngredient(
-        this Ingredient ingredient
-    ) => new(ingredient.Id, ingredient.Name, ingredient.NameAr);
-
-    public static GetPlanQueryResponseItem MapPlanResponse(this Plan plan) =>
+    public static GetPlanQueryResponseItem MapPlanResponse(this Plan plan,string baseUrl) =>
      new(
         plan.Id,
         plan.Name,
         plan.Description,
+        baseUrl + plan.ImageUrl,
         plan.DurationInDays,
+        plan.LMealsPerDay,
+        plan.BDMealsPerDay,
         plan.BreakfastPrice,
         plan.DinnerPrice,
         plan.GetTotalPrice(),
-        plan.RiceCarbGrams,
-        plan.PastaCarbGrams,
-        plan.MaxRiceCarbGrams,
-        plan.MaxPastaCarbGrams,
+        plan.CarbGrams,
+        plan.MaxCarbGrams,
         plan.LunchCategories.Select(c => new GetPlanCategoryResponseItem(
             c.Id,
             c.Name,
             c.NumberOfMeals,
             c.ProteinGrams,
             c.PricePerGram,
-            c.AllowProteinChange,
-            c.MaxMeals,    
+            c.AllowProteinChange,  
             c.MaxProteinGrams,
             c.GetCategoryPrice()
         )).ToList()
     );
+
 }

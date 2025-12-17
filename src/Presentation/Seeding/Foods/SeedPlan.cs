@@ -19,98 +19,91 @@ namespace Presentation.Seeding.Foods
             {
                 Id = basicPlanId,
                 Name = "Lunch Meal Per Month",
-                Description = "غذاء صحي لمدة شهر",
+                Description = "That is the best and most healthy Packdage",
                 DurationInDays = 28,
+                LMealsPerDay = 1,
+                BDMealsPerDay =2,
                 BreakfastPrice = 2000,
                 DinnerPrice = 2000,
-                PastaCarbGrams = 250,
-                RiceCarbGrams = 250,
-                MaxRiceCarbGrams = 400,
-                MaxPastaCarbGrams = 400,
+                CarbGrams = 250,
+                MaxCarbGrams = 400,
                 LunchCategories = new List<PlanCategory>
                 {
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id =1,
                         PlanId = basicPlanId,
-                        Name = "سمك",
+                        Name = "Chicken Menu",
                         NumberOfMeals = 4,
                         ProteinGrams = 120,
                         PricePerGram = 2m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 250
                     },                  
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                       // Id = 2,
                         PlanId = basicPlanId,
-                        Name = "طاجن فراخ",
-                        NumberOfMeals = 6,
+                        Name = "Chicken Twagen",
+                        NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 1.5m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id = 3,
                         PlanId = basicPlanId,
-                        Name = " صدور فراخ",
-                        NumberOfMeals = 6,
+                        Name = "Meat Menu",
+                        NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 1.5m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id = 4,
                         PlanId = basicPlanId,
-                        Name = "اللحم",
+                        Name = "Twagen Meat",
                         NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 2m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id =5,
                         PlanId = basicPlanId,
-                        Name = "طاجن اللحم",
+                        Name = "Sea Food Menu",
                         NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 2m,
                         AllowProteinChange = true,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                      //  Id = 6,
                         PlanId = basicPlanId,
-                        Name = " بيتزا حبوب كاملة",
+                        Name = "Pizaa Menu",
                         NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 2m,
                         AllowProteinChange = false,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     },
                     new PlanCategory
                     {
-                        Id = Guid.NewGuid(),
+                        //Id = 7,
                         PlanId = basicPlanId,
-                        Name = "الحواوشي",
+                        Name = "Hawawshi Menu",
                         NumberOfMeals = 4,
                         ProteinGrams = 100,
                         PricePerGram = 2m,
                         AllowProteinChange = false,
-                        MaxMeals = 28,
                         MaxProteinGrams = 230
                     }
                 }

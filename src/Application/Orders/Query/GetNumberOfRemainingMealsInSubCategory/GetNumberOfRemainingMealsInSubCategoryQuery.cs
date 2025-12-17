@@ -1,0 +1,8 @@
+﻿
+
+using MediatR;
+
+namespace Application.Orders.Query.GetNumberOfRemainingMealsInSubCategory;
+
+public record GetNumberOfRemainingMealsInSubCategoryQuery(uint SubCategoryId) : IRequest<GetNumberOfRemainingMealsInSubCategoryQueryResponse>;
+public record GetNumberOfRemainingMealsInSubCategoryQueryResponse(int RemainingMeals);

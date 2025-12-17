@@ -10,16 +10,10 @@ namespace Application.Users.Commands
         public UpdateUserCommandValidator(UserManager<User> userManager)
         {
 
-            RuleFor(x => x.FirstName)
+            RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("First name is required.")
                 .MaximumLength(255);
 
-            RuleFor(x => x.MiddleName)
-                .MaximumLength(255);
-
-            RuleFor(x => x.LastName)
-                .NotEmpty().WithMessage("Last name is required.")
-                .MaximumLength(255);
 
             RuleFor(x => x.MainAddress)
                 .NotEmpty().WithMessage("Main address is required.")

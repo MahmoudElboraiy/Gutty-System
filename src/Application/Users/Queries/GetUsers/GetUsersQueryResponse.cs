@@ -15,9 +15,7 @@ public record GetUsersQueryResponse(
 public record UserResponse(
     string Id,
     string PhoneNumber,
-    string FirstName,
-    string MiddleName,
-    string LastName,
+    string Name,
     string MainAddress,
     string SecondPhoneNumber,
     string? Email,

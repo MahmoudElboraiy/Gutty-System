@@ -1,62 +1,33 @@
+﻿
 using Application.Interfaces.UnitOfWorkInterfaces;
-using Domain.DErrors;
-using Domain.Enums;
-using Domain.Models.Entities;
 using ErrorOr;
 using MediatR;
 
 namespace Application.Ingredients.Commands.UpdateIngredient;
 
-public class UpdateIngredientCommandHandler
-    : IRequestHandler<UpdateIngredientCommand, ErrorOr<UpdateIngredientCommandResponse>>
+public class UpdateIngredientCommandHandler :
+    IRequestHandler<UpdateIngredientCommand, ErrorOr<UpdateIngredientCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-
     public UpdateIngredientCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-
-    public async Task<ErrorOr<UpdateIngredientCommandResponse>> Handle(
-        UpdateIngredientCommand request,
-        CancellationToken cancellationToken
-    )
+    public async Task<ErrorOr<UpdateIngredientCommandResponse>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
     {
-        var oldIngredient = await _unitOfWork.Ingredients.GetByIdAsync(request.Id);
-
-        if (oldIngredient == null)
+        var ingredient = await _unitOfWork.Ingredients.GetByIdAsync(request.Id);
+        if (ingredient is null)
         {
-            return DomainErrors.Ingredients.IngredientNotFound(request.Id);
+            return Error.NotFound(description: $"Ingredient with id {request.Id} not found.");
         }
-
-        oldIngredient.Name = request.Name;
-        oldIngredient.NameAr = request.NameAr;
-
-        if (oldIngredient.StockQuantity != request.Stock)
-        {
-            await _unitOfWork.IngredientChanges.AddAsync(
-                new IngredientChange()
-                {
-                    IngredientId = oldIngredient.Id,
-                    Quantity =
-                        Convert.ToInt32(request.Stock)
-                        - Convert.ToInt32(oldIngredient.StockQuantity),
-                    OldValue = oldIngredient.StockQuantity,
-                    NewValue = request.Stock,
-                }
-            );
-        }
-
-        oldIngredient.StockQuantity = request.Stock;
-
-        _unitOfWork.Ingredients.Update(oldIngredient);
-
+        ingredient.Name = request.Name;
+        ingredient.CaloriesPer100g = request.CaloriesPer100g;
+        ingredient.ProteinPer100g = request.ProteinPer100g;
+        ingredient.CarbsPer100g = request.CarbsPer100g;
+        ingredient.FatsPer100g = request.FatsPer100g;
+        _unitOfWork.Ingredients.Update(ingredient);
         await _unitOfWork.CompleteAsync();
-
-        return new UpdateIngredientCommandResponse(
-            oldIngredient.Id,
-            oldIngredient.Name,
-            oldIngredient.StockQuantity
-        );
+        var response = new UpdateIngredientCommandResponse(ingredient.Id);
+        return response;
     }
 }

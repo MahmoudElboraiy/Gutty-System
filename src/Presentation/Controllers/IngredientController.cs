@@ -1,15 +1,19 @@
+
 using Application.Ingredients.Commands.CreateIngredient;
 using Application.Ingredients.Commands.DeleteIngredient;
 using Application.Ingredients.Commands.UpdateIngredient;
+using Application.Ingredients.Queries.GetIngredientById;
 using Application.Ingredients.Queries.GetIngredients;
-using Application.IngredientsChanges.Queries;
+using Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
 public class IngredientController : Controller
 {
     private readonly ISender _mediator;
@@ -19,15 +23,22 @@ public class IngredientController : Controller
         _mediator = mediator;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetIngredients([FromQuery] GetIngredientsQuery query)
+    [HttpGet("GetIngredient")]
+    public async Task<IActionResult> GetIngredients([FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10, [FromQuery] string? searchName =null)
     {
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(new GetIngredientsQuery(pageNumber, pageSize, searchName));
+        return result.Match<IActionResult>(Ok, BadRequest);
+    }
+    [HttpGet("GetIngredientById/{id:int}")]
+    public async Task<IActionResult> GetIngredientById([FromRoute] int id)
+    {
+        var result = await _mediator.Send(new GetIngredientByIdQuery(id));
         return result.Match<IActionResult>(Ok, BadRequest);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> UpdateIngredient([FromBody] CreateIngredientCommand command)
+    [HttpPost("CreateIngredient")]
+    public async Task<IActionResult> CreateIngredient([FromBody] CreateIngredientCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Match<IActionResult>(Ok, BadRequest);
@@ -45,13 +56,6 @@ public class IngredientController : Controller
     {
         var command = new DeleteIngredientCommand(id);
         var result = await _mediator.Send(command);
-        return result.Match<IActionResult>(Ok, BadRequest);
-    }
-
-    [HttpGet("change")]
-    public async Task<IActionResult> GetChange([FromQuery] GetIngredientsChangesQuery query)
-    {
-        var result = await _mediator.Send(query);
         return result.Match<IActionResult>(Ok, BadRequest);
     }
 }

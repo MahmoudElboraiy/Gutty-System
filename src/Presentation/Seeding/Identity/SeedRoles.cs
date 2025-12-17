@@ -8,6 +8,7 @@ public class SeedRoles
     public static async Task SeedAsync(RoleManager<IdentityRole> roleManager)
     {
         await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+        await roleManager.CreateAsync(new IdentityRole(Roles.CustomerService.ToString()));
         await roleManager.CreateAsync(new IdentityRole(Roles.User.ToString()));
     }
 }

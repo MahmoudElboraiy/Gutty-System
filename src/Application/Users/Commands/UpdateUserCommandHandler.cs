@@ -31,10 +31,7 @@ namespace Application.Users.Commands
                 return Error.NotFound(description: "User not found.");
             }
 
-            user.FirstName = request.FirstName;
-            user.MiddleName = request.MiddleName;
-            user.LastName = request.LastName;
-            user.CityId = request.CityId;
+            user.Name = request.Name;
             user.MainAddress = request.MainAddress;
             user.SecondaryAddress = request.SecondaryAddress;
             user.SecondPhoneNumber = request.SecondPhoneNumber;
@@ -53,8 +50,7 @@ namespace Application.Users.Commands
 
             var response = new UpdateUserCommandResponse(
                 user.Id,
-                user.FirstName,
-                user.LastName,
+                user.Name,
                 user.Email
             );
 

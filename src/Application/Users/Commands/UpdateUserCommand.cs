@@ -11,10 +11,7 @@ namespace Application.Users.Commands
 {
     public record UpdateUserCommand(
         string Id,
-        string FirstName,
-        string MiddleName,
-        string LastName,
-        int CityId,
+        string Name,
         string MainAddress,
         string? SecondaryAddress,
         string SecondPhoneNumber,
@@ -25,8 +22,7 @@ namespace Application.Users.Commands
 
     public record UpdateUserCommandResponse(
         string Id,
-        string FirstName,
-        string LastName,
+        string Name,
         string Email
     );
 }

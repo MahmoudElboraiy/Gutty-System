@@ -3,17 +3,16 @@ using MediatR;
 
 namespace Application.Plans.Queries.GetPlans;
 
-public record GetPlansQuery() : IRequest<GetPlansQueryResponse>;
+public record GetPlansQuery(int pageNumber , int pageSize) : IRequest<GetPlansQueryResponse>;
 
 public record GetPlansQueryResponse(List<GetPlanQueryResponseItem> Plans);
 public record GetPlanCategoryResponseItem(
-    Guid Id,
+    int Id,
     string Name,
     uint NumberOfMeals,
     uint ProteinGrams,
     decimal PricePerGram,
     bool AllowProteinChange,
-    uint MaxMeals,
     uint MaxProteinGrams,
     decimal CategoryPrice
 );
@@ -21,14 +20,15 @@ public record GetPlanQueryResponseItem(
     Guid Id,
     string Name,
     string Description,
+    string? ImageUrl,
     uint DurationInDays,
+    uint LMealsPerDay,
+    uint BDMealsPerDay,
     decimal BreakfastPrice,
     decimal DinnerPrice,
     decimal TotalPrice,
-    uint RiceCarbGrams,
-    uint PastaCarbGrams,
-    uint MaxRiceCarbGrams,
-    uint MaxPastaCarbGrams,
+    uint CarbGrams,
+    uint MaxCarbGrams,
      List<GetPlanCategoryResponseItem> Categories
 )
 {

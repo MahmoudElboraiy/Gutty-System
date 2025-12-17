@@ -12,6 +12,4 @@ public class UserPrefernce
     [MaxLength(1000)]
     public string Notes { get; set; } = string.Empty;
 
-    public List<Item> UnlovedItems { get; set; } = [];
-    public List<Ingredient> UnlovedIngredients { get; set; } = [];
 }

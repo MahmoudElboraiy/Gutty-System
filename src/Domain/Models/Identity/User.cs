@@ -7,14 +7,13 @@ namespace Domain.Models.Identity;
 public class User : IdentityUser
 {
     [MaxLength(255)]
-    public required string FirstName { get; set; }
+    public required string Name { get; set; }
 
     [MaxLength(255)]
-    public string MiddleName { get; set; } = string.Empty;
+    public string? MiddleName { get; set; } = string.Empty;
 
     [MaxLength(255)]
-    public required string LastName { get; set; }
-    public required int CityId { get; set; }
+    public string? LastName { get; set; } = string.Empty;
 
     [MaxLength(255)]
     public required string MainAddress { get; set; }

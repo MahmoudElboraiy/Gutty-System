@@ -33,10 +33,9 @@ public class UserVerifyQueryHandler
         return new UserVerifyQueryResponse(
             user.Id,
             user.PhoneNumber,
-            user.FirstName,
-            user.MiddleName,
-            user.LastName,
+            user.Name,
             user.MainAddress,
+            user.SecondaryAddress,
             user.SecondPhoneNumber,
             user.Email,
             user.PhoneNumberConfirmed,

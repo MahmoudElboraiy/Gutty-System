@@ -34,6 +34,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserPrefernceRepository, UserPrefernceRepository>();
+        services.AddScoped<ISystemConfigurationRepository, SystemConfigurationRepository>();
 
         services
             .AddIdentityCore<User>(o =>
@@ -51,7 +52,7 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        Console.WriteLine(connectionString);
+       // Console.WriteLine(connectionString);
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
         services
@@ -78,7 +79,14 @@ public static class DependencyInjection
             );
 
         services.AddAuthorization();
-
+        services.AddDistributedMemoryCache();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();;
+        services.AddScoped<ISmsRepository, SmsRepository>();
+        services.AddHttpClient<ISmsRepository, SmsRepository>();
+        services.AddScoped<IOtpRepository, OtpRepository>();
+        services.AddScoped<IFileStorageService, FileStorageService>();
+        services.AddMemoryCache();
+        services.AddHttpContextAccessor();
         return services;
     }
 }
