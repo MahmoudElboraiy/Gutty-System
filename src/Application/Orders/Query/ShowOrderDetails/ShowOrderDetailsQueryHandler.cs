@@ -143,7 +143,8 @@ public class ShowOrderDetailsQueryHandler : IRequestHandler<ShowOrderDetailsQuer
             (int)allowedBreakfastPerDay*dayNumber,
             LunchMealsSelected,
             (int)allowedLunchPerDay*dayNumber,
-            IsChangeDeleveryDate
+            IsChangeDeleveryDate,
+            order.IsCompleted
           );
         return result;
        

@@ -17,18 +17,36 @@ public class FileStorageService : IFileStorageService
 
     public async Task<string> SaveImageAsync(IFormFile file)
     {
- 
-        var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
+        try
+        {
+            var extension = Path.GetExtension(file.FileName).ToLower();
+            
+            if(extension != ".jpg" && extension != ".jpeg" && extension != ".png" && extension != ".gif" && extension != ".webp")
+            {
+                throw new FormatException("Unsupported file format");
+            }
+            var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
 
-        if (!Directory.Exists(uploadsPath))
-            Directory.CreateDirectory(uploadsPath);
+            if (!Directory.Exists(uploadsPath))
+                Directory.CreateDirectory(uploadsPath);
 
-        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-        var fullPath = Path.Combine(uploadsPath, fileName);
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var fullPath = Path.Combine(uploadsPath, fileName);
 
-        using var stream = new FileStream(fullPath, FileMode.Create);
-        await file.CopyToAsync(stream);
+            using var stream = new FileStream(fullPath, FileMode.Create);
+            await file.CopyToAsync(stream);
 
-        return "/uploads/" + fileName;
-    }
+            return "/uploads/" + fileName;
+        }
+        catch (Exception ex)
+        {
+            // Unsupported file format
+            if(ex is FormatException)
+            {
+                throw new Exception("Unsupported file format. Please upload an image file.");
+            }
+            throw new Exception(
+           $"UPLOAD ERROR | Root: {_env.WebRootPath} | ContentRoot: {_env.ContentRootPath} | MSG: {ex.Message}");
+        }
+        }
 }

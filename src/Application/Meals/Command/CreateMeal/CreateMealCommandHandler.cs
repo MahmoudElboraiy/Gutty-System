@@ -1,6 +1,8 @@
 ﻿
 
 using Application.Authentication.Common.EditAddress;
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Models.Entities;
 using ErrorOr;
@@ -12,10 +14,12 @@ public class CreateMealCommandHandler : IRequestHandler<CreateMealCommand, Error
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileStorageService _fileService;
-    public CreateMealCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService)
+    private readonly ICacheService _cacheService;
+    public CreateMealCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
         _fileService = fileService;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<ResultMessage>> Handle(CreateMealCommand request, CancellationToken cancellationToken)
     {
@@ -39,6 +43,7 @@ public class CreateMealCommandHandler : IRequestHandler<CreateMealCommand, Error
             IngredientId = request.IngredientId,
             DefaultQuantityGrams = request.DefaultQuantityGrams
         };
+        _cacheService.IncrementVersion(CacheKeys.MealsVersion);
         await _unitOfWork.Meals.AddAsync(meal);
         await _unitOfWork.CompleteAsync();
         return new ResultMessage

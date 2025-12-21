@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Presentation.Controllers
@@ -17,6 +18,7 @@ namespace Presentation.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    [EnableRateLimiting("PerUser")]
     public class InventoryPurchasesController : ControllerBase
     {
         private readonly ISender _mediator;

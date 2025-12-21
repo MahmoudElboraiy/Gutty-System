@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Models.Entities;
 using ErrorOr;
@@ -11,12 +13,15 @@ public class CreateIngredientCommandHandler :
     IRequestHandler<CreateIngredientCommand, ErrorOr<CreateIngredientCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public CreateIngredientCommandHandler(IUnitOfWork unitOfWork)
+    private readonly ICacheService _cacheService;
+    public CreateIngredientCommandHandler(IUnitOfWork unitOfWork, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<CreateIngredientCommandResponse>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
     {
+
         var ingredient = new Ingredient
         {
             Name = request.Name,
@@ -28,6 +33,7 @@ public class CreateIngredientCommandHandler :
         await _unitOfWork.Ingredients.AddAsync(ingredient);
         await _unitOfWork.CompleteAsync();
         var response = new CreateIngredientCommandResponse(ingredient.Id);
+        _cacheService.IncrementVersion(CacheKeys.IngredientsVersion);
         return response;
     }
 }

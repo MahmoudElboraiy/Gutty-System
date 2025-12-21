@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Domain.Models.Identity;
 using ErrorOr;
 using MediatR;
@@ -11,9 +13,11 @@ namespace Application.Authentication.Common.EditUserDashBoard;
 public class EditUserDashBoardCommandHandler : IRequestHandler<EditUserDashBoardCommand, ErrorOr<ResultSuccess>>
 {
     private readonly UserManager<User> _userManager;
-    public EditUserDashBoardCommandHandler(UserManager<User> userManager)
+    private readonly ICacheService _cacheService;
+    public EditUserDashBoardCommandHandler(UserManager<User> userManager, ICacheService cacheService)
     {
         _userManager = userManager;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<ResultSuccess>> Handle(EditUserDashBoardCommand request, CancellationToken cancellationToken)
     {
@@ -39,6 +43,7 @@ public class EditUserDashBoardCommandHandler : IRequestHandler<EditUserDashBoard
         {
             return Error.Failure("User.UpdateFailed", "Failed to update user.");
         }
+        _cacheService.IncrementVersion(CacheKeys.CustomersVersion);
         return new ResultSuccess(true, "User updated successfully.");
     }
 

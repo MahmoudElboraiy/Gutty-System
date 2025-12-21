@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
@@ -10,9 +12,11 @@ namespace Application.PromoCodes.Commands.CreatePromoCode;
 public class CreatePromoCodeCommandHandler : IRequestHandler<CreatePromoCodeCommand, ErrorOr<CreatePromoCodeCommandResponse>>
 {
     private readonly IUnitOfWork unitOfWork;
-    public CreatePromoCodeCommandHandler(IUnitOfWork unitOfWork)
+    private readonly ICacheService _cacheService;
+    public CreatePromoCodeCommandHandler(IUnitOfWork unitOfWork, ICacheService cacheService)
     {
         this.unitOfWork = unitOfWork;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<CreatePromoCodeCommandResponse>> Handle(CreatePromoCodeCommand request, CancellationToken cancellationToken)
     {
@@ -32,6 +36,7 @@ public class CreatePromoCodeCommandHandler : IRequestHandler<CreatePromoCodeComm
             ExpiryDate = request.ExpiryDate,
             IsActive = request.IsActive
         };
+        _cacheService.IncrementVersion(CacheKeys.PromoCodesVersion);
         await unitOfWork.PromoCodes.AddAsync(promoCode);
         await unitOfWork.CompleteAsync();
         return new CreatePromoCodeCommandResponse(promoCode.Id);

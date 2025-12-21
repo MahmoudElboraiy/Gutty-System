@@ -21,6 +21,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="StackExchange.Redis" Version="2.10.1" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
         <PackageReference Include="Vonage" Version="8.13.2" />
     </ItemGroup>

@@ -1,11 +1,13 @@
 using System.Runtime.InteropServices.JavaScript;
 using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[EnableRateLimiting("PerUser")]
 public class EnumsController : ControllerBase
 {
     

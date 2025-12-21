@@ -1,4 +1,5 @@
 ﻿
+using Application.Cache;
 using Application.Interfaces;
 using Domain.Models.Identity;
 using ErrorOr;
@@ -12,13 +13,16 @@ public class EditUserCommandHandler: IRequestHandler<EditUserCommand, ErrorOr<Re
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly UserManager<User> _userManager;
+    private readonly ICacheService _cacheService;
     public EditUserCommandHandler(
         ICurrentUserService currentUserService,
-        UserManager<User> userManager
+        UserManager<User> userManager,
+        ICacheService cacheService
     )
     {
         _currentUserService = currentUserService;
         _userManager = userManager;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<ResultMessage>> Handle(EditUserCommand request, CancellationToken cancellationToken)
     {
@@ -46,6 +50,7 @@ public class EditUserCommandHandler: IRequestHandler<EditUserCommand, ErrorOr<Re
         {
             return Error.Failure("User.UpdateFailed", "Failed to update user.");
         }
+        _cacheService.IncrementVersion(CacheKeys.CustomersVersion);
         return new ResultMessage(true, "User updated successfully.");
     }
 }

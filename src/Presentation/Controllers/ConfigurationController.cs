@@ -7,11 +7,13 @@ using Domain.Models.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting("fixed")]
     public class ConfigurationController : ControllerBase
     {
         private readonly IMediator _mediator;

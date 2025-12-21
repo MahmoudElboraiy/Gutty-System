@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
@@ -10,9 +12,11 @@ namespace Application.Meals.Command.DeleteCategory
         IRequestHandler<DeleteCategoryCommand, ErrorOr<DeleteCategoryCommandResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public DeleteCategoryCommandHandler(IUnitOfWork unitOfWork)
+        private readonly ICacheService _cacheService;
+        public DeleteCategoryCommandHandler(IUnitOfWork unitOfWork,ICacheService cacheService)
         {
             _unitOfWork = unitOfWork;
+            _cacheService = cacheService;
         }
         public async Task<ErrorOr<DeleteCategoryCommandResponse>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
@@ -28,6 +32,7 @@ namespace Application.Meals.Command.DeleteCategory
             }
             _unitOfWork.Categories.Remove(category);
             await _unitOfWork.CompleteAsync();
+            _cacheService.IncrementVersion(CacheKeys.CategoriesVersion);
             return new DeleteCategoryCommandResponse(category.Id);
         }
     }

@@ -6,7 +6,7 @@ namespace Application.Orders.Query.ShowOrderDetails;
 
 public record ShowOrderDetailsQuery() : IRequest<ErrorOr<ShowOrderDetailsQueryResponse>>;
 public record ShowOrderDetailsQueryResponse(List<ShowOrderMealsDetailsQueryResponseItem> OrderMeals
-    ,int SelectedBreakFastAndDinner,int AllowBreakFastAndDinnerMeals,int SelectedLunch ,int AllowLunchMeals, bool IsChangeDeliveryDate);
+    ,int SelectedBreakFastAndDinner,int AllowBreakFastAndDinnerMeals,int SelectedLunch ,int AllowLunchMeals, bool IsChangeDeliveryDate,bool IsCompleted);
 public record ShowOrderMealsDetailsQueryResponseItem(
     int OrderMealId,
     string MealName,

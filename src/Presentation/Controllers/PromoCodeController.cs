@@ -9,11 +9,13 @@ using Application.PromoCodes.Commands.EditPromoCode;
 using Application.PromoCodes.Commands.DeletePromoCode;
 using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+    [EnableRateLimiting("PerUser")]
     public class PromoCodeController : ControllerBase
     {
         private readonly IMediator _mediator;

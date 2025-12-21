@@ -1,5 +1,6 @@
 ﻿
 using Application.Authentication.Common;
+using Application.Cache;
 using Application.Interfaces;
 using Domain.Models.Identity;
 using ErrorOr;
@@ -15,15 +16,18 @@ public class AddRoleCommandHandler :
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ICacheService _cacheService;
     public AddRoleCommandHandler(
         IJwtTokenGenerator jwtTokenGenerator,
         UserManager<User> userManager,
-        RoleManager<IdentityRole> roleManager
+        RoleManager<IdentityRole> roleManager,
+        ICacheService cacheService
     )
     {
         _jwtTokenGenerator = jwtTokenGenerator;
         _userManager = userManager;
         _roleManager = roleManager;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<AuthenticationResponse>> Handle(
         AddRoleCommand request,
@@ -59,6 +63,7 @@ public class AddRoleCommandHandler :
             return Error.Failure("Role.AssignmentFailed", "Failed to assign role to user.");
         }
         var token = _jwtTokenGenerator.GenerateToken(user,request.Role);
+        _cacheService.IncrementVersion(CacheKeys.CustomersVersion);
         return new AuthenticationResponse(token,request.Role);
     }
 }

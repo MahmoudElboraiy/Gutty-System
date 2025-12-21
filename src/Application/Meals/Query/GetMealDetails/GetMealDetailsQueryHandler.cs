@@ -1,7 +1,10 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Enums;
+using Domain.Models.Entities;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -14,25 +17,30 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public GetMealDetailsQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
+    private readonly ICacheService _cacheService;
+    public GetMealDetailsQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor,ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
         _httpContextAccessor = httpContextAccessor;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<GetMealDetailsQueryResponse>> Handle(GetMealDetailsQuery request, CancellationToken cancellationToken)
     {
-        var meal = await _unitOfWork.Meals
-            .GetQueryable()
-            .Where(m => m.Id == request.MealId)
-            .AsNoTracking()
-            .Include(i=>i.Ingredient)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        var category = await _unitOfWork.SubCategories
-            .GetQueryable()
-            .Where(c => c.Id == meal.SubcategoryId)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(cancellationToken);
+        var meal = await _cacheService.GetOrCreateAsync<Meal>(
+                baseKey: CacheKeys.MealById,
+                versionKey: CacheKeys.MealsVersion,
+                parametersKey: $"meal_{request.MealId}",
+                factory: async () =>
+                {
+                    var meal = await _unitOfWork.Meals
+                        .GetQueryable()
+                        .AsNoTracking()
+                        .Include(m => m.Ingredient)
+                        .Include(m => m.Subcategory)
+                            .ThenInclude(sc => sc.Category)
+                        .FirstOrDefaultAsync(m => m.Id == request.MealId, cancellationToken);
+                    return meal;
+                });
 
         GetMealDetailsQueryResponse responseItem = null;
         if(meal == null) {
@@ -52,7 +60,7 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
                 meal.FixedProtein.Value,
                 meal.FixedCarbs.Value,
                 meal.FixedFats.Value,
-                category.CategoryId,
+                meal.Subcategory.CategoryId,
                 meal.SubcategoryId,
                 meal.DefaultQuantityGrams
             );
@@ -96,7 +104,7 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
             meal.Ingredient.ProteinPer100g * ratio,
             meal.Ingredient.CarbsPer100g * ratio,
             meal.Ingredient.FatsPer100g * ratio,
-            category.CategoryId,
+            meal.Subcategory.CategoryId,
             meal.SubcategoryId,
             ingredient
         );

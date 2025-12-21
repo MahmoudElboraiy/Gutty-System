@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Models.Entities;
 using ErrorOr;
@@ -12,10 +14,12 @@ public class CreateSubCategoryCommandHandler :
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileStorageService _fileService;
-    public CreateSubCategoryCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService)
+    private readonly ICacheService _cacheService;
+    public CreateSubCategoryCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
         _fileService = fileService;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<CreateSubCategoryCommandResponse>> Handle(CreateSubCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -35,6 +39,8 @@ public class CreateSubCategoryCommandHandler :
             ImageUrl = imageUrl,
             CategoryId = request.CategoryId
         };
+        _cacheService.IncrementVersion(CacheKeys.SubCategoriesVersion);
+        _cacheService.IncrementVersion(CacheKeys.MealsVersion);
         await _unitOfWork.SubCategories.AddAsync(subCategory);
         await _unitOfWork.CompleteAsync();
         return new CreateSubCategoryCommandResponse(subCategory.Id);

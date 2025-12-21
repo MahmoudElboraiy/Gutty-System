@@ -22,12 +22,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Text.RegularExpressions;
 
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting("PerUser")]
     public class MenuController : ControllerBase
     {
         private readonly IMediator _mediator;
