@@ -1,9 +1,11 @@
 using System.Reflection;
+using System.Threading.RateLimiting;
 using Application;
 using Domain.Models.Identity;
 using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -81,7 +83,37 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddOpenApi();
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("PerUser", context =>
+    {
+     
+        var userId = context.User?.FindFirst("sub")?.Value
+                     ?? context.User?.FindFirst("id")?.Value;
 
+   
+        if (string.IsNullOrEmpty(userId))
+        {
+            var ip = context.Connection.RemoteIpAddress?.ToString();
+            return RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey: ip ?? "anonymous",
+                factory: _ => new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 100,
+                    Window = TimeSpan.FromMinutes(1)
+                });
+        }
+
+        return RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: userId,
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 100,          
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0
+            });
+    });
+});
 var app = builder.Build();
 
 app.UseCors(corsPolicyName);
@@ -136,6 +168,9 @@ if (args.Length > 0 && (args[0] == "seedAll" || args[0] == "seed"))
 {
     Environment.Exit(0);
 }
+
+app.UseRateLimiter();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

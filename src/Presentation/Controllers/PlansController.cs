@@ -16,11 +16,13 @@ using System.Numerics;
 using Application.Plans.Commands.DeletePlan;
 using Application.Plans.Commands.EditPlan;
 using Application.Plans.Queries.GetPlanById;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("PerUser")]
 public class PlansController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -20,13 +20,14 @@ using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Presentation.Controllers;
-
 [ApiController]
 [Route("auth")]
-public class AuthController : Controller
+[EnableRateLimiting("PerUser")]
+public class AuthController : ControllerBase
 {
     private readonly ISender _mediator;
 

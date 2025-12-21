@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Models.Entities;
 using ErrorOr;
@@ -11,9 +13,11 @@ namespace Application.PromoCodes.Commands.DeletePromoCode;
 public class DeletePromoCodeCommandHandler : IRequestHandler<DeletePromoCodeCommand, ErrorOr<DeletePromoCodeCommandResponse>>
 {
     private readonly IUnitOfWork unitOfWork;
-    public DeletePromoCodeCommandHandler(IUnitOfWork unitOfWork)
+    private readonly ICacheService _cacheService;
+    public DeletePromoCodeCommandHandler(IUnitOfWork unitOfWork,ICacheService cacheService)
     {
         this.unitOfWork = unitOfWork;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<DeletePromoCodeCommandResponse>> Handle(DeletePromoCodeCommand request, CancellationToken cancellationToken)
     {
@@ -36,7 +40,7 @@ public class DeletePromoCodeCommandHandler : IRequestHandler<DeletePromoCodeComm
                 description: $"Cannot delete promo code '{request.code}' because it is associated with active subscriptions."
                 );
         }
-
+        _cacheService.IncrementVersion(CacheKeys.PromoCodesVersion);
         unitOfWork.PromoCodes.Remove(promoCode);
         await unitOfWork.CompleteAsync();
         return new DeletePromoCodeCommandResponse(true);

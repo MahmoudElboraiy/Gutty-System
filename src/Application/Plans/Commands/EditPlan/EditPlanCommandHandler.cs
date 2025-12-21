@@ -1,6 +1,7 @@
 ﻿
 
 using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Models.Entities;
 using ErrorOr;
@@ -15,9 +16,9 @@ public class EditPlanCommandHandler :
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileStorageService _fileService;
-    private readonly IMemoryCache _cache;
+    private readonly ICacheService _cache;
     public EditPlanCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService,
-        IMemoryCache memoryCache)
+        ICacheService memoryCache)
     {
         _unitOfWork = unitOfWork;
         _fileService = fileService;
@@ -70,9 +71,8 @@ public class EditPlanCommandHandler :
         }
         
         _unitOfWork.Plans.Update(planExits);
-
-        await _unitOfWork.CompleteAsync();
-        _cache.Remove(CacheKeys.Plans);
+        _cache.IncrementVersion(CacheKeys.PlansVersion);
+        await _unitOfWork.CompleteAsync();     
         return new EditPlanCommandResponse(planExits.Id);
     }
 }

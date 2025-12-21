@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
@@ -10,9 +12,11 @@ namespace Application.Meals.Command.DeleteMeal;
 public class DeleteMealCommandHandler : IRequestHandler<DeleteMealCommand, ErrorOr<ResultMessage>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public DeleteMealCommandHandler(IUnitOfWork unitOfWork)
+    private readonly ICacheService _cacheService;
+    public DeleteMealCommandHandler(IUnitOfWork unitOfWork, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<ResultMessage>> Handle(DeleteMealCommand request, CancellationToken cancellationToken)
     {
@@ -39,7 +43,8 @@ public class DeleteMealCommandHandler : IRequestHandler<DeleteMealCommand, Error
                 description: $"Cannot delete meal with id {request.Id} because it is used in upcoming orders."
                 );
         }
-            _unitOfWork.Meals.Remove(meal);
+        _cacheService.IncrementVersion(CacheKeys.MealsVersion);
+        _unitOfWork.Meals.Remove(meal);
         await _unitOfWork.CompleteAsync();
         return new ResultMessage
         {

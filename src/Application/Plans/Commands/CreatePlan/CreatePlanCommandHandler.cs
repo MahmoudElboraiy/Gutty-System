@@ -1,4 +1,5 @@
 using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.DErrors;
 using Domain.Models.Entities;
@@ -16,9 +17,9 @@ public class CreatePlanCommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
     private readonly IFileStorageService _fileService;
-    private readonly IMemoryCache _cache;
+    private readonly ICacheService _cache;
     public CreatePlanCommandHandler(IUnitOfWork unitOfWork, UserManager<User> userManager, IFileStorageService fileService
-        , IMemoryCache memoryCache)
+        , ICacheService memoryCache)
     {
         _unitOfWork = unitOfWork;
         _userManager = userManager;
@@ -58,10 +59,9 @@ public class CreatePlanCommandHandler
                 MaxProteinGrams = c.MaxProteinGrams
             }).ToList()
         };
-
+        _cache.IncrementVersion(CacheKeys.PlansVersion);
         await _unitOfWork.Plans.AddAsync(plan);
-        await _unitOfWork.CompleteAsync();
-        _cache.Remove(CacheKeys.Plans);
+        await _unitOfWork.CompleteAsync();  
         return new CreatePlanCommandResponse(plan.Id);
     }
 }

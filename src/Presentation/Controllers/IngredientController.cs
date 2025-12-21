@@ -8,12 +8,14 @@ using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = $"{nameof(Roles.Admin)},{nameof(Roles.CustomerService)}")]
+[EnableRateLimiting("PerUser")]
 public class IngredientController : Controller
 {
     private readonly ISender _mediator;

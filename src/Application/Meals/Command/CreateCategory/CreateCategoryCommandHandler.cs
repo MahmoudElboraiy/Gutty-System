@@ -1,4 +1,6 @@
 ﻿
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Models.Entities;
 using ErrorOr;
@@ -9,9 +11,11 @@ namespace Application.Meals.Command.CreateCategory;
 public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, ErrorOr<CreateCategoryCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public CreateCategoryCommandHandler(IUnitOfWork unitOfWork)
+    private readonly ICacheService _cacheService;
+    public CreateCategoryCommandHandler(IUnitOfWork unitOfWork,ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<CreateCategoryCommandResponse>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -22,6 +26,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         };
         await _unitOfWork.Categories.AddAsync(category);
         await _unitOfWork.CompleteAsync();
+        _cacheService.IncrementVersion(CacheKeys.CategoriesVersion);
         return new CreateCategoryCommandResponse(category.Id);
     }
 }

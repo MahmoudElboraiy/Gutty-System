@@ -1,4 +1,6 @@
 ﻿
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.Models.Identity;
 using ErrorOr;
@@ -12,10 +14,12 @@ public class RemoveUserCommandHandler : IRequestHandler<RemoveUserCommand, Error
 {
     private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _unitOfWork;
-    public RemoveUserCommandHandler(UserManager<User> userManager, IUnitOfWork unitOfWork)
+    private readonly ICacheService _cacheService;
+    public RemoveUserCommandHandler(UserManager<User> userManager, IUnitOfWork unitOfWork,ICacheService cacheService)
     {
         _userManager = userManager;
         _unitOfWork = unitOfWork;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<ResultSuccess>> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
     {
@@ -42,7 +46,7 @@ public class RemoveUserCommandHandler : IRequestHandler<RemoveUserCommand, Error
         {
             return Error.Failure("User.DeletionFailed", "Failed to delete user.");
         }
-
+        _cacheService.IncrementVersion(CacheKeys.CustomersVersion);
         return new ResultSuccess(true, "User deleted successfully.");
     }
 }

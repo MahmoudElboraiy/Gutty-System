@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 
 namespace Infrastructure;
 
@@ -87,6 +88,7 @@ public static class DependencyInjection
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
+        services.AddSingleton<ICacheService, InMemoryCacheService>();
         return services;
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
@@ -9,9 +11,11 @@ public class UpdateIngredientCommandHandler :
     IRequestHandler<UpdateIngredientCommand, ErrorOr<UpdateIngredientCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public UpdateIngredientCommandHandler(IUnitOfWork unitOfWork)
+    private readonly ICacheService _cacheService;
+    public UpdateIngredientCommandHandler(IUnitOfWork unitOfWork, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<UpdateIngredientCommandResponse>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
     {
@@ -27,6 +31,8 @@ public class UpdateIngredientCommandHandler :
         ingredient.FatsPer100g = request.FatsPer100g;
         _unitOfWork.Ingredients.Update(ingredient);
         await _unitOfWork.CompleteAsync();
+        _cacheService.IncrementVersion(CacheKeys.IngredientsVersion);
+        _cacheService.IncrementVersion(CacheKeys.MealsVersion);
         var response = new UpdateIngredientCommandResponse(ingredient.Id);
         return response;
     }

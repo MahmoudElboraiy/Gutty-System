@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
@@ -10,10 +12,12 @@ public class UpdateMealCommandHandler : IRequestHandler<UpdateMealCommand, Error
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileStorageService _fileService;
-    public UpdateMealCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService)
+    private readonly ICacheService _cacheService;
+    public UpdateMealCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
         _fileService = fileService;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<ResultMessage>> Handle(UpdateMealCommand request, CancellationToken cancellationToken)
     {
@@ -39,6 +43,7 @@ public class UpdateMealCommandHandler : IRequestHandler<UpdateMealCommand, Error
         meal.SubcategoryId = request.SubcategoryId;
         meal.IngredientId = request.IngredientId;
         meal.DefaultQuantityGrams = request.DefaultQuantityGrams;
+        _cacheService.IncrementVersion(CacheKeys.MealsVersion);
         _unitOfWork.Meals.Update(meal);
         await _unitOfWork.CompleteAsync();
         return new ResultMessage

@@ -1,6 +1,7 @@
 ﻿
 
 using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
@@ -12,8 +13,8 @@ namespace Application.Plans.Commands.DeletePlan;
 public class DeletePlanCommandHandler: IRequestHandler<DeletePlanCommand,ErrorOr<ResultMessage>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMemoryCache _cache;
-    public DeletePlanCommandHandler(IUnitOfWork unitOfWork, IMemoryCache memoryCache)
+    private readonly ICacheService _cache;
+    public DeletePlanCommandHandler(IUnitOfWork unitOfWork, ICacheService memoryCache)
     {
         _unitOfWork = unitOfWork;
         _cache = memoryCache;
@@ -36,9 +37,9 @@ public class DeletePlanCommandHandler: IRequestHandler<DeletePlanCommand,ErrorOr
                 description: $"Cannot delete plan with id {request.id} because it is associated with active subscriptions."
                 );
         }
+        _cache.IncrementVersion(CacheKeys.PlansVersion);
         _unitOfWork.Plans.Remove(planExits);
-        await _unitOfWork.CompleteAsync();
-        _cache.Remove(CacheKeys.Plans);
+        await _unitOfWork.CompleteAsync();    
         return new ResultMessage(true, "Plan deleted successfully");
     }
 }

@@ -18,12 +18,14 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Orders.Query.IsThereOrder;
 using Application.Orders.Query.GetIngredientsByDate;
 using Application.Orders.Query.GetOrdersByDateWithMeals;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [EnableRateLimiting("PerUser")]
     public class OrderController : ControllerBase
     {
         private readonly IMediator _mediator;

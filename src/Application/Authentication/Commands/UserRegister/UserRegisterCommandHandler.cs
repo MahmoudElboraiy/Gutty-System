@@ -1,4 +1,5 @@
 using Application.Authentication.Common;
+using Application.Cache;
 using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Domain.DErrors;
@@ -17,19 +18,22 @@ public class UserRegisterCommandHandler
     private readonly UserManager<User> _userManager;
     private readonly ISmsRepository _smsRepository;
     private readonly IJwtTokenGenerator JwtTokenGenerator;
-  //  private readonly IOtpRepository _otpRepository;
+    private readonly ICacheService _cacheService;
+    //  private readonly IOtpRepository _otpRepository;
 
     public UserRegisterCommandHandler(
         UserManager<User> userManager,
         IJwtTokenGenerator jwtTokenGenerator,
-        ISmsRepository smsRepository
-      //  IOtpRepository otpRepository
+        ISmsRepository smsRepository,
+        ICacheService cacheService
+    //  IOtpRepository otpRepository
     )
     {
         _userManager = userManager;
         JwtTokenGenerator = jwtTokenGenerator;
         _smsRepository = smsRepository;
-      //  _otpRepository = otpRepository;
+        _cacheService = cacheService;
+        //  _otpRepository = otpRepository;
     }
 
     public async Task<ErrorOr<AuthenticationResponse>> Handle(
@@ -74,7 +78,7 @@ public class UserRegisterCommandHandler
         // TODO: Send verification sms to user
 
         var jwtToken = JwtTokenGenerator.GenerateToken(user, Roles.User.ToString());
-
+        _cacheService.IncrementVersion(CacheKeys.CustomersVersion);
         return new AuthenticationResponse(jwtToken, Roles.User.ToString());
     }
 }

@@ -1,4 +1,6 @@
-﻿using Application.Interfaces.UnitOfWorkInterfaces;
+﻿using Application.Cache;
+using Application.Interfaces;
+using Application.Interfaces.UnitOfWorkInterfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -9,33 +11,40 @@ public class GetMealsQueryHandler : IRequestHandler<GetMealsQuery, GetMealsQuery
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public GetMealsQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
+    private readonly ICacheService _cacheService;
+    public GetMealsQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
         _httpContextAccessor = httpContextAccessor;
+        _cacheService = cacheService;
     }
     public async Task<GetMealsQueryResponse> Handle(GetMealsQuery request, CancellationToken cancellationToken)
     {
-        var meals = await _unitOfWork.Meals
-            .GetQueryable()
-            .Where(m => m.SubcategoryId == request.SubCategoryId)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
-
         var httpRequest = _httpContextAccessor.HttpContext!.Request;
         var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
 
-        var responseItems = meals
-            .Select(
-                m =>
-                    new GetMealQueryResponseItem(
+        var cacheKeyParams = $"subCategory_{request.SubCategoryId}";
+
+        var responseItems = await _cacheService.GetOrCreateAsync<
+            List<GetMealQueryResponseItem>>(
+            baseKey: CacheKeys.Meals,
+            versionKey: CacheKeys.MealsVersion,
+            parametersKey: cacheKeyParams,
+            factory: async () =>
+            {
+                return await _unitOfWork.Meals
+                    .GetQueryable()
+                    .AsNoTracking()
+                    .Where(m => m.SubcategoryId == request.SubCategoryId)
+                    .Select(m => new GetMealQueryResponseItem(
                         m.Id,
                         m.Name,
                         m.Description,
                         baseUrl + m.ImageUrl
-                    )
-            )
-            .ToList();
+                    ))
+                    .ToListAsync(cancellationToken);
+            });
+
         return new GetMealsQueryResponse(responseItems);
     }
 }

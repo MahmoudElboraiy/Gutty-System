@@ -1,4 +1,5 @@
 ﻿
+using Application.Cache;
 using Application.Interfaces;
 using Domain.Models.Identity;
 using ErrorOr;
@@ -11,17 +12,20 @@ public class EditPhoneNumberCommandHandler : IRequestHandler<EditPhoneNumberComm
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly UserManager<User> _userManager;
- //   private readonly IOtpRepository _otpRepository;
+    private readonly ICacheService _cacheService;
+    //   private readonly IOtpRepository _otpRepository;
 
     public EditPhoneNumberCommandHandler(
          ICurrentUserService currentUserService,
-         UserManager<User> userManager
-   //         IOtpRepository otpRepository
+         UserManager<User> userManager,
+         ICacheService cacheService
+         //         IOtpRepository otpRepository
          )
     {
         _currentUserService = currentUserService;
         _userManager = userManager;
-     //   _otpRepository = otpRepository;
+        _cacheService = cacheService;
+        //   _otpRepository = otpRepository;
     }
     public async Task<ErrorOr<ResultMessage>> Handle(EditPhoneNumberCommand request, CancellationToken cancellationToken)
     {
@@ -42,7 +46,8 @@ public class EditPhoneNumberCommandHandler : IRequestHandler<EditPhoneNumberComm
         var result = await _userManager.UpdateAsync(user);       
         if (result.Succeeded)
         {
-          //  await _otpRepository.RemoveOtpAsync($"{request.NewPhoneNumber}");
+            //  await _otpRepository.RemoveOtpAsync($"{request.NewPhoneNumber}");
+            _cacheService.IncrementVersion(CacheKeys.CustomersVersion);
             return new ResultMessage(true, "Phone number updated successfully.");
         }
         else

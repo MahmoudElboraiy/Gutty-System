@@ -1,4 +1,5 @@
 using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using Application.Profiles;
 using Domain.Models.Entities;
@@ -15,12 +16,12 @@ public class GetPlansQueryHandler : IRequestHandler<GetPlansQuery, GetPlansQuery
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IMemoryCache _cache;
-    public GetPlansQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IMemoryCache memoryCache)
+    private readonly ICacheService _cacheService;
+    public GetPlansQueryHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
         _httpContextAccessor = httpContextAccessor;
-        _cache = memoryCache;
+        _cacheService = cacheService;
     }
 
     public async Task<GetPlansQueryResponse> Handle(
@@ -28,35 +29,32 @@ public class GetPlansQueryHandler : IRequestHandler<GetPlansQuery, GetPlansQuery
         CancellationToken cancellationToken
     )
     {
-        if (!_cache.TryGetValue(CacheKeys.Plans, out List<GetPlanQueryResponseItem> allPlans))
-        {
-             var Plans = await _unitOfWork
-            .Plans.GetQueryable()
-            .Include(p => p.LunchCategories) 
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        var httpRequest = _httpContextAccessor.HttpContext!.Request;
+        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
 
-            var httpRequest = _httpContextAccessor.HttpContext!.Request;
-            var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+        var parametersKey = $"page_{request.pageNumber}_size_{request.pageSize}";
 
-            allPlans = Plans.Select(x => x.MapPlanResponse(baseUrl)).ToList();
+        var pagePlans = await _cacheService.GetOrCreateAsync<List<GetPlanQueryResponseItem>>(
+            baseKey: CacheKeys.Plans,
+            versionKey: CacheKeys.PlansVersion,
+            parametersKey: parametersKey,
+            factory: async () =>
+            {
+                var skip = (request.pageNumber - 1) * request.pageSize;
+                var take = request.pageSize;
 
-            _cache.Set(
-                 CacheKeys.Plans,
-                 allPlans,
-                  new MemoryCacheEntryOptions
-                  {
-                      SlidingExpiration = TimeSpan.FromHours(24),
-                      Priority = CacheItemPriority.High
-                  }
-                        );      
-        }
+                var plans = await _unitOfWork.Plans
+                    .GetQueryable()
+                    .Include(p => p.LunchCategories)
+                    .AsNoTracking()
+                    .OrderBy(p => p.Id)
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync(cancellationToken);
 
-        var items = allPlans
-           .Skip((request.pageNumber - 1) * request.pageSize)
-           .Take(request.pageSize)
-           .ToList();
+                return plans.Select(p => p.MapPlanResponse(baseUrl)).ToList();
+            });
 
-        return new GetPlansQueryResponse(items);
+        return new GetPlansQueryResponse(pagePlans);
     }
 } 

@@ -1,5 +1,7 @@
 ﻿
 
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
@@ -11,10 +13,12 @@ public class UpdateSubCategoryCommandHandler :
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFileStorageService _fileService;
-    public UpdateSubCategoryCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService)
+    private readonly ICacheService _cacheService;
+    public UpdateSubCategoryCommandHandler(IUnitOfWork unitOfWork, IFileStorageService fileService, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
         _fileService = fileService;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<UpdateSubCategoryCommandResponse>> Handle(UpdateSubCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -36,6 +40,8 @@ public class UpdateSubCategoryCommandHandler :
         subCategory.Name = request.SubCategoryName;
         subCategory.ImageUrl = imageUrl;
         subCategory.CategoryId = request.CategoryId;
+        _cacheService.IncrementVersion(CacheKeys.SubCategoriesVersion);
+        _cacheService.IncrementVersion(CacheKeys.MealsVersion);
         await _unitOfWork.CompleteAsync();
         return new UpdateSubCategoryCommandResponse(subCategory.Id);
     }

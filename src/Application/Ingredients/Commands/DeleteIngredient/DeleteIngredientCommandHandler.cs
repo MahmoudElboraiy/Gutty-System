@@ -1,4 +1,6 @@
 ﻿
+using Application.Cache;
+using Application.Interfaces;
 using Application.Interfaces.UnitOfWorkInterfaces;
 using ErrorOr;
 using MediatR;
@@ -10,9 +12,11 @@ public class DeleteIngredientCommandHandler :
     IRequestHandler<DeleteIngredientCommand, ErrorOr<DeleteIngredientCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public DeleteIngredientCommandHandler(IUnitOfWork unitOfWork)
+    private readonly ICacheService _cacheService;
+    public DeleteIngredientCommandHandler(IUnitOfWork unitOfWork, ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
+        _cacheService = cacheService;
     }
     public async Task<ErrorOr<DeleteIngredientCommandResponse>> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)
     {
@@ -33,6 +37,7 @@ public class DeleteIngredientCommandHandler :
         }
             _unitOfWork.Ingredients.Remove(ingredient);
         await _unitOfWork.CompleteAsync();
+        _cacheService.IncrementVersion(CacheKeys.IngredientsVersion);
         var response = new DeleteIngredientCommandResponse(
             true,
             $"Ingredient with id {request.Id} deleted successfully."
