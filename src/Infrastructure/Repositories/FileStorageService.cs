@@ -23,6 +23,8 @@ public class FileStorageService : IFileStorageService
             var uploadsFolder = "/var/www/Gutty-System/src/Presentation/wwwroot/uploads";
 
            // var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
+
+
             Console.WriteLine("WebRootPath: " + _env.WebRootPath);
 
 
