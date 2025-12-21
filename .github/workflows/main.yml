@@ -17,11 +17,11 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x' # Adjust version as needed
-<<<<<<< HEAD
+
         
     - name: Restore dependencies
       run: dotnet restore Healthy-Food-System.sln
-=======
+
 
     - name: make appsettings.json
       run: echo -e '${{secrets.APPSETTINGS}}' > src/Presentation/appsettings.json 
