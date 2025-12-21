@@ -19,18 +19,18 @@ public class FileStorageService : IFileStorageService
     {
         try
         {
-            var extension = Path.GetExtension(file.FileName).ToLower();
-            
-           
-            var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
+
+            var uploadsFolder = "/var/www/Gutty-System/src/Presentation/wwwroot/uploads";
+
+           // var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
             Console.WriteLine("WebRootPath: " + _env.WebRootPath);
 
 
-            if (!Directory.Exists(uploadsPath))
-                Directory.CreateDirectory(uploadsPath);
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
 
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            var fullPath = Path.Combine(uploadsPath, fileName);
+            var fullPath = Path.Combine(uploadsFolder, fileName);
 
             using var stream = new FileStream(fullPath, FileMode.Create);
             await file.CopyToAsync(stream);
