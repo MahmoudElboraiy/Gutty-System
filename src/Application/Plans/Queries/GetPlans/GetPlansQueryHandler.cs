@@ -30,7 +30,7 @@ public class GetPlansQueryHandler : IRequestHandler<GetPlansQuery, GetPlansQuery
     )
     {
         var httpRequest = _httpContextAccessor.HttpContext!.Request;
-        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+        var baseUrl = $"https://{httpRequest.Host}";
 
         var parametersKey = $"page_{request.pageNumber}_size_{request.pageSize}";
 

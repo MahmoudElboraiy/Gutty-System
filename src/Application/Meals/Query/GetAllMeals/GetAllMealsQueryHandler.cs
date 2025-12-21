@@ -42,7 +42,7 @@ public class GetAllMealsQueryHandler : IRequestHandler<GetAllMealsQuery, ErrorOr
                    .ToList();
 
                var httpRequest = _httpContextAccessor.HttpContext!.Request;
-               var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+               var baseUrl = $"https://{httpRequest.Host}";
 
                var response = pagedMeals.Select(m => new GetAllMealsQueryResponse
                {

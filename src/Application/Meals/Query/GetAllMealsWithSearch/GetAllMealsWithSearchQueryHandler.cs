@@ -61,7 +61,7 @@ public class GetAllMealsWithSearchQueryHandler: IRequestHandler<GetAllMealsWithS
                    .ToListAsync(cancellationToken);
 
                var httpRequest = _httpContextAccessor.HttpContext!.Request;
-               var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+               var baseUrl = $"https://{httpRequest.Host}";
 
                var responseItems = mealsPaged.Select(m => new GetAllMealsWithSearchItem
                (

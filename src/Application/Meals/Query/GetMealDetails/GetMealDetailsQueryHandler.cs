@@ -47,7 +47,7 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
             return Error.NotFound("Meal.NotFound", "Meal not found");
         }
         var httpRequest = _httpContextAccessor.HttpContext!.Request;
-        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+        var baseUrl = $"https://{httpRequest.Host}";
         if (meal.IngredientId == null)
         {
             responseItem = new GetMealDetailsQueryResponse

@@ -24,7 +24,7 @@ public class GetSubCategoriesByIdQueryHandler:
     public async Task<ErrorOr<GetSubCategoriesByIdQueryResponse>> Handle(GetSubCategoriesByIdQuery request, CancellationToken cancellationToken)
     {
         var httpRequest = _httpContextAccessor.HttpContext!.Request;
-        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+        var baseUrl = $"https://{httpRequest.Host}";
 
         var cacheKeyParams = $"subCategory_{request.SubCategoryId}";
 

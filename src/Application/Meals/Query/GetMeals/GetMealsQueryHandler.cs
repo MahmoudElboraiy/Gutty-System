@@ -21,7 +21,7 @@ public class GetMealsQueryHandler : IRequestHandler<GetMealsQuery, GetMealsQuery
     public async Task<GetMealsQueryResponse> Handle(GetMealsQuery request, CancellationToken cancellationToken)
     {
         var httpRequest = _httpContextAccessor.HttpContext!.Request;
-        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+        var baseUrl = $"https://{httpRequest.Host}";
 
         var cacheKeyParams = $"subCategory_{request.SubCategoryId}";
 

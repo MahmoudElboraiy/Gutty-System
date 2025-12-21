@@ -47,7 +47,7 @@ public class GetPlanByIdQueryHandler : IRequestHandler<GetPlanByIdQuery, ErrorOr
                 }
 
                 var httpRequest = _httpContextAccessor.HttpContext!.Request;
-                var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host}";
+                var baseUrl = $"https://{httpRequest.Host}";
 
                 var categories = plan.LunchCategories.Select(c => new GetPlanCategoryByIdResponseItem(
                     Id: c.Id,
