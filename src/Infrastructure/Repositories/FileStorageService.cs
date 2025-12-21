@@ -21,11 +21,10 @@ public class FileStorageService : IFileStorageService
         {
             var extension = Path.GetExtension(file.FileName).ToLower();
             
-            if(extension != ".jpg" && extension != ".jpeg" && extension != ".png" && extension != ".gif" && extension != ".webp")
-            {
-                throw new FormatException("Unsupported file format");
-            }
+           
             var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
+            Console.WriteLine("WebRootPath: " + _env.WebRootPath);
+
 
             if (!Directory.Exists(uploadsPath))
                 Directory.CreateDirectory(uploadsPath);
@@ -39,12 +38,7 @@ public class FileStorageService : IFileStorageService
             return "/uploads/" + fileName;
         }
         catch (Exception ex)
-        {
-            // Unsupported file format
-            if(ex is FormatException)
-            {
-                throw new Exception("Unsupported file format. Please upload an image file.");
-            }
+        {       
             throw new Exception(
            $"UPLOAD ERROR | Root: {_env.WebRootPath} | ContentRoot: {_env.ContentRootPath} | MSG: {ex.Message}");
         }
