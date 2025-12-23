@@ -135,6 +135,7 @@ public class ShowOrderDetailsQueryHandler : IRequestHandler<ShowOrderDetailsQuer
         //    .Where(om => om.OrderId == orderId && om.MealId.HasValue)
         //    .Count();
 
+        var IsToday = order.DeliveryDate == today;
 
         var result = new ShowOrderDetailsQueryResponse(
               order.Meals.Select(om => om.MapOrderMealResponse(mealDetails)).ToList(),
@@ -144,7 +145,7 @@ public class ShowOrderDetailsQueryHandler : IRequestHandler<ShowOrderDetailsQuer
             LunchMealsSelected,
             (int)allowedLunchPerDay*dayNumber,
             IsChangeDeleveryDate,
-            order.IsCompleted
+            IsToday
           );
         return result;
        

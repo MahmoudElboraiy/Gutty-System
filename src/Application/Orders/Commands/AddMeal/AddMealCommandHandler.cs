@@ -19,24 +19,33 @@ public class AddMealCommandHandler : IRequestHandler<AddMealCommand, AddMealComm
     public async Task<AddMealCommandResponse> Handle(AddMealCommand request, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.UserId;
-
-        var subscription = await _unitOfWork.Subscriptions.GetQueryable()
-            .Include(s => s.LunchCategories)
-            .Include(s => s.Plan)
-            .FirstOrDefaultAsync(s => s.UserId == userId && s.IsCurrent && !s.IsPaused, cancellationToken);
-
-        if(subscription == null)
-        {
-            return new AddMealCommandResponse(false, "No active subscription found for the user.");
-        }
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        //var subscription = await _unitOfWork.Subscriptions.GetQueryable()
+        //    .Include(s => s.LunchCategories)
+        //    .Include(s => s.Plan)
+        //    .FirstOrDefaultAsync(s => (s.UserId == userId && s.IsCurrent && !s.IsPaused) , cancellationToken);
         var order = await _unitOfWork.Orders.GetQueryable()
-            .Where(o => o.SubscriptionId == subscription.Id && !o.IsCompleted)
+            .Include(order => order.Meals)
+            .Include(order => order.Subscription)
+                .ThenInclude(sub => sub.Plan)
+            .Include(order => order.Subscription)
+                .ThenInclude(sub => sub.LunchCategories)
+            .Where(o => o.Subscription.UserId == userId
+                        && o.Subscription.IsCurrent
+                        && !o.Subscription.IsPaused
+                        && !o.IsCompleted )
             .FirstOrDefaultAsync(cancellationToken);
-
         if (order == null)
         {
-            return new AddMealCommandResponse(false, "Order not found.");
-        }
+            return new AddMealCommandResponse(false, "No active order found for the user.");
+        }   
+            //if (orsubscription == null)
+            //{
+            //    return new AddMealCommandResponse(false, "No active subscription found for the user.");
+            //}
+            //var order = await _unitOfWork.Orders.GetQueryable()
+            //    .Where(o => o.SubscriptionId == subscription.Id)
+            //    .FirstOrDefaultAsync(cancellationToken);
 
         var meal =await _unitOfWork.Meals.GetQueryable()
             .AsNoTracking()
@@ -51,25 +60,20 @@ public class AddMealCommandHandler : IRequestHandler<AddMealCommand, AddMealComm
 
         var mealType = meal?.MealType;
 
-            var subCategoryId = meal!.SubcategoryId;
+       var subCategoryId = meal!.SubcategoryId;
 
-        var subscriptionCategory = subscription?.LunchCategories
+        //var subscriptionCategory = subscription?.LunchCategories
+        //       .FirstOrDefault(c => c.SubCategoryId == subCategoryId);
+        var subscriptionCategory = order!.Subscription.LunchCategories
                .FirstOrDefault(c => c.SubCategoryId == subCategoryId);
 
-       var planId = subscription?.PlanId;
+        //var planId = subscription?.PlanId;
 
-        //var mealsPerDa2 = await _unitOfWork.Plans.GetQueryable()
-        //      .Where(p => p.Id == planId)
-        //      .Select(p => new { p.LMealsPerDay ,p.BDMealsPerDay})
-        //      .FirstOrDefaultAsync(cancellationToken);
+        var planId = order!.Subscription.PlanId;
 
-        //var mealCount = await _unitOfWork.OrderMeals
-        //    .GetQueryable()
-        //    .AsNoTracking()
-        //    .Where(m => m.OrderId == request.orderId)
-        //    .CountAsync(m => m.MealType == mealType);
         var mealCount =order.Meals.Count(m => m.MealType == mealType);
-        var mealsPerDay = new { subscription.Plan.LMealsPerDay, subscription.Plan.BDMealsPerDay };
+        //var mealsPerDay = new { subscription.Plan.LMealsPerDay, subscription.Plan.BDMealsPerDay };
+        var mealsPerDay = new {order!.Subscription.Plan.LMealsPerDay, order!.Subscription.Plan.BDMealsPerDay };
 
         var BD_OrderCount = (order!.DayNumber * mealsPerDay!.BDMealsPerDay);
         var L_OrderCount = (order!.DayNumber * mealsPerDay!.LMealsPerDay);
@@ -89,7 +93,8 @@ public class AddMealCommandHandler : IRequestHandler<AddMealCommand, AddMealComm
             }
 
             subscriptionCategory.NumberOfMealsLeft -= (uint)request.count;
-            subscription!.LunchMealsLeft -= (uint)request.count;
+            order.Subscription.LunchMealsLeft -= (uint)request.count;
+            //subscription!.LunchMealsLeft -= (uint)request.count;
         }
         for (int i = 0; i < request.count; i++)
         {

@@ -15,16 +15,12 @@ public class RemoveCarbFromMealCommandHandler : IRequestHandler<RemoveCarbFromMe
     public async Task<RemoveCarbFromMealCommandResponse> Handle(RemoveCarbFromMealCommand request, CancellationToken cancellationToken)
     {
         var orderMeal = await _unitOfWork.OrderMeals
-      .GetQueryable()
-      .Include(om => om.Order)
-      .FirstOrDefaultAsync(o => o.Id == request.orderMealId);
+              .GetQueryable()                      
+              .FirstOrDefaultAsync(o => o.Id == request.orderMealId);
+   
         if (orderMeal == null)
         {
             return new RemoveCarbFromMealCommandResponse(false, "Could not remove Carb");
-        }
-        if(orderMeal.Order.IsCompleted)
-        {
-            return new RemoveCarbFromMealCommandResponse(false, "Cannot remove Carb from a completed order.");
         }
         orderMeal.CarbMealId = null;
        // _unitOfWork.OrderMeals.Update(orderMeal);

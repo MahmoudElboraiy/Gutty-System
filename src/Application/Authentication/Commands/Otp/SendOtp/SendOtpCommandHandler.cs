@@ -23,7 +23,7 @@ public class SendOtpCommandHandler : IRequestHandler<SendOtpCommand, ErrorOr<str
 
         var PhoneNumber = "2" + request.PhoneNumber;
 
-        var restult = await _smsRepository.SendSmsAsync(PhoneNumber, $"Your OTP code is: {otp}");
+        var restult = await _smsRepository.SendSmsAsync(PhoneNumber, $"Gutty OTP code is: {otp}");
 
         if (restult == false)
         {
