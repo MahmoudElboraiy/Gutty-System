@@ -64,12 +64,13 @@ public class RemoveMealCommandHandler : IRequestHandler<RemoveMealCommand, Remov
             orderMeal.Order.Subscription.LunchMealsLeft++;
             subCategory.NumberOfMealsLeft++;
         }
+        orderMeal.Order.DeliveryDate = null;
         if (orderMeal.Order.Subscription.IsCurrent==false)
         {
             orderMeal.Order.Subscription.IsCurrent = true;
         }
         if(orderMeal.Order.IsCompleted)
-        {
+        {         
             orderMeal.Order.Subscription.DaysLeft += (uint)orderMeal.Order.DayNumber;
             orderMeal.Order.IsCompleted = false;
         }
