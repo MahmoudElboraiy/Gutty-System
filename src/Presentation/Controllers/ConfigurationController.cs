@@ -13,7 +13,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableRateLimiting("fixed")]
+    [EnableRateLimiting("PerUser")]
     public class ConfigurationController : ControllerBase
     {
         private readonly IMediator _mediator;

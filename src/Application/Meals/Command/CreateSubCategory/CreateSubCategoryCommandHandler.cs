@@ -32,8 +32,6 @@ public class CreateSubCategoryCommandHandler :
         {
             return Error.Validation("SubCategory.ImageMissing", "Image file is required for the subcategory.");
         }
-        Console.WriteLine($"Image received: {request.Image.FileName}");
-        Console.WriteLine($"Image length: {request.Image.Length} bytes");
         var imageUrl = await _fileService.SaveImageAsync(request.Image);
         var subCategory = new Subcategory
         {
