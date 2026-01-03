@@ -26,10 +26,6 @@ public class UpdateMealCommandHandler : IRequestHandler<UpdateMealCommand, Error
         {
             return Error.NotFound("Meal.NotFound", "Meal not found");
         }
-        if(request.Image ==null || request.Image.Length == 0)
-        {
-            return Error.Validation("Meal.ImageMissing", "Image file is required for the meal.");
-        }
         var imageUrl = meal.ImageUrl;
 
         if(request.Image != null)

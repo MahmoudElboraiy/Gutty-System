@@ -10,7 +10,7 @@ public record EditPlanCommand(
     Guid Id,
     string Name,
     string Description,
-    IFormFile Image,
+    IFormFile? Image,
     int DurationInDays,
     uint LMealsPerDay,
     uint BDMealsPerDay,

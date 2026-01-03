@@ -8,7 +8,7 @@ namespace Application.Meals.Command.UpdateSubCategory;
 public record UpdateSubCategoryCommand(
     int SubCategoryId,
     string SubCategoryName,
-    IFormFile Image,
+    IFormFile? Image,
     int CategoryId
 ) : IRequest<ErrorOr<UpdateSubCategoryCommandResponse>>;
 public record UpdateSubCategoryCommandResponse(

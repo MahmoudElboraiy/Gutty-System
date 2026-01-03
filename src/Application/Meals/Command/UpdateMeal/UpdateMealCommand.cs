@@ -10,7 +10,7 @@ namespace Application.Meals.Command.UpdateMeal;
 public record UpdateMealCommand(
     int Id,
     string Name,
-    IFormFile Image,
+    IFormFile? Image,
     string Description,
     decimal? FixedCalories,
     decimal? FixedProtein,

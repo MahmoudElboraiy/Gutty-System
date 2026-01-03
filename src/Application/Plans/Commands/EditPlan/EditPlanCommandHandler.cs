@@ -66,8 +66,6 @@ public class EditPlanCommandHandler :
             existingCategory.PricePerGram = newCategory.PricePerGram;
             existingCategory.AllowProteinChange = newCategory.AllowProteinChange;
             existingCategory.MaxProteinGrams = (uint)newCategory.MaxProteinGrams;
-
-
         }
         
         _unitOfWork.Plans.Update(planExits);
