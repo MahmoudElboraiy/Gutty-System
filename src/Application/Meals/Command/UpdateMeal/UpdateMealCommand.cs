@@ -10,7 +10,6 @@ namespace Application.Meals.Command.UpdateMeal;
 public record UpdateMealCommand(
     int Id,
     string Name,
-    IFormFile? Image,
     string Description,
     decimal? FixedCalories,
     decimal? FixedProtein,
@@ -20,7 +19,8 @@ public record UpdateMealCommand(
     bool AcceptCarb,
     int SubcategoryId,
     int? IngredientId,
-    decimal? DefaultQuantityGrams
+    decimal? DefaultQuantityGrams,
+    IFormFile? Image =null
 ) : IRequest<ErrorOr<ResultMessage>>;
 public record ResultMessage
 {

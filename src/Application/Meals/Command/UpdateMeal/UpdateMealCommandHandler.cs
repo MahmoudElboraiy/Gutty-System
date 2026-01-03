@@ -28,7 +28,7 @@ public class UpdateMealCommandHandler : IRequestHandler<UpdateMealCommand, Error
         }
         var imageUrl = meal.ImageUrl;
 
-        if(request.Image != null)
+        if(request.Image != null && request.Image.Length > 0)
              imageUrl = await _fileService.SaveImageAsync(request.Image);
 
         meal.Name = request.Name;

@@ -10,7 +10,6 @@ public record EditPlanCommand(
     Guid Id,
     string Name,
     string Description,
-    IFormFile? Image,
     int DurationInDays,
     uint LMealsPerDay,
     uint BDMealsPerDay,
@@ -18,7 +17,8 @@ public record EditPlanCommand(
     decimal DinnerPrice,
     int CarbGrams,
     int MaxCarbGrams,
-    List<EditPlanCategoryDto> LunchCategories
+    List<EditPlanCategoryDto> LunchCategories,
+    IFormFile? Image=null
 ) : IRequest<ErrorOr<EditPlanCommandResponse>>;
 public record EditPlanCategoryDto(
     int? Id,
