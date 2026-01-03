@@ -32,11 +32,11 @@ public class UpdateSubCategoryCommandHandler :
         {
             return Error.NotFound("Category.NotFound", $"Category with Id {request.CategoryId} not found.");
         }
-        if(request.Image ==null || request.Image.Length==0)
+        string imageUrl = subCategory.ImageUrl;
+        if (request.Image != null)
         {
-            return Error.Validation("SubCategory.ImageMissing", "Image file is required for the subcategory.");
+             imageUrl = await _fileService.SaveImageAsync(request.Image);
         }
-        var imageUrl = await _fileService.SaveImageAsync(request.Image);
         subCategory.Name = request.SubCategoryName;
         subCategory.ImageUrl = imageUrl;
         subCategory.CategoryId = request.CategoryId;

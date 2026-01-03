@@ -1,4 +1,5 @@
-﻿using ErrorOr;
+﻿using Domain.Enums;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Meals.Query.GetMealDetails;
@@ -15,5 +16,8 @@ public record GetMealDetailsQueryResponse(
     decimal Fats,
     int CategoryId,
     int SubcategoryId,
-    decimal? DefaultQuantityGrams
+    decimal? DefaultQuantityGrams,
+    MealType MealType,
+    int? IngredientId,
+    bool AcceptCarb
     );

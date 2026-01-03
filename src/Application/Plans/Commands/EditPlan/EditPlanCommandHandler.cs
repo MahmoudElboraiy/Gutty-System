@@ -33,11 +33,11 @@ public class EditPlanCommandHandler :
         {
             return Error.NotFound(description: "Plan not found");
         }
-        if(request.Image ==null || request.Image.Length == 0)
+        var imageUrl = planExits.ImageUrl;
+        if (request.Image !=null )
         {
-            return Error.Validation("Plan.ImageMissing", "Image file is required for the plan.");
+            imageUrl = await _fileService.SaveImageAsync(request.Image);
         }
-        var imageUrl = await _fileService.SaveImageAsync(request.Image);
         planExits.Name = string.IsNullOrEmpty(request.Name) ? planExits.Name : request.Name;
         planExits.Description = string.IsNullOrEmpty(request.Description) ? planExits.Description : request.Description;
         planExits.ImageUrl = string.IsNullOrEmpty(imageUrl) ? planExits.ImageUrl : imageUrl;

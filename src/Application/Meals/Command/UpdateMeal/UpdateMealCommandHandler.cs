@@ -30,7 +30,11 @@ public class UpdateMealCommandHandler : IRequestHandler<UpdateMealCommand, Error
         {
             return Error.Validation("Meal.ImageMissing", "Image file is required for the meal.");
         }
-        var imageUrl = await _fileService.SaveImageAsync(request.Image);
+        var imageUrl = meal.ImageUrl;
+
+        if(request.Image != null)
+             imageUrl = await _fileService.SaveImageAsync(request.Image);
+
         meal.Name = request.Name;
         meal.ImageUrl = imageUrl;
         meal.Description = request.Description;

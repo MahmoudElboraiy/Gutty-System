@@ -62,7 +62,10 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
                 meal.FixedFats.Value,
                 meal.Subcategory.CategoryId,
                 meal.SubcategoryId,
-                meal.DefaultQuantityGrams
+                meal.DefaultQuantityGrams,
+                meal.MealType.Value,
+                meal.IngredientId,
+                meal.AcceptCarb
             );
             return responseItem;
         }
@@ -106,7 +109,10 @@ public class GetMealDetailsQueryHandler : IRequestHandler<GetMealDetailsQuery, E
             meal.Ingredient.FatsPer100g * ratio,
             meal.Subcategory.CategoryId,
             meal.SubcategoryId,
-            ingredient
+            ingredient,
+            meal.MealType.Value,
+            meal.IngredientId,
+            meal.AcceptCarb
         );
         return responseItem;
     }

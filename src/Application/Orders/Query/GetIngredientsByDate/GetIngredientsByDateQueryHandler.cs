@@ -41,6 +41,7 @@ public class GetIngredientsByDateQueryHandler
 
 
         var totalIngredients = new Dictionary<string, decimal>();
+        var mealCounts = new Dictionary<string, int>();
 
         foreach (var order in orders)
         {
@@ -70,16 +71,65 @@ public class GetIngredientsByDateQueryHandler
                     if (!totalIngredients.ContainsKey(ingredientName))
                         totalIngredients[ingredientName] = 0;
 
-                    totalIngredients[ingredientName] += grams;
+                    totalIngredients[ingredientName] += grams;                    
                 }
+                //foreach( var meal in mealsToCheck.Where(m=>m!=null))
+                //{
+                //    var mealKey = meal.Name;
+                //    if (!mealCounts.ContainsKey(mealKey))
+                //        mealCounts[mealKey] = 0;
+                //    mealCounts[mealKey]++;
+                //}              
+            }
+        }
+        // Breakfast & Dinner
+        foreach (var orderMeal in orders.SelectMany(o => o.Meals))
+        {
+            if (orderMeal.Meal != null && orderMeal.Meal.MealType == MealType.BreakFastAndDinner)
+            {
+                var key = orderMeal.Meal.Name;
+                if (!mealCounts.ContainsKey(key))
+                    mealCounts[key] = 0;
+                mealCounts[key]++;
             }
         }
 
-        
+        // Protein
+        foreach (var orderMeal in orders.SelectMany(o => o.Meals))
+        {
+            if (orderMeal.ProteinMeal != null)
+            {
+                var key = orderMeal.ProteinMeal.Name;
+                if (!mealCounts.ContainsKey(key))
+                    mealCounts[key] = 0;
+                mealCounts[key]++;
+            }
+        }
+
+        // Carb
+        foreach (var orderMeal in orders.SelectMany(o => o.Meals))
+        {
+            if (orderMeal.CarbMeal != null)
+            {
+                var key = orderMeal.CarbMeal.Name;
+                if (!mealCounts.ContainsKey(key))
+                    mealCounts[key] = 0;
+                mealCounts[key]++;
+            }
+        }
+
+
         var resultList = totalIngredients
             .Select(i => new IngredientQuantity(i.Key, i.Value))
             .ToList();
 
-        return new GetIngredientsByDateQueryResponse(request.DeliveryDate, resultList);
+        var mealsResult = mealCounts
+           .Select(m => new MealsQuantity(
+               m.Key,
+               m.Value
+           ))
+           .ToList();
+
+        return new GetIngredientsByDateQueryResponse(request.DeliveryDate, resultList, mealsResult);
     }
 }
