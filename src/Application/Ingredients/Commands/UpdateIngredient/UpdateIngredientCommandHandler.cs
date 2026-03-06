@@ -29,6 +29,7 @@ public class UpdateIngredientCommandHandler :
         ingredient.ProteinPer100g = request.ProteinPer100g;
         ingredient.CarbsPer100g = request.CarbsPer100g;
         ingredient.FatsPer100g = request.FatsPer100g;
+        ingredient.RawWeightPer100g = request.RawWeightPer100g;
         _unitOfWork.Ingredients.Update(ingredient);
         await _unitOfWork.CompleteAsync();
         _cacheService.IncrementVersion(CacheKeys.IngredientsVersion);

@@ -12,5 +12,5 @@ public record GetIngredientsByDateQueryResponse(
     List<MealsQuantity> Meals
 );
 
-public record IngredientQuantity(string IngredientName, decimal TotalGrams);
+public record IngredientQuantity(string IngredientName, decimal TotalGrams,decimal TotalRawWeight);
 public record MealsQuantity(string MealName, decimal TotalCount);

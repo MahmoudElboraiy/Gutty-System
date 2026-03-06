@@ -55,7 +55,8 @@ public class GetIngredientsQueryHandler : IRequestHandler<GetIngredientsQuery, E
                     ingredient.CaloriesPer100g,
                     ingredient.ProteinPer100g,
                     ingredient.CarbsPer100g,
-                    ingredient.FatsPer100g
+                    ingredient.FatsPer100g,
+                    ingredient.RawWeightPer100g
                 )).ToList();
 
                 var finalResponse = new GetIngredientsQueryResponse(

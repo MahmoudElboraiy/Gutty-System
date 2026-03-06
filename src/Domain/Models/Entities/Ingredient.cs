@@ -11,6 +11,8 @@ public class Ingredient
     public decimal ProteinPer100g { get; set; }
     public decimal CarbsPer100g { get; set; }
     public decimal FatsPer100g { get; set; }
+    // raw wighet for 100 grams
+    public decimal? RawWeightPer100g { get; set; }
 
     public ICollection<Meal> Meals { get; set; }
 }

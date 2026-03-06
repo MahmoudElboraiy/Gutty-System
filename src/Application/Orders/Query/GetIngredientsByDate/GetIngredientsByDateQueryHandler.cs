@@ -41,6 +41,7 @@ public class GetIngredientsByDateQueryHandler
 
 
         var totalIngredients = new Dictionary<string, decimal>();
+        var totalRawIngredients = new Dictionary<string, decimal>();
         var mealCounts = new Dictionary<string, int>();
 
         foreach (var order in orders)
@@ -71,7 +72,11 @@ public class GetIngredientsByDateQueryHandler
                     if (!totalIngredients.ContainsKey(ingredientName))
                         totalIngredients[ingredientName] = 0;
 
-                    totalIngredients[ingredientName] += grams;                    
+                    if (!totalRawIngredients.ContainsKey(ingredientName))
+                        totalRawIngredients[ingredientName] = 0;
+
+                    totalIngredients[ingredientName] += grams;
+                    totalRawIngredients[ingredientName] += (decimal)(meal.Ingredient.RawWeightPer100g * grams / 100m);
                 }
                 //foreach( var meal in mealsToCheck.Where(m=>m!=null))
                 //{
@@ -120,7 +125,7 @@ public class GetIngredientsByDateQueryHandler
 
 
         var resultList = totalIngredients
-            .Select(i => new IngredientQuantity(i.Key, i.Value))
+            .Select(i => new IngredientQuantity(i.Key, i.Value, totalRawIngredients[i.Key]))
             .ToList();
 
         var mealsResult = mealCounts

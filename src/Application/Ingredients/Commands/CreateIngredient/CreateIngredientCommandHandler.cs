@@ -28,7 +28,8 @@ public class CreateIngredientCommandHandler :
             CaloriesPer100g = request.CaloriesPer100g,
             ProteinPer100g = request.ProteinPer100g,
             CarbsPer100g = request.CarbsPer100g,
-            FatsPer100g = request.FatsPer100g
+            FatsPer100g = request.FatsPer100g,
+            RawWeightPer100g = request.RawWeightPer100g
         };
         await _unitOfWork.Ingredients.AddAsync(ingredient);
         await _unitOfWork.CompleteAsync();

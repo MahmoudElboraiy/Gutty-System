@@ -10,6 +10,7 @@ public record CreateIngredientCommand(
     decimal CaloriesPer100g,
     decimal ProteinPer100g,
     decimal CarbsPer100g,
-    decimal FatsPer100g
+    decimal FatsPer100g,
+    decimal? RawWeightPer100g
     ) : IRequest<ErrorOr<CreateIngredientCommandResponse>>;
 public record CreateIngredientCommandResponse(int Id);

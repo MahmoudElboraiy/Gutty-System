@@ -37,7 +37,8 @@ public class GetIngredientByIdQueryHandler :
                   ingredient.CaloriesPer100g,
                   ingredient.ProteinPer100g,
                   ingredient.CarbsPer100g,
-                  ingredient.FatsPer100g
+                  ingredient.FatsPer100g,
+                  ingredient.RawWeightPer100g
                   );
               return response;
           });

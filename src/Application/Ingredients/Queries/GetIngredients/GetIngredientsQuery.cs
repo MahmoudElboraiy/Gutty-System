@@ -19,6 +19,7 @@ public record class GetIngredientsItem(
     decimal CaloriesPer100g,
     decimal ProteinPer100g,
     decimal CarbsPer100g,
-    decimal FatsPer100g
+    decimal FatsPer100g,
+    decimal? RawWeightPer100g
     );
 
