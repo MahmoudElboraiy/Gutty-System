@@ -76,7 +76,7 @@ public class GetIngredientsByDateQueryHandler
                         totalRawIngredients[ingredientName] = 0;
 
                     totalIngredients[ingredientName] += grams;
-                    totalRawIngredients[ingredientName] += (decimal)(meal.Ingredient.RawWeightPer100g * grams / 100m);
+                    totalRawIngredients[ingredientName] += (decimal)(meal.Ingredient.RawWeightPer100g??0 * grams / 100m);
                 }
                 //foreach( var meal in mealsToCheck.Where(m=>m!=null))
                 //{
