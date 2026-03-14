@@ -53,21 +53,40 @@ public class EditPlanCommandHandler :
         // Updating categories
         foreach (var newCategory in request.LunchCategories)
         {
+
             var existingCategory = oldCategories.FirstOrDefault(c => c.Id == newCategory.Id);
 
-            if(existingCategory ==null)
+            if(existingCategory !=null)
             {
-                return Error.NotFound(description: $"Category with Id {newCategory.Id} not found");
+                existingCategory.Name = newCategory.Name;
+                existingCategory.NumberOfMeals = (uint)newCategory.NumberOfMeals;
+                existingCategory.ProteinGrams = (uint)newCategory.ProteinGrams;
+                existingCategory.PricePerGram = newCategory.PricePerGram;
+                existingCategory.AllowProteinChange = newCategory.AllowProteinChange;
+                existingCategory.MaxProteinGrams = (uint)newCategory.MaxProteinGrams;
             }
-
-            existingCategory.Name = newCategory.Name;
-            existingCategory.NumberOfMeals = (uint)newCategory.NumberOfMeals;
-            existingCategory.ProteinGrams = (uint)newCategory.ProteinGrams;
-            existingCategory.PricePerGram = newCategory.PricePerGram;
-            existingCategory.AllowProteinChange = newCategory.AllowProteinChange;
-            existingCategory.MaxProteinGrams = (uint)newCategory.MaxProteinGrams;
+            else
+            {
+                planExits.LunchCategories.Add(new PlanCategory
+                {
+                    Name = newCategory.Name,
+                    NumberOfMeals = (uint)newCategory.NumberOfMeals,
+                    ProteinGrams = (uint)newCategory.ProteinGrams,
+                    PricePerGram = newCategory.PricePerGram,
+                    AllowProteinChange = newCategory.AllowProteinChange,
+                    MaxProteinGrams = (uint)newCategory.MaxProteinGrams
+                });
+            }
         }
-        
+        var categoriesToDelete = oldCategories
+            .Where(old => !request.LunchCategories.Any(n => n.Id == old.Id))
+            .ToList();
+
+        foreach (var category in categoriesToDelete)
+        {
+            planExits.LunchCategories.Remove(category);
+        }
+
         _unitOfWork.Plans.Update(planExits);
         _cache.IncrementVersion(CacheKeys.PlansVersion);
         await _unitOfWork.CompleteAsync();     
