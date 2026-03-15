@@ -33,7 +33,7 @@ public class PlansController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetPlans([FromQuery] int pageNumber =1 ,int pageSize =5)
+    public async Task<IActionResult> GetPlans([FromQuery] int pageNumber =1 ,int pageSize =80)
     {
         var result = await _mediator.Send(new GetPlansQuery(pageNumber ,pageSize));
         return Ok(result);
